@@ -12,7 +12,5 @@ object Application extends Controller {
   def attempt = Action {
     Ok(views.html.show())
   }
-  
-  var id: Int
-  def getId: Int = this.id
+ 
 }
