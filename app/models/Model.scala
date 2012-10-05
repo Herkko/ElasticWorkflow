@@ -12,4 +12,5 @@ object Model {
 	)
 	
 	def findAll() = this.models.toList.sortBy(_.id)
+	
 }
