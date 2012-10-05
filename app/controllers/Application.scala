@@ -15,6 +15,7 @@ object Application extends Controller {
     Ok(views.html.show())
   }
   
+  //Just a method to be able to test if anorm works
   def listModels = Action { implicit request =>
     //Creating a few models and adding to database
     var model1 = new Model(1, "Send an order", new Date())
