@@ -14,4 +14,8 @@ object Application extends Controller {
     Ok(views.html.show())
   }
   
+  def listModels = Action { implicit request =>
+    val models = Model.findAll
+    Ok(views.html.model_list(models))
+  }
 }
