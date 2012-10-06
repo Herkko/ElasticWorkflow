@@ -5,7 +5,9 @@ CREATE TABLE processElements (
 	elementTypeId int,
 	relationId int,
 	value varchar,
-	size int);
+	size int,
+	xCoord int,
+	yCoord int);
 	
 CREATE TABLE modelProcesses(
 	id int,
@@ -14,9 +16,11 @@ CREATE TABLE modelProcesses(
 	dateCreated Date);
 
 CREATE TABLE models(
-	id int,
+	id int NOT NULL AUTO_INCREMENT,
 	name varchar,
-	dateCreated Date);
+	dateCreated Date,
+	PRIMARY KEY (id)
+);
 
 CREATE TABLE processes(
 	id int,
