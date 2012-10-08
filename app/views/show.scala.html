@@ -18,6 +18,14 @@
             	var startCircle = RaphaelElement.circle(80,70,40).attr({
             	fill: "white"
             	});
+			
+		var ajaxURL = "toJSON.html";	
+		$.getJSON(ajaxURL, startCircle, function(){
+			$.('#p').val("onnistui");	
+			};
+		);
+
+		
 
 
             };
@@ -27,6 +35,8 @@
         </script>
     </head>
     <body>
-        <div id="holder"></div>
+      <p id="testi">kokeilu</p>
     </body>
 </html>
+
+{1, HelloPallo, 10, 224, 42}

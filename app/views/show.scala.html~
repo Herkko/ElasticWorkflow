@@ -9,15 +9,25 @@
         
 
 	<script> 
-            var R;
-
-            window.onload = function () {
-            		R = Raphael("holder", 600, 500);
+            var RaphaelElement;
+	    window.onload =init();
+		
+            function init() {
+            	RaphaelElement = Raphael("holder", 600, 500);
             		
-            		var startCircle = R.circle(80,70,40).attr({
-            			fill: "white"
-            		});
+            	var startCircle = RaphaelElement.circle(80,70,40).attr({
+            	fill: "white"
+            	});
+			
+		var ajaxURL = "toJSON.html";	
+		$.getJSON(ajaxURL, startCircle, function(){};);
+
+		
+
+
             };
+
+	
 
         </script>
     </head>
@@ -25,3 +35,5 @@
         <div id="holder"></div>
     </body>
 </html>
+
+{1, HelloPallo, 10, 224, 42}
