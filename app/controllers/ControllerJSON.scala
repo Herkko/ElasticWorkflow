@@ -19,6 +19,7 @@ object ControllerJSON extends Controller {
         "links" -> List(
           "http://link1",
           "http://link2")))
-   Ok("")//views.html.showJson(json))
+   println("LALA " + json)
+   Ok(views.html.showJson(json))
   }
 }

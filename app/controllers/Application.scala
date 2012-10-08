@@ -62,4 +62,7 @@ object Application extends Controller {
       NotFound
   }
 
+  def showScala = Action { implicit request =>
+    Ok(views.html.show())
+  }
 }

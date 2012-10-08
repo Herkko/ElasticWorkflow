@@ -9,6 +9,7 @@ GET		/models/new			controllers.Application.addModel
 GET		/models/:id			controllers.Application.showModel(id: Int)
 GET		/models/:id/new		controllers.Application.addProcessToModel(id: Int)
 GET     /json				controllers.ControllerJSON.showElement
+GET     /show				controllers.Application.showScala
 GET  	/*path  			controllers.Application.removeSlash(path: String)
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
