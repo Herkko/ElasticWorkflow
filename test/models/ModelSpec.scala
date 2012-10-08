@@ -26,12 +26,14 @@ class ModelSpec extends Specification {
       }
     }
 
-    "disallow inserting model if id exists" in {
+    "fail to insert model if id exists" in {
       running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
         Model.insert(new Model(Id(1), "name1", new Date()))
         Model.insert(new Model(Id(1), "name2", new Date())) must throwA[JdbcSQLException]
       }
     }
+    
+    
   }
 
 }

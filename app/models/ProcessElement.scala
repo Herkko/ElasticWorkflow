@@ -35,4 +35,8 @@ object ProcessElement {
         "yCoord" -> processElement.yCoord).executeUpdate() == 1
     }
   }
+  
+  def findAll: List[ProcessElement] = DB.withConnection { implicit connection =>
+    SQL("""select * from processElements""").as(parse *)
+  }
 }
