@@ -19,7 +19,8 @@ object ControllerJSON extends Controller {
         "links" -> List(
           "http://link1",
           "http://link2")))
-   println("LALA " + json)
-   Ok(views.html.showJson(json))
+   
+   val element = generate(ProcessElement(1, 1, 2, "Elementti", 10, 200, 500))
+   Ok(views.html.showJson(element))
   }
 }
