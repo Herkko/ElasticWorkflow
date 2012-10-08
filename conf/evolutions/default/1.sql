@@ -1,20 +1,5 @@
 # --- !Ups
-
-CREATE TABLE processElements (
-	modelProcessId int,
-	elementTypeId int,
-	relationId int,
-	value varchar,
-	size int,
-	xCoord int,
-	yCoord int);
 	
-CREATE TABLE modelProcesses(
-	id int,
-	modelId int,
-	processId int,
-	dateCreated Date);
-
 CREATE TABLE models(
 	id int NOT NULL AUTO_INCREMENT,
 	name varchar,
@@ -23,9 +8,21 @@ CREATE TABLE models(
 );
 
 CREATE TABLE processes(
-	id int,
+	id int NOT NULL AUTO_INCREMENT,
 	name varchar,
-	dateCreated Date);
+	dateCreated Date,
+	PRIMARY KEY (id)	
+);
+
+CREATE TABLE modelProcesses(
+	id int NOT NULL AUTO_INCREMENT,
+	modelId int NOT NULL AUTO_INCREMENT,
+	processId int NOT NULL AUTO_INCREMENT,
+	dateCreated Date,
+	PRIMARY KEY (id),
+	FOREIGN KEY (modelId) REFERENCES models (id),
+	FOREIGN KEY (processId) REFERENCES processes (id)
+);
 
 CREATE TABLE relations(
 	id int,
@@ -40,14 +37,30 @@ CREATE TABLE relationTypes(
 	relationType varchar);
 
 CREATE TABLE elementTypes(
-	id int,
+	id int NOT NULL AUTO_INCREMENT,
 	name varchar,
 	elementType int,
 	description varchar,
-	picture int);
+	picture int,
+	PRIMARY KEY (id)
+);
+
+INSERT INTO elementTypes(id, name, elementType, description, picture) VALUES (1, 'Swimlane', 1, 'Swimlane contains many smaller elements', 0);
+INSERT INTO elementTypes VALUES (2, 'Start Element', 2, 'Start element begins process', 0);
+
+CREATE TABLE processElements (
+	modelProcessId int NOT NULL AUTO_INCREMENT,
+	elementTypeId int NOT NULL AUTO_INCREMENT,
+	relationId int NOT NULL AUTO_INCREMENT,
+	value varchar,
+	size int,
+	xCoord int,
+	yCoord int,
+	FOREIGN KEY (modelProcessId) REFERENCES modelProcesses (id),
+	FOREIGN KEY (elementTypeId) REFERENCES elementTypes (id)
+);
 
 # --- !Downs 
-
 DROP TABLE IF EXISTS processElements;
 DROP TABLE IF EXISTS modelProcesses;
 DROP TABLE IF EXISTS models;

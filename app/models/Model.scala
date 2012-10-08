@@ -3,45 +3,51 @@ package models
 import play.api.Play.current
 import play.api.db.DB
 import java.util.Date
-import anorm.ResultSetParser
-import anorm.RowParser
-import anorm.SQL
-import anorm.SqlQuery
-import anorm.~
 import anorm.SqlParser._
 import anorm._
 
-case class Model(id: Pk[Int], name: String, dateCreated: Date) 
+case class Model(id: Pk[Int], name: String, dateCreated: Date)
 
 object Model {
 
-	val findAllSql: SqlQuery = SQL("select * from models")
-    val insertSql: SqlQuery = SQL("insert into models values ({id}, {name}, {dateCreated})")
-    
-	val modelParser: RowParser[Model] = {
-		get[Pk[Int]]("id") ~
-		get[String]("name") ~
-		get[Date]("dateCreated") map {
-		  case id ~ name ~ dateCreated =>
-		    Model(id, name, dateCreated)
-		}
-	}
-	
-	val modelsParser: ResultSetParser[List[Model]] = {
-		modelParser *
-	}
-	
-	def findAll: List[Model] = DB.withConnection { implicit connection =>
-	  findAllSql.as(modelsParser)
-	}
+  val parse = {
+    get[Pk[Int]]("id") ~
+      get[String]("name") ~
+      get[Date]("dateCreated") map {
+        case id ~ name ~ dateCreated =>
+          Model(id, name, dateCreated)
+      }
+  }
 
-	def insert(model: Model): Boolean = {
-		DB.withConnection { implicit connection =>
-		    insertSql.on( 
-				"id" -> model.id, 
-				"name" -> model.name, 
-				"dateCreated" -> model.dateCreated
-			).executeUpdate() == 1 
-		}
-	}
+  def findAll: List[Model] = DB.withConnection { implicit connection =>
+    SQL("""select * from models""").as(parse *) //.sortBy(_.id)
+  }
+
+  def contains(id: Int): Boolean = {
+    DB.withConnection { implicit connection =>
+      SQL(""" 
+          select * from models
+		  where models.id = {id}
+		 """).on('id -> id).as(parse *).toList.size == 1
+    }
+  }
+
+  def findById(id: Int): Model = DB.withConnection { implicit connection =>
+    SQL(""" 
+        select * from models
+	    where models.id = {id}
+	   """).on('id -> id).as(parse *).head
+  }
+
+  def insert(model: Model): Int = {
+    DB.withConnection { implicit connection =>
+      SQL(""" insert into models values ({id}, {name}, {dateCreated})""").on(
+        "id" -> model.id,
+        "name" -> model.name,
+        "dateCreated" -> model.dateCreated).executeInsert()
+    } match {
+      case Some(long) => long.intValue()
+      case None => throw new Exception("Model couldn't be added to database")
+    }
+  }
 }
