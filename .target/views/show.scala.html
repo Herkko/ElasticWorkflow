@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
     <head>
-        <title>Moi</title>
+        <meta charset="utf-8">
+        <title>Raphael</title>
+       
+        <script src="@routes.Assets.at("javascripts/raphael.js")"></script>
+
+        <script> 
+            var R;
+
+            window.onload = function () {
+            		R = Raphael("holder", 600, 500);
+            		
+            		var startCircle = R.circle(80,70,40).attr({
+            			fill: "white"
+            		});
+            };
+
+        </script>
     </head>
     <body>
-        <p>Hello Scala World</p>
+        <div id="holder"></div>
     </body>
 </html>
