@@ -3,9 +3,12 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
-GET     /attempt					controllers.Application.attempt
-GET		/models						controllers.Application.listModels
+GET     /                   controllers.Application.index
+GET		/models				controllers.Application.listModels
+GET		/models/new			controllers.Application.addModel
+GET		/models/:id			controllers.Application.showModel(id: Int)
+GET		/models/:id/new		controllers.Application.addProcessToModel(id: Int)
+GET  	/*path  			controllers.Application.removeSlash(path: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

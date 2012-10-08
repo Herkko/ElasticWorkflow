@@ -1,0 +1,24 @@
+@(model: Model, processes: List[(Process, Seq[ProcessElement])])
+
+@main("Showing one model") {
+  
+  <h2>Model information: </h2>
+  <dl class="model">
+	  <dt>Model: @model.id</dt>
+	  <dd>Name: @model.name</dd>
+	  <dd>Created: @model.dateCreated</dd>
+  </dl>
+	
+	<dl class="processes">
+	@for(process <- processes) {
+	  <dt>Process: @process._1.id</dt>
+	  <dd>Name: @process._1.name</dd>
+	  <dd>Created: @process._1.dateCreated</dd>
+	  <dt>Contains elements:</dt>
+		  @process._2.map { element =>
+		    <dd><t>@element.value</dd>
+		  }
+	  <br>
+	}
+	</dl>
+}
