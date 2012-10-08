@@ -11,7 +11,6 @@ object Application extends Controller {
   def index = Action {
     Ok(views.html.index("Your new application is ready."))
   }
-<<<<<<< HEAD
 
   //List all models from database
   def listModels = Action { implicit request =>
@@ -42,12 +41,6 @@ object Application extends Controller {
     } else {
       Redirect(routes.Application.listModels)
     }
-=======
-  
-
-  def attempt = Action {
-    Ok(views.html.show())
->>>>>>> 0f6603dfa14c5187b0f4da2dc3fc62f34c0a61ac
   }
   
   //Create new process with two elements
