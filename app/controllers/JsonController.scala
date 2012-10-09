@@ -6,7 +6,7 @@ import play.api._
 import play.api.mvc._
 import com.codahale.jerkson.Json._
 
-object ControllerJSON extends Controller {
+object JsonController extends Controller {
 
   def showElement = Action { implicit request =>
    val processElements = ProcessElement.findAll map {
