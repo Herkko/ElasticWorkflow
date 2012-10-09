@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Raphael</title>
+       	<link media="screen" href="ElastFlo.css" rel="stylesheet">
+        <script src="@routes.Assets.at("javascripts/raphael.js")"></script>
+	<script src="raphael.js"></script>
+        
+
+	<script> 
+            var RaphaelElement;
+
+	    window.onload  = function () {
+            	RaphaelElement = Raphael("holder", 600, 500);
+            		
+            	var circle = RaphaelElement.circle(80,70,40);
+		circle.attr("fill", "#f00");
+		circle.attr("stroke", "#fff");
+		
+			
+		
+
+            };
+
+	
+
+        </script>
+    </head>
+    <body>
+    
+    </body>
+</html>
+
+
