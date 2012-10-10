@@ -8,12 +8,19 @@ import com.codahale.jerkson.Json._
 
 object JsonController extends Controller {
 
-  def showElement = Action { implicit request =>
+  def showAll = Action { implicit request =>
 
    val jsonElements = JsonObject.findAll map {
      jsonObject => generate(jsonObject)
    }
  
+   Ok(views.html.showJson(jsonElements))
+  }
+  
+  def showElementByModel(id: Int) = Action { implicit request =>
+   val jsonElements = JsonObject.findByModel(id) map {
+     jsonObject => generate(jsonObject)
+   }
    Ok(views.html.showJson(jsonElements))
   }
 }

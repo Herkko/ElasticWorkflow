@@ -39,6 +39,16 @@ object Model {
 	   """).on('id -> id).as(parse *).head
   }
 
+  def countProcesses(id: Int): Int = DB.withConnection { implicit connection =>
+    SQL("""select count(*) from processes
+        join modelProcesses on modelProcesses.processId = processes.id
+        join models on models.id = modelProcesses.modelId
+        where models.id = {id}
+        """).on('id -> id).as(scalar[Long].single) match {
+      case long => long.intValue()
+    }
+  }
+
   def insert(model: Model): Int = {
     DB.withConnection { implicit connection =>
       SQL(""" insert into models values ({id}, {name}, {dateCreated})""").on(

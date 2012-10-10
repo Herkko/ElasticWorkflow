@@ -24,4 +24,15 @@ object JsonObject {
           where processElements.elementTypeId = elementTypes.id
          """).as(parse *)
   }
+  
+  def findByModel(id: Int): List[JsonObject] = DB.withConnection { implicit connection =>
+    SQL("""select elementTypes.description, processElements.xCoord, processElements.yCoord
+          from elementTypes, processElements
+          join modelProcesses on modelProcesses.id = processElements.modelProcessId
+          join models on models.id = modelProcesses.modelId
+          join processes on processes.id = modelProcesses.processId
+          where processElements.elementTypeId = elementTypes.id
+          and models.id = {id}
+         """).on('id -> id).as(parse *)
+  }
 }

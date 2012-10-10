@@ -10,7 +10,8 @@ GET		/models/:id								controllers.Models.show(id: Int)
 GET		/models/:id/processes/new			    controllers.Processes.add(id: Int)
 GET     /models/:id/relations/:relationId/new  	controllers.Relations.add(id: Int, relationId: Int)
 GET     /models/:id/relations/:rId/delete  		controllers.Relations.delete(id: Int, rId: Int)
-GET     /json									controllers.JsonController.showElement
+GET     /json									controllers.JsonController.showAll
+GET		/json/:id								controllers.JsonController.showElementByModel(id: Int)
 GET     /show									controllers.Application.showScala
 GET  	/*path  								controllers.Application.removeSlash(path: String)
 
