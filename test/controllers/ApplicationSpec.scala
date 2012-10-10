@@ -16,7 +16,8 @@ class ApplicationSpec extends Specification {
       contentType(result) must beSome("text/html")
       charset(result) must beSome("utf-8")   
     }
-  
+
+  /*
     "respond to the listModels Action by listing models" in {
       running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
         Model.insert(new Model(Id(1), "First model", new Date()))
@@ -30,6 +31,6 @@ class ApplicationSpec extends Specification {
         charset(result) must beSome("utf-8")   
         //contentAsString(result) must contain("")
       }
-    }
+    }*/
   }
 }
