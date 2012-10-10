@@ -40,8 +40,8 @@ CREATE TABLE elementTypes(
 	PRIMARY KEY (id)
 );
 
-INSERT INTO elementTypes(id, name, elementType, description, picture) VALUES (1, 'Swimlane', 1, 'Swimlane contains many smaller elements', 0);
-INSERT INTO elementTypes VALUES (2, 'Start Element', 2, 'Start element begins process', 0);
+INSERT INTO elementTypes(id, name, elementType, description, picture) VALUES (1, 'Swimlane', 1, 'rect', 0);
+INSERT INTO elementTypes VALUES (2, 'Start Element', 2, 'circle', 0);
 
 CREATE TABLE processElements (
 	modelProcessId int NOT NULL AUTO_INCREMENT,

@@ -8,6 +8,8 @@ import anorm._
 
 object Processes extends Controller {
 
+  var xCoord = 20
+  
   //Add new process to model
   def add(modelId: Int) = Action { implicit request =>
     if (Model.contains(modelId)) {
@@ -24,7 +26,8 @@ object Processes extends Controller {
       val modelProcessId: Int = ModelProcess.insert(ModelProcess(NotAssigned, modelId, processId, new Date()))
       
       //Adding two elements to new process
-      val processRelId1 = ProcessElement.insert(ProcessElement(modelProcessId, 1, NotAssigned, "Swimlane", 0, 0, 0))
-      val processRelId2 = ProcessElement.insert(ProcessElement(modelProcessId, 2, NotAssigned, "Start Element", 0, 0, 0))
+      val processRelId1 = ProcessElement.insert(ProcessElement(modelProcessId, 1, NotAssigned, "Swimlane", 0, xCoord, 20))
+      val processRelId2 = ProcessElement.insert(ProcessElement(modelProcessId, 2, NotAssigned, "Start Element", 0, xCoord+50, 70))
+      xCoord += 200
   }
 }

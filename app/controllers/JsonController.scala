@@ -9,9 +9,11 @@ import com.codahale.jerkson.Json._
 object JsonController extends Controller {
 
   def showElement = Action { implicit request =>
-   val processElements = ProcessElement.findAll map {
-     processElement => generate(processElement)
+
+   val jsonElements = JsonObject.findAll map {
+     jsonObject => generate(jsonObject)
    }
-   Ok(views.html.showJson(processElements))
+ 
+   Ok(views.html.showJson(jsonElements))
   }
 }
