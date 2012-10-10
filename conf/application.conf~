@@ -46,5 +46,9 @@ logger.play=INFO
 logger.application=DEBUG
 
 #Cobertura plugin to generate test coverage
-module.cobertura=${play.path}/modules/cobertura
+<<<<<<< HEAD
+#module.cobertura=${play.path}/modules/cobertura
+=======
+module.cobertura=/Applications/play-2.0.3/modules/cobertura
+>>>>>>> c56c32bdb1a9f681bba3751129eefad226dd0267
 
