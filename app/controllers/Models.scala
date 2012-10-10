@@ -7,7 +7,7 @@ import java.util.Date
 import anorm._
 
 object Models extends Controller {
-
+  
   //List all models from database
   def list = Action { implicit request =>
     Ok(views.html.modelTest.list(Model.findAll))
