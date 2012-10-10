@@ -60,4 +60,11 @@ object Process {
       case None => throw new Exception("Process couldn't be added to database")
     }
   }
+  
+   def delete(id: Int): Boolean = {
+    DB.withConnection { implicit connection =>
+      SQL("delete from processes where id = {id}").
+        on('id -> id).executeUpdate() == 0
+    }
+  }
 }
