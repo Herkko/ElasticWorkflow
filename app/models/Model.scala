@@ -8,6 +8,9 @@ import anorm._
 
 case class Model(id: Pk[Int], name: String, dateCreated: Date)
 
+/**
+ * Model is a collection of processes, elements and relations.
+ */
 object Model {
 
   val parse = {
@@ -19,10 +22,16 @@ object Model {
       }
   }
 
+  /**
+   * Return list of all the models in database.
+   */
   def findAll: List[Model] = DB.withConnection { implicit connection =>
     SQL("""select * from models""").as(parse *) //.sortBy(_.id)
   }
 
+  /**
+   * Return true if model with id, specified by parameter id, exists. Return false otherwise.
+   */
   def contains(id: Int): Boolean = {
     DB.withConnection { implicit connection =>
       SQL(""" 
@@ -32,6 +41,9 @@ object Model {
     }
   }
 
+  /**
+   * Find a model with a certain id. //TODO What happens if id doesn't exist?
+   */
   def findById(id: Int): Model = DB.withConnection { implicit connection =>
     SQL(""" 
         select * from models
@@ -39,16 +51,9 @@ object Model {
 	   """).on('id -> id).as(parse *).head
   }
 
-  def countProcesses(id: Int): Int = DB.withConnection { implicit connection =>
-    SQL("""select count(*) from processes
-        join modelProcesses on modelProcesses.processId = processes.id
-        join models on models.id = modelProcesses.modelId
-        where models.id = {id}
-        """).on('id -> id).as(scalar[Long].single) match {
-      case long => long.intValue()
-    }
-  }
-
+  /**
+   * Insert new model to database.
+   */
   def insert(model: Model): Int = {
     DB.withConnection { implicit connection =>
       SQL(""" insert into models values ({id}, {name}, {dateCreated})""").on(

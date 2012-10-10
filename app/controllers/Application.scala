@@ -8,11 +8,19 @@ import anorm._
 
 object Application extends Controller {
 
+  /**
+   * Show default start page.
+   * @return
+   */
   def index = Action {
     Ok(views.html.index("Your new application is ready."))
   }
 
-  //Try to remove slash from the end of URL to see if path will work
+  /**
+   * By default Play sees addresses such as, for example, /models and /models/
+   * as different addresses. This method helps application to redirect to the right
+   * page, even if path ends with a slash.
+   */
   def removeSlash(path: String) = Action {
     val ending = path.charAt(path.length() - 1)
     if (ending == '/')
@@ -21,6 +29,9 @@ object Application extends Controller {
       NotFound
   }
 
+  /**
+   * Show page that uses Raphael.
+   */
   def showScala = Action { implicit request =>
     Ok(views.html.show())
   }
