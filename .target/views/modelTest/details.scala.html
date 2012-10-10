@@ -1,4 +1,4 @@
-@(model: Model, processes: List[(Process, Seq[ProcessElement])], relations: List[(Relation , RelationType)])
+@(model: Model, processes: List[(Process, Seq[ProcessElement])], relations: List[Relation])
 
 @main("Showing one model") {
   
@@ -26,14 +26,14 @@
 	}
 	</dl>
 
-      <b>Relations:</b> //Relation id refers to the id of the element (i.e. which element relation belongs to).
+      <b>Relations:</b>
 	  <dl class="relations">
       @for(relation <- relations) {
-        <dt>RelationId: @relation._1.relationId</dt>
-        <dd>Description: @relation._1.value</dd>
-        <dd>Start Point: @relation._1.startPointId</dd>
-        <dd>End Point:   @relation._1.endPointId</dd>
-        <dd>Type:		 @relation._2.relationType</dd>
+        <dt>Relation id: @relation.id //toDo</dt>
+        <dd>Belongs to element with id: @relation.relationId</dd>
+        <dd>Description: @relation.value</dd>
+        <dd>Start Point: @relation.startPointId</dd>
+        <dd>End Point:   @relation.endPointId</dd>
         <br>
       }
 	  <br>

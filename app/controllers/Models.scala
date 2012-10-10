@@ -17,7 +17,7 @@ object Models extends Controller {
   def show(id: Int) = Action { implicit request =>
     if (Model.contains(id)) {
       val model = Model.findById(id)
-      val relations = Relation.findByModelWithTypes(id)
+      val relations = Relation.findByModel(id)
       Ok(views.html.modelTest.details(model, Process.findByModel(model.id.toString().toInt), relations))
     } else {
       Redirect(routes.Models.list())

@@ -43,19 +43,18 @@ object Relation {
   def findAll: List[Relation] = DB.withConnection { implicit connection =>
     SQL("""select * from relations""").as(parse *)
   }
-
-  def findByModelWithTypes(id: Int): List[(Relation, RelationType)] = {
+  
+  def findByModel(id: Int): List[Relation] = {
     DB.withConnection { implicit connection =>
       SQL(""" 
-          select relations.*, relationTypes.* from relations, relationTypes
+          select relations.* from relations
           join processElements on processElements.relationId = relations.relationId
           join modelProcesses on modelProcesses.id = processElements.modelProcessId
           join models on models.id = modelProcesses.modelId
           join processes on processes.id = modelProcesses.processId
 		  join elementTypes on processElements.elementTypeId = elementTypes.id
 		  where models.id = {id}
-          and relations.relationTypeId = relationTypes.id
-		""").on('id -> id).as(withTypes *)
+		""").on('id -> id).as(parse *)
     }
   }
   
