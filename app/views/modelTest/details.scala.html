@@ -26,10 +26,10 @@
 	}
 	</dl>
 
-      <b>Relations:</b>
+      <b>Relations:</b> //Relation id refers to the id of the element (i.e. which element relation belongs to).
 	  <dl class="relations">
       @for(relation <- relations) {
-        <dt>Relation: @relation._1.relationId</dt>
+        <dt>RelationId: @relation._1.relationId</dt>
         <dd>Description: @relation._1.value</dd>
         <dd>Start Point: @relation._1.startPointId</dd>
         <dd>End Point:   @relation._1.endPointId</dd>

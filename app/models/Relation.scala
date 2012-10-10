@@ -37,27 +37,14 @@ object Relation {
         "endPointId" -> relation.endPointId,
         "value" -> relation.value,
         "relationId" -> relation.relationId).executeUpdate() == 1
-    } 
+    }
   }
 
   def findAll: List[Relation] = DB.withConnection { implicit connection =>
     SQL("""select * from relations""").as(parse *)
   }
-  /*
-  def findAllWithTypes: List[(Relation, RelationType)] = DB.withConnection { implicit connection =>
-    SQL("""select relations.*, relationTypes.* from relations, relationTypes 
-        where relations.relationTypeId = relationTypes.id""").as(withTypes *)
-  }*/
-/*   def findById(id: Int): List[Relation] = {
-    DB.withConnection { implicit connection =>
-      SQL("""
-          select * from relations
-          where relations.id = {id}
-		""").on('id -> id).as(parse *)
-    }
-  }*/
-  
-   def findByModelWithTypes(id: Int): List[(Relation, RelationType)] = {
+
+  def findByModelWithTypes(id: Int): List[(Relation, RelationType)] = {
     DB.withConnection { implicit connection =>
       SQL(""" 
           select relations.*, relationTypes.* from relations, relationTypes
@@ -67,7 +54,15 @@ object Relation {
           join processes on processes.id = modelProcesses.processId
 		  join elementTypes on processElements.elementTypeId = elementTypes.id
 		  where models.id = {id}
+          and relations.relationTypeId = relationTypes.id
 		""").on('id -> id).as(withTypes *)
+    }
+  }
+  
+  def delete(id: Int): Boolean = {
+    DB.withConnection { implicit connection =>
+      SQL("delete from relations where id = {id}").
+        on('id -> id).executeUpdate() == 0
     }
   }
 }

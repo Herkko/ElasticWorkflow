@@ -26,7 +26,5 @@ object Processes extends Controller {
       //Adding two elements to new process
       val processRelId1 = ProcessElement.insert(ProcessElement(modelProcessId, 1, NotAssigned, "Swimlane", 0, 0, 0))
       val processRelId2 = ProcessElement.insert(ProcessElement(modelProcessId, 2, NotAssigned, "Start Element", 0, 0, 0))
-       
-    //  Relation.insert(Relation(NotAssigned, 1, 100, 200, "Test relation of start element", processRelId2))
   }
 }
