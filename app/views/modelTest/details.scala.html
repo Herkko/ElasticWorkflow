@@ -1,4 +1,4 @@
-@(model: Model, processes: List[(Process, Seq[ProcessElement])])
+@(model: Model, processes: List[(Process, Seq[ProcessElement])], relations: List[(Relation , RelationType)])
 
 @main("Showing one model") {
   
@@ -9,16 +9,32 @@
 	  <dd>Created: @model.dateCreated</dd>
   </dl>
 	
+     <b>Processes:</b>
 	<dl class="processes">
 	@for(process <- processes) {
 	  <dt>Process: @process._1.id</dt>
 	  <dd>Name: @process._1.name</dd>
 	  <dd>Created: @process._1.dateCreated</dd>
-	  <dt>Contains elements:</dt>
-		  @process._2.map { element =>
-		    <dd><t>@element.value</dd>
-		  }
+	  
+	  <br>
+	  <dd>Contains elements:</dd>
+	  @process._2.map { element =>
+      	<dd><t>@element.value: @element.relationId</dd>
+	  }
+
 	  <br>
 	}
 	</dl>
+
+      <b>Relations:</b>
+	  <dl class="relations">
+      @for(relation <- relations) {
+        <dt>Relation: @relation._1.relationId</dt>
+        <dd>Description: @relation._1.value</dd>
+        <dd>Start Point: @relation._1.startPointId</dd>
+        <dd>End Point:   @relation._1.endPointId</dd>
+        <dd>Type:		 @relation._2.relationType</dd>
+        <br>
+      }
+	  <br>
 }

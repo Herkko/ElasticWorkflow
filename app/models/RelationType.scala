@@ -2,12 +2,20 @@ package models
 
 import play.api.Play.current
 import play.api.db.DB
-import anorm.SQL
-import anorm.SqlQuery
+import anorm._
+import anorm.SqlParser._
 
 case class RelationType(id: Int, relationType: String)
 
 object RelationType {
+
+  val parse = {
+    get[Int]("id") ~
+      get[String]("relationType") map {
+        case id ~ relationType =>
+          RelationType(id, relationType)
+      }
+  }
 
   def insert(relationType: RelationType): Boolean = {
     DB.withConnection { implicit connection =>

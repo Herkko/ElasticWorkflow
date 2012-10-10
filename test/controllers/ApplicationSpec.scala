@@ -23,7 +23,7 @@ class ApplicationSpec extends Specification {
         Model.insert(new Model(Id(2), "Second model", new Date()))
         Model.insert(new Model(Id(3), "Third model", new Date()))
         
-        val result = controllers.Application.listModels(FakeRequest())
+        val result = controllers.Models.list(FakeRequest())
         
         status(result) must equalTo(OK)
         contentType(result) must beSome("text/html")

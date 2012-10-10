@@ -6,12 +6,12 @@ import anorm._
 import anorm.SqlQuery
 import anorm.SqlParser._
 
-case class Relation(id: Int, relationTypeId: Int, startPointId: Int, endPointId: Int, value: String, relationId: Int)
+case class Relation(id: Pk[Int], relationTypeId: Int, startPointId: Int, endPointId: Int, value: String, relationId: Int)
 
 object Relation {
-  
+
   val parse = {
-    get[Int]("id") ~
+    get[Pk[Int]]("id") ~
       get[Int]("relationTypeId") ~
       get[Int]("startPointId") ~
       get[Int]("endPointId") ~
@@ -20,5 +20,54 @@ object Relation {
         case id ~ relationTypeId ~ startPointId ~ endPointId ~ value ~ relationId =>
           Relation(id, relationTypeId, startPointId, endPointId, value, relationId)
       }
+  }
+
+  val withTypes = {
+    parse ~ RelationType.parse map {
+      case relation ~ relationType => (relation, relationType)
+    }
+  }
+
+  def insert(relation: Relation): Boolean = {
+    DB.withConnection { implicit connection =>
+      SQL("""insert into relations values ({id}, {relationTypeId}, {startPointId}, {endPointId}, {value}, {relationId})""").on(
+        "id" -> relation.id,
+        "relationTypeId" -> relation.relationTypeId,
+        "startPointId" -> relation.startPointId,
+        "endPointId" -> relation.endPointId,
+        "value" -> relation.value,
+        "relationId" -> relation.relationId).executeUpdate() == 1
+    } 
+  }
+
+  def findAll: List[Relation] = DB.withConnection { implicit connection =>
+    SQL("""select * from relations""").as(parse *)
+  }
+  /*
+  def findAllWithTypes: List[(Relation, RelationType)] = DB.withConnection { implicit connection =>
+    SQL("""select relations.*, relationTypes.* from relations, relationTypes 
+        where relations.relationTypeId = relationTypes.id""").as(withTypes *)
+  }*/
+/*   def findById(id: Int): List[Relation] = {
+    DB.withConnection { implicit connection =>
+      SQL("""
+          select * from relations
+          where relations.id = {id}
+		""").on('id -> id).as(parse *)
+    }
+  }*/
+  
+   def findByModelWithTypes(id: Int): List[(Relation, RelationType)] = {
+    DB.withConnection { implicit connection =>
+      SQL(""" 
+          select relations.*, relationTypes.* from relations, relationTypes
+          join processElements on processElements.relationId = relations.relationId
+          join modelProcesses on modelProcesses.id = processElements.modelProcessId
+          join models on models.id = modelProcesses.modelId
+          join processes on processes.id = modelProcesses.processId
+		  join elementTypes on processElements.elementTypeId = elementTypes.id
+		  where models.id = {id}
+		""").on('id -> id).as(withTypes *)
+    }
   }
 }

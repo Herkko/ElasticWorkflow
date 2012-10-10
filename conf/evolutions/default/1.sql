@@ -24,17 +24,12 @@ CREATE TABLE modelProcesses(
 	FOREIGN KEY (processId) REFERENCES processes (id)
 );
 
-CREATE TABLE relations(
-	id int,
-	relationTypeId int,
-	startPointId int,
-	endPointId int,
-	value varchar,
-	relationId int);
-
 CREATE TABLE relationTypes(
-	id int,
-	relationType varchar);
+	id int NOT NULL AUTO_INCREMENT,
+	relationType varchar,
+	PRIMARY KEY (id)
+);
+INSERT INTO relationTypes VALUES (1, 'normal line');
 
 CREATE TABLE elementTypes(
 	id int NOT NULL AUTO_INCREMENT,
@@ -56,8 +51,22 @@ CREATE TABLE processElements (
 	size int,
 	xCoord int,
 	yCoord int,
+	PRIMARY KEY (relationId),
 	FOREIGN KEY (modelProcessId) REFERENCES modelProcesses (id),
 	FOREIGN KEY (elementTypeId) REFERENCES elementTypes (id)
+);
+
+
+CREATE TABLE relations(
+	id int NOT NULL AUTO_INCREMENT,
+	relationTypeId int NOT NULL AUTO_INCREMENT,
+	startPointId int,
+	endPointId int,
+	value varchar,
+	relationId int NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (id),
+	FOREIGN KEY (relationTypeId) REFERENCES relationTypes (id),
+	FOREIGN KEY (relationId) REFERENCES processElements (relationId)	
 );
 
 # --- !Downs 

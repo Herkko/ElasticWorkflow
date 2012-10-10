@@ -6,14 +6,14 @@ import java.util.Date
 import anorm._
 import anorm.SqlParser._
 
-case class ProcessElement(modelProcessId: Int, elementTypeId: Int, relationId: Int, value: String, size: Int, xCoord: Int, yCoord: Int)
+case class ProcessElement(modelProcessId: Int, elementTypeId: Int, relationId: Pk[Int], value: String, size: Int, xCoord: Int, yCoord: Int)
 
 object ProcessElement {
 
   val parse = {
     get[Int]("modelProcessId") ~
       get[Int]("elementTypeId") ~
-      get[Int]("relationId") ~
+      get[Pk[Int]]("relationId") ~
       get[String]("value") ~
       get[Int]("size") ~
       get[Int]("xCoord") ~
@@ -23,7 +23,7 @@ object ProcessElement {
       }
   }
 
-  def insert(processElement: ProcessElement): Boolean = {
+  def insert(processElement: ProcessElement): Int = {
     DB.withConnection { implicit connection =>
       SQL("""insert into processElements values ({modelProcessId}, {elementTypeId}, {relationId}, {value}, {size}, {xCoord}, {yCoord})""").on(
         "modelProcessId" -> processElement.modelProcessId,
@@ -32,10 +32,13 @@ object ProcessElement {
         "value" -> processElement.value,
         "size" -> processElement.size,
         "xCoord" -> processElement.xCoord,
-        "yCoord" -> processElement.yCoord).executeUpdate() == 1
+        "yCoord" -> processElement.yCoord).executeInsert() match {
+          case Some(long) => long.intValue()
+          case None => throw new Exception("ProcessElement couldn't be added to database")
+        }
     }
   }
-  
+
   def findAll: List[ProcessElement] = DB.withConnection { implicit connection =>
     SQL("""select * from processElements""").as(parse *)
   }
