@@ -33,6 +33,7 @@ object Application extends Controller {
    * Show page that uses Raphael.
    */
   def showScala = Action { implicit request =>
-    Ok(views.html.show())
+    Ok(views.html.jsTest())
   }
+  
 }

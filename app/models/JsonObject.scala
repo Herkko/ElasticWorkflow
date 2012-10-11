@@ -5,7 +5,9 @@ import play.api.db.DB
 import anorm._
 import anorm.SqlParser._
 
-case class JsonObject(`type`: String, cx: Int, cy: Int)
+case class JsonObject(`type`: String, cx: Int, cy: Int) {
+  def this() = this("", 0, 0)
+}
 
 /**
  * This is probably a temporary class, needed to show JSON objects with Raphael library. 

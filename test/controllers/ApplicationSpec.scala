@@ -16,21 +16,5 @@ class ApplicationSpec extends Specification {
       contentType(result) must beSome("text/html")
       charset(result) must beSome("utf-8")   
     }
-
-  /*
-    "respond to the listModels Action by listing models" in {
-      running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
-        Model.insert(new Model(Id(1), "First model", new Date()))
-        Model.insert(new Model(Id(2), "Second model", new Date()))
-        Model.insert(new Model(Id(3), "Third model", new Date()))
-        
-        val result = controllers.Models.list(FakeRequest())
-        
-        status(result) must equalTo(OK)
-        contentType(result) must beSome("text/html")
-        charset(result) must beSome("utf-8")   
-        //contentAsString(result) must contain("")
-      }
-    }*/
   }
 }
