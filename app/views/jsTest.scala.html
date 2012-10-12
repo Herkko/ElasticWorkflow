@@ -5,6 +5,7 @@
         <title>Raphael</title>
        	<link media="screen" href="ElastFlo.css" rel="stylesheet">
         <script src="@routes.Assets.at("javascripts/raphael.js")"></script>
+<script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
 	<script src="raphael.js"></script>
         <script src="jquery-1.7.1.min.js"></script>
 
@@ -15,15 +16,18 @@
 
 	<script> 
 		var RaphaelElement;
-		var jsonlista = {type:"circle", cx: 50, cy:100, r: 25, fill:"#585858 "};
-	    RaphaelElement = Raphael(100, 100, 500, 500);
-	    var box1 = RaphaelElement.rect(10,10,400,200,1);
+		RaphaelElement = Raphael(100, 100, 500, 500);
 
+	/*	var jsonlista = {type:"circle", cx: 50, cy:100, r: 25, fill:"#585858 "};
+	    var box1 = RaphaelElement.rect(10,10,400,200,1);
 	    RaphaelElement.add([jsonlista]);
-	    readJSON2();
+	*/
+	    readJSON();
       
 		function readJSON(){
-			$.getJSON('ajax/show', function(data){jsonlista = data;});
+			$.getJSON('/json', function(data){ 
+				draw(data);
+	        });
 		}
 
 	    function InitProcess(){
@@ -38,7 +42,35 @@
 	    	var anim = Raphael.animation({cx: 10, cy: 20}, 2e3);
 	    	circle1.animate(anim.delay(5000));
 	    	var anim =  RaphaelElement.circle(320, 240, 60).animation({fill: "#223fa3", stroke: "#000", "stroke-width": 80, "stroke-opacity": 0.5}, 800);
-	    }	    
+	    }	   
+
+	    function draw(elementList) {
+	      for (var i = 0; i < elementList.length; i++) { 
+	    	  var elem = elementList[i];
+	    	  if(elem.type == "circle") startElement(elem.cx, elem.cy, 25);
+	    	  else if(elem.type == "rect") RaphaelElement.rect(elem.cx,elem.cy,400,200,1);
+	      }
+	    }
+	    
+	    function startElement(x, y, r) {
+              var s = RaphaelElement.set()           		  	
+              s.push(
+            		  RaphaelElement.circle(x, y, r).attr({ fill:"#585858"}),
+            		  RaphaelElement.text(x, y, "Start").attr({fill: "white", "font-size": 15})
+              );
+              RaphaelElement.set(s).drag(move, start);
+        }
+
+	    function start() {
+	    	this.ox = this.attr("cx");
+	    	this.oy = this.attr("cx");
+        } 
+
+	    function move(dx, dy) {
+            this.attr({cx: this.ox + dx, cy: this.oy + dy});
+        };
+            		
+
         </script>
 </html>
 
