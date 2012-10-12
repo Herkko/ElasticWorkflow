@@ -16,14 +16,17 @@
 
 	<script> 
 		var RaphaelElement;
-		RaphaelElement = Raphael(100, 100, 500, 500);
+		RaphaelElement = Raphael(100, 100, "100%", "100%");
 
 	/*	var jsonlista = {type:"circle", cx: 50, cy:100, r: 25, fill:"#585858 "};
 	    var box1 = RaphaelElement.rect(10,10,400,200,1);
 	    RaphaelElement.add([jsonlista]);
 	*/
+
 	    readJSON();
       
+		//if more than one models exists, their elements will overlap
+		//will draw many swimlanes now
 		function readJSON(){
 			$.getJSON('/json', function(data){ 
 				draw(data);
@@ -48,7 +51,7 @@
 	      for (var i = 0; i < elementList.length; i++) { 
 	    	  var elem = elementList[i];
 	    	  if(elem.type == "circle") startElement(elem.cx, elem.cy, 25);
-	    	  else if(elem.type == "rect") RaphaelElement.rect(elem.cx,elem.cy,400,200,1);
+	    	  else if(elem.type == "rect") RaphaelElement.rect(elem.cx,elem.cy,600,200,1);
 	      }
 	    }
 	    
@@ -61,6 +64,7 @@
               RaphaelElement.set(s).drag(move, start);
         }
 
+	    //moving bugs if many start elements exist
 	    function start() {
 	    	this.ox = this.attr("cx");
 	    	this.oy = this.attr("cx");

@@ -45,11 +45,11 @@ object Processes extends Controller {
    * SwimLane and StartElement and no relations.
    */
   def createNewProcess(modelId: Int) = {
-    var xCoord = (Process.countByModel(modelId)) * 200 + 20
+    var yCoord = (Process.countByModel(modelId)) * 220 + 20
     val processId: Int = Process.create(Process(NotAssigned, "Process", new Date()))
     val modelProcessId: Int = ModelProcess.create(ModelProcess(NotAssigned, modelId, processId, new Date()))
 
-    val processRelId1 = ProcessElement.create(ProcessElement(modelProcessId, 1, NotAssigned, "Swimlane", 0, xCoord, 20))
-    val processRelId2 = ProcessElement.create(ProcessElement(modelProcessId, 2, NotAssigned, "Start Element", 0, xCoord + 50, 70))
+    val processRelId1 = ProcessElement.create(ProcessElement(modelProcessId, 1, NotAssigned, "Swimlane", 0, 20, yCoord))
+    val processRelId2 = ProcessElement.create(ProcessElement(modelProcessId, 2, NotAssigned, "Start Element", 0, 70, yCoord + 70))
   }
 }
