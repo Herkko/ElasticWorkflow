@@ -14,11 +14,27 @@ object Processes extends Controller {
   /**
    * Add new process to a model. Called when a new model is created, or user wants to add a process to existing model.
    * Redirects to a page that lists all models, if model with id equal to parameter modelId doesn't exist.
+   * to fix: processId isnt used anywhere, database still determines id itself.
    */
-  def add(modelId: Int) = Action { implicit request =>
+  def create(modelId: Int) = Action { implicit request =>
     if (Model.contains(modelId)) {
       createNewProcess(modelId)
-      Redirect(routes.Models.show(modelId))
+      Redirect(routes.Models.read(modelId))
+    } else {
+      Redirect(routes.Models.list)
+    }
+  }
+  
+  /*
+   * these two methods can be replaced with a method that takes function as parameter
+   */
+  def delete(modelId: Int, processId: Int) = Action { implicit request =>
+    if (Model.contains(modelId)) {
+      Relation.deleteByProcess(processId)
+      ProcessElement.deleteByProcess(processId)
+      ModelProcess.deleteByProcess(processId)
+      Process.delete(processId)
+      Redirect(routes.Models.read(modelId))
     } else {
       Redirect(routes.Models.list)
     }
@@ -30,10 +46,10 @@ object Processes extends Controller {
    */
   def createNewProcess(modelId: Int) = {
     var xCoord = (Process.countByModel(modelId)) * 200 + 20
-    val processId: Int = Process.insert(Process(NotAssigned, "Process", new Date()))
-    val modelProcessId: Int = ModelProcess.insert(ModelProcess(NotAssigned, modelId, processId, new Date()))
+    val processId: Int = Process.create(Process(NotAssigned, "Process", new Date()))
+    val modelProcessId: Int = ModelProcess.create(ModelProcess(NotAssigned, modelId, processId, new Date()))
 
-    val processRelId1 = ProcessElement.insert(ProcessElement(modelProcessId, 1, NotAssigned, "Swimlane", 0, xCoord, 20))
-    val processRelId2 = ProcessElement.insert(ProcessElement(modelProcessId, 2, NotAssigned, "Start Element", 0, xCoord + 50, 70))
+    val processRelId1 = ProcessElement.create(ProcessElement(modelProcessId, 1, NotAssigned, "Swimlane", 0, xCoord, 20))
+    val processRelId2 = ProcessElement.create(ProcessElement(modelProcessId, 2, NotAssigned, "Start Element", 0, xCoord + 50, 70))
   }
 }
