@@ -18,5 +18,6 @@ GET     /models/:id/relations/:rId/delete  		controllers.Relations.delete(id: In
 GET     /json									controllers.JsonController.showAll
 GET		/json/:id								controllers.JsonController.showElementByModel(id: Int)
 GET     /show									controllers.Application.showScala
+GET     /bb										controllers.Application.showBackboneAttempt
 GET  	/*path  								controllers.Application.removeSlash(path: String)
 
