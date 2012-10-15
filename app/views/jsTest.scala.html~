@@ -5,6 +5,8 @@
         <title>Raphael</title>
        	<link media="screen" href="ElastFlo.css" rel="stylesheet">
         <script src="@routes.Assets.at("javascripts/raphael.js")"></script>
+	<script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
+
 	<script src="raphael.js"></script>
         <script src="jquery-1.7.1.min.js"></script>
 
@@ -19,15 +21,14 @@
 	  var RaphaelElement;
 	  var jsonlista = {type:"circle", cx: 50, cy:100, r: 25, fill:"#585858 "};
 	      RaphaelElement = Raphael(100, 100, 500, 500);
-	      var box1 = RaphaelElement.rect(10,10,400,200,1);
-	    
-	      RaphaelElement.add([jsonlista]);
 	      readJSON();
-      
+	      RaphaelElement.add([jsonlista]);
+	   
+	      
 	
 
 	  function readJSON(){
-	      $.getJSON('ajax/test.json', function(data){jsonlista = data;});
+	      $.getJSON('/json', function(data){jsonlista = data;});
 	  }
 
 
@@ -51,9 +52,10 @@
 
 	    var anim =  RaphaelElement.circle(320, 240, 60).animation({fill: "#223fa3", stroke: "#000", "stroke-width": 80, "stroke-opacity": 0.5}, 800);
 
-
 	    }
 
+
+	    
         </script>
 </html>
 
