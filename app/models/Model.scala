@@ -23,6 +23,31 @@ object Model {
   }
 
   /**
+   * Insert new model to database.
+   */
+  def create(model: Model): Int = {
+    DB.withConnection { implicit connection =>
+      SQL(""" insert into models values ({id}, {name}, {dateCreated})""").on(
+        "id" -> model.id,
+        "name" -> model.name,
+        "dateCreated" -> model.dateCreated).executeInsert()
+    } match {
+      case Some(long) => long.intValue()
+      case None => throw new Exception("Model couldn't be added to database")
+    }
+  }
+  
+ /**
+   * Find a model with a certain id. //TODO What happens if id doesn't exist?
+   */
+  def read(id: Int): Model = DB.withConnection { implicit connection =>
+    SQL(""" 
+        select * from models
+	    where models.id = {id}
+	   """).on('id -> id).as(parse *).head
+  }
+  
+  /**
    * Return list of all the models in database.
    */
   def findAll: List[Model] = DB.withConnection { implicit connection =>
@@ -40,29 +65,5 @@ object Model {
 		 """).on('id -> id).as(parse *).toList.size == 1
     }
   }
-
-  /**
-   * Find a model with a certain id. //TODO What happens if id doesn't exist?
-   */
-  def findById(id: Int): Model = DB.withConnection { implicit connection =>
-    SQL(""" 
-        select * from models
-	    where models.id = {id}
-	   """).on('id -> id).as(parse *).head
-  }
-
-  /**
-   * Insert new model to database.
-   */
-  def insert(model: Model): Int = {
-    DB.withConnection { implicit connection =>
-      SQL(""" insert into models values ({id}, {name}, {dateCreated})""").on(
-        "id" -> model.id,
-        "name" -> model.name,
-        "dateCreated" -> model.dateCreated).executeInsert()
-    } match {
-      case Some(long) => long.intValue()
-      case None => throw new Exception("Model couldn't be added to database")
-    }
-  }
+ 
 }

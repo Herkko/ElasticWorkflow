@@ -36,7 +36,7 @@ object Relation {
    * Insert new relation to database.
    * @return
    */
-  def insert(relation: Relation): Boolean = {
+  def create(relation: Relation): Boolean = {
     DB.withConnection { implicit connection =>
       SQL("""insert into relations values ({id}, {relationTypeId}, {startPointId}, {endPointId}, {value}, {relationId})""").on(
         "id" -> relation.id,
@@ -79,6 +79,19 @@ object Relation {
     DB.withConnection { implicit connection =>
       SQL("delete from relations where id = {id}").
         on('id -> id).executeUpdate() == 0
+    }
+  }
+  
+  /**
+   * Delete relation specified by parameter id.
+   */
+  def deleteByProcess(id: Int): Boolean = {
+    DB.withConnection { implicit connection =>
+      SQL("""delete from relations
+          where relationId in (
+          select relationId from processElements
+          where modelProcessId in (select id from modelProcesses where processId in (select id from processes where id = {id})))
+        """).on('id -> id).executeUpdate() == 0
     }
   }
 }

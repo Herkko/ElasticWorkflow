@@ -1,0 +1,19 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                   					controllers.Application.index
+GET		/models									controllers.Models.list
+GET		/models/new								controllers.Models.add
+GET		/models/:id								controllers.Models.show(id: Int)
+GET		/models/:id/processes/new			    controllers.Processes.add(id: Int)
+GET     /models/:id/relations/:relationId/new  	controllers.Relations.add(id: Int, relationId: Int)
+GET     /models/:id/relations/:rId/delete  		controllers.Relations.delete(id: Int, rId: Int)
+GET     /json									controllers.JsonController.showAll
+GET		/json/:id								controllers.JsonController.showElementByModel(id: Int)
+GET     /show									controllers.Application.showScala
+GET  	/*path  								controllers.Application.removeSlash(path: String)
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)

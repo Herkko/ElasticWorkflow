@@ -24,7 +24,7 @@ object RelationType {
   /**
    * Insert new relation type to database.
    */
-  def insert(relationType: RelationType): Boolean = {
+  def create(relationType: RelationType): Boolean = {
     DB.withConnection { implicit connection =>
       SQL("""insert into relationTypes values ({id}, {relationType})""").on(
         "id" -> relationType.id,

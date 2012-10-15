@@ -18,7 +18,7 @@ object ElementType {
   /**
    * Insert new element type to database.
    */
-  def insert(elementType: ElementType): Boolean = {
+  def create(elementType: ElementType): Boolean = {
     DB.withConnection { implicit connection =>
       SQL("""insert into elementTypes values ({id}, {name}, {elementType}, {description}, {picture})""").on(
         "id" -> elementType.id,

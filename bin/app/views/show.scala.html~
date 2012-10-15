@@ -19,11 +19,8 @@
             	fill: "white"
             	});
 			
-		var ajaxURL = "http://localhost:9000/show";	
-		$.getJSON(ajaxURL, startCircle, function(){
-			$.('#p').val("onnistui");	
-			};
-		);
+		var ajaxURL = "toJSON.html";	
+		$.getJSON(ajaxURL, startCircle, function(){};);
 
 		
 
@@ -35,9 +32,8 @@
         </script>
     </head>
     <body>
-      <p id="testi">kokeilu</p>
+        <div id="holder"></div>
     </body>
 </html>
 
 {1, HelloPallo, 10, 224, 42}
-

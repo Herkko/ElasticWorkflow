@@ -15,12 +15,12 @@ object Relations extends Controller {
    * Add new relation to the element specified by elementId. Parameter modelId is needed to show the page of the right model
    * afterwards so that user can see changes. //TODO add check that elementId actually exists.
    */
-  def add(modelId: Int, elementId: Int) = Action { implicit request =>
+  def create(modelId: Int, elementId: Int) = Action { implicit request =>
     if (Model.contains(modelId)) {
       // if (Process.contains(processId)) {
-      Relation.insert(Relation(NotAssigned, 1, 100, 200, "Test relation", elementId))
+      Relation.create(Relation(NotAssigned, 1, 100, 200, "Test relation", elementId))
       // } 
-      Redirect(routes.Models.show(modelId))
+      Redirect(routes.Models.read(modelId))
     } else {
       Redirect(routes.Models.list)
     }
@@ -34,7 +34,7 @@ object Relations extends Controller {
   def delete(modelId: Int, id: Int) = Action { implicit request =>
     if (Model.contains(modelId)) {
       Relation.delete(id)
-      Redirect(routes.Models.show(modelId))
+      Redirect(routes.Models.read(modelId))
     } else {
       Redirect(routes.Models.list)
     }
