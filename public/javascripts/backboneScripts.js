@@ -1,4 +1,4 @@
-var Circle = Backbone.Model.extend({
+var roundElement = Backbone.Model.extend({
   defaults: {
 	name: 'CircleElementX', 
 	Value: 'empty',
@@ -6,19 +6,31 @@ var Circle = Backbone.Model.extend({
 	cx: 0,
 	cy: 0,
 	r: 10 
-      }
+      },
+       Render: function(){
+     // code to create raphael objects
+     var rCircle = paper.circle(cx, cy,r);
+    }, Update: function(){
+     //hakee JSON ja muodostaa modelin 
+      
+    }
 	
   });
 
-var Line = Backbone.Model.extend({
+var relationElement = Backbone.Model.extend({
     defaults: {
 	  name: 'LineElement',
 	  value: 'empty',
 	  type: 'line',
 	  startPoint: 0,
 	  endPoint: 0,
+    },
+    Render: function(){
+     // code to create raphael objects 
+    },
+    update: function(){
+      
     }
-  
 });
 
 
