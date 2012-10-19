@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Backbone</title>
+       	<link media="screen" href="ElastFlo.css" rel="stylesheet">
+		<script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
+		<script src="@routes.Assets.at("javascripts/raphael.js")"></script>
+		<script src="@routes.Assets.at("javascripts/underscore.js")"></script>
+		<script src="@routes.Assets.at("javascripts/backbone.js")"></script>
+		<script src="@routes.Assets.at("javascripts/backboneScripts.js")"></script>
+
+	 <script type="text/template" id="elementList_template">
+		<ol>Element
+		<li class="clickable"><input value=<%= type %>></input></li>
+  		<li class="clickable"><%= cx %></li>
+		<li class="clickable"><%= cy %></li>
+		</ol>
+	</script>
+
+	<script type="text/javascript"> 
+		$(function(){
+
+			//create json models, fields are automatically derived from json.
+			var Element = Backbone.Model.extend();
+
+			//url defines where you can get list of json elements
+			var ElementList = Backbone.Collection.extend({
+				model: Element,
+				url: '/json'
+			});
+
+			//create new instance of ElementList
+			var Elements = new ElementList;
+
+			//Iterate through all the elements, render template for each element and return a list of templates
+			var ElementsView = Backbone.View.extend({
+				template: _.template($('#elementList_template').html()),
+				render: function(eventName) {
+					_.each(this.model.models, function(element){
+						var lTemplate = this.template(element.toJSON());
+						$(this.el).append(lTemplate);
+					}, this);
+					return this;
+				}
+			});
+
+			var AppView = Backbone.View.extend({
+				el: "body",
+				
+				events: {
+					'click .clickable': 'handleClick',
+					'change': 'handleChange'
+				},
+				
+				//get all element templates and append them to html div with id #elements
+				render: function(){
+					var elementsView = new ElementsView({model:Elements});
+					var lHtml = elementsView.render().el;
+					$('#elements').html(lHtml);
+				},
+
+				//fetch the list of elements and do a render method
+				initialize: function(){
+					var lOptions = {};
+					lOptions.success = this.render;
+					Elements.fetch(lOptions);
+				},
+				
+				handleClick: function() {
+				  console.log("Something was clicked");
+				},
+				
+				handleChange: function() {
+				  console.log("Something was changed");
+				}
+			});
+
+			var App = new AppView;
+		});
+     </script>
+    </head>
+    <body>
+		<div id="elements">
+</div>
+    </body>
+</html>
