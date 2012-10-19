@@ -22,7 +22,7 @@ object Models extends Controller {
   }
   
   /**
-   * Show data about model specified by parameter id. Data includes model itself, model processes 
+   * ¤ data about model specified by parameter id. Data includes model itself, model processes 
    * and their elements, model relations. Processes and elements are grouped in tuples, so that each tuple
    * consists of a process and a set of elements which belong to it.
    * If model with a given id doesn't exist, redirects to a page that lists all models.
