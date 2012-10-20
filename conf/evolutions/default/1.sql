@@ -43,7 +43,7 @@ CREATE TABLE elementTypes(
 INSERT INTO elementTypes(id, name, elementType, description, picture) VALUES (1, 'Swimlane', 1, 'rect', 0);
 INSERT INTO elementTypes VALUES (2, 'Start', 2, 'circle', 0);
 INSERT INTO elementTypes VALUES (3, 'End', 3, 'circle', 0);
-INSERT INTO elementTypes VALUES (4, 'Action', 4, 'rect', 0);
+INSERT INTO elementTypes VALUES (4, 'Activity', 4, 'rect', 0);
 
 CREATE TABLE processElements (
 	modelProcessId int NOT NULL AUTO_INCREMENT,
@@ -62,8 +62,10 @@ CREATE TABLE processElements (
 CREATE TABLE relations(
 	id int NOT NULL AUTO_INCREMENT,
 	relationTypeId int NOT NULL AUTO_INCREMENT,
-	startPointId int,
-	endPointId int,
+	x1 int,
+	y1 int,
+	x2 int, 
+	y2 int,
 	value varchar,
 	relationId int NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (id),

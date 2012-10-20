@@ -49,7 +49,14 @@ object Processes extends Controller {
     val processId: Int = Process.create(Process(NotAssigned, "Process", new Date()))
     val modelProcessId: Int = ModelProcess.create(ModelProcess(NotAssigned, modelId, processId, new Date()))
 
-    val processRelId1 = ProcessElement.create(ProcessElement(modelProcessId, 1, NotAssigned, "Swimlane", 0, 20, yCoord))
-    val processRelId2 = ProcessElement.create(ProcessElement(modelProcessId, 2, NotAssigned, "Start Element", 0, 70, yCoord + 70))
+    ProcessElement.create(ProcessElement(modelProcessId, 1, NotAssigned, "Swimlane", 0, 20, yCoord))
+    val relId1 = ProcessElement.create(ProcessElement(modelProcessId, 2, NotAssigned, "Start Element", 0, 70, yCoord + 70))
+    
+    val relId2 = ProcessElement.create(ProcessElement(modelProcessId, 3, NotAssigned, "End Element", 0, 270, yCoord + 70))
+    val relId3 = ProcessElement.create(ProcessElement(modelProcessId, 4, NotAssigned, "Activity Element", 0, 170, yCoord + 90))
+    
+    //?? all info is repeated twice in relations?
+    Relation.create(Relation(NotAssigned, 1, 70, yCoord+70, 170, yCoord + 90, "first relation", relId1))
+    Relation.create(Relation(NotAssigned, 1, 70, yCoord+70, 170, yCoord + 90, "first relation", relId3))
   }
 }

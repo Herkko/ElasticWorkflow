@@ -15,8 +15,8 @@ GET		/models/:id/processes/new				controllers.Processes.create(id: Int)
 GET		/models/:id/processes/:pId/delete	    controllers.Processes.delete(id: Int, pId: Int)
 GET     /models/:id/relations/:rId/new  	    controllers.Relations.create(id: Int, rId: Int)
 GET     /models/:id/relations/:rId/delete  		controllers.Relations.delete(id: Int, rId: Int)
-GET     /json									controllers.JsonController.showAll
-GET		/json/:id								controllers.JsonController.showElementByModel(id: Int)
+GET     /json/:elemType						    controllers.JsonController.getElements(elemType: String)
+GET     /json/:elemType/:modelId				controllers.JsonController.getElementsByModel(elemType: String, modelId: Int)
 GET     /show									controllers.Application.showScala
 GET     /bb										controllers.Application.showBackboneAttempt
 GET  	/*path  								controllers.Application.removeSlash(path: String)

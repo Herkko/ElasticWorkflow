@@ -18,7 +18,7 @@ object Relations extends Controller {
   def create(modelId: Int, elementId: Int) = Action { implicit request =>
     if (Model.contains(modelId)) {
       // if (Process.contains(processId)) {
-      Relation.create(Relation(NotAssigned, 1, 100, 200, "Test relation", elementId))
+      Relation.create(Relation(NotAssigned, 1, 100, 90, 200, 90, "Test relation", elementId))
       // } 
       Redirect(routes.Models.read(modelId))
     } else {
