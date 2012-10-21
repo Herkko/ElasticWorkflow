@@ -13,7 +13,7 @@ class ModelSpec extends Specification {
 
     "be persisted" in {
       running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
-        Model.insert(new Model(Id(1), "name", new Date()))
+        Model.create(new Model(Id(1), "name", new Date()))
         Model.findAll must have size 1
       }
     }
@@ -28,9 +28,9 @@ class ModelSpec extends Specification {
 
       "list 3 models" in {
         running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
-          Model.insert(new Model(Id(1), "name1", new Date()))
-          Model.insert(new Model(Id(2), "name2", new Date()))
-          Model.insert(new Model(Id(3), "name3", new Date()))
+          Model.create(new Model(Id(1), "name1", new Date()))
+          Model.create(new Model(Id(2), "name2", new Date()))
+          Model.create(new Model(Id(3), "name3", new Date()))
           Model.findAll must have size 3
         }
       }
@@ -46,7 +46,7 @@ class ModelSpec extends Specification {
           charset(result) must beSome("utf-8")
           contentAsString(result) must contain("Model: 1")
           contentAsString(result) must contain("Model: 2")
-          contentAsString(result) must not contain("Model: 3")
+          contentAsString(result) must not contain ("Model: 3")
         }
       }
     }
@@ -55,8 +55,8 @@ class ModelSpec extends Specification {
 
       "fail to insert model if id exists" in {
         running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
-          Model.insert(new Model(Id(1), "name1", new Date()))
-          Model.insert(new Model(Id(1), "name2", new Date())) must throwA[JdbcSQLException]
+          Model.create(new Model(Id(1), "name1", new Date()))
+          Model.create(new Model(Id(1), "name2", new Date())) must throwA[JdbcSQLException]
         }
 
         "insert model when requested by browser" in {
@@ -72,7 +72,5 @@ class ModelSpec extends Specification {
         }
       }
     }
-
   }
-
 }

@@ -33,9 +33,9 @@ object JsonController extends Controller {
     Ok(toJson(jsonElements))
   }*/
 
-
   def getElements(elementType: String) = Action { implicit request =>
     elementType match {
+      case "swimlane" => Ok(toJson(Swimlane.findAll))
       case "start" => Ok(toJson(Start.findAll))  
       case "end" => Ok(toJson(End.findAll))
       case "relation" => Ok(toJson(Relation.findAll))
@@ -46,6 +46,7 @@ object JsonController extends Controller {
   
   def getElementsByModel(elementType: String, id: Int) = Action { implicit request =>
     elementType match {
+      case "swimlane" => Ok(toJson(Swimlane.findByModel(id)))
       case "start" => Ok(toJson(Start.findByModel(id)))  
       case "end" => Ok(toJson(End.findByModel(id)))
       case "relation" => Ok(toJson(Relation.findByModel(id)))
