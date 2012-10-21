@@ -19,5 +19,6 @@ GET     /json/:elemType						    controllers.JsonController.getElements(elemType
 GET     /json/:elemType/:modelId				controllers.JsonController.getElementsByModel(elemType: String, modelId: Int)
 GET     /show									controllers.Application.showScala
 GET     /bb										controllers.Application.showBackboneAttempt
+GET		/edit									controllers.Application.showEdit
 GET  	/*path  								controllers.Application.removeSlash(path: String)
 

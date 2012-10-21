@@ -5,8 +5,8 @@
         <title>Raphael</title>
        	<link media="screen" href="ElastFlo.css" rel="stylesheet">
         <script src="@routes.Assets.at("javascripts/raphael.js")"></script>
-<script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
-	<script src="raphael.js"></script>
+		<script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
+		<script src="raphael.js"></script>
         <script src="jquery-1.7.1.min.js"></script>
 
 	
@@ -14,9 +14,25 @@
     <body>   
     </body>
 
+
+<script> 
+	    
+	  var RaphaelElement;
+	  var jsonlista = {type:"circle", cx: 50, cy:100, r: 25, fill:"#585858 "};
+	      RaphaelElement = Raphael(100, 100, 500, 500);
+	      readJSON();
+	      RaphaelElement.add([jsonlista]);
+	   
+	      
+	
+
+	  function readJSON(){
+	      $.getJSON('/json', function(data){jsonlista = data;});
+	  }
 	<script> 
 		var RaphaelElement;
 		RaphaelElement = Raphael(100, 100, "100%", "100%");
+
 
 	/*	var jsonlista = {type:"circle", cx: 50, cy:100, r: 25, fill:"#585858 "};
 	    var box1 = RaphaelElement.rect(10,10,400,200,1);
@@ -64,6 +80,7 @@
               RaphaelElement.set(s).drag(move, start);
         }
 
+
 	    //moving bugs if many start elements exist
 	    function start() {
 	    	this.ox = this.attr("cx");
@@ -73,8 +90,7 @@
 	    function move(dx, dy) {
             this.attr({cx: this.ox + dx, cy: this.oy + dy});
         };
-            		
-
+	    
         </script>
 </html>
 

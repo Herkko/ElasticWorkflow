@@ -43,4 +43,8 @@ object Application extends Controller {
     Ok(views.html.jvsTest())
   }
   
+  def showBackboneAttempt = Action { implicit request =>
+    Ok(views.html.edit())
+  }
+  
 }
