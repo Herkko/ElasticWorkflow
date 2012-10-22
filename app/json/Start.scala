@@ -9,10 +9,8 @@ import play.api.libs.json._
 
 case class Start(cx: Int, cy: Int) 
 
-object Start {
-
-  type T = Start
-
+object Start{
+  
   implicit object StartFormat extends Format[Start] {
     def reads(json: JsValue) = Start(
       (json \ "cx").as[Int],
@@ -31,7 +29,7 @@ object Start {
       }
   }
 
-  def findAll(): List[T] = DB.withConnection { implicit connection =>
+  def findAll(): List[Start] = DB.withConnection { implicit connection =>
     SQL("""select processElements.xCoord, processElements.yCoord
           from processElements
           join elementTypes on elementTypes.id = processElements.elementTypeId
@@ -39,7 +37,7 @@ object Start {
          """).as(parse *)
   }
 
-  def findByModel(id: Int): List[T] = DB.withConnection { implicit connection =>
+  def findByModel(id: Int): List[Start] = DB.withConnection { implicit connection =>
     SQL("""select processElements.xCoord, processElements.yCoord from processElements
           join elementTypes on elementTypes.id = processElements.elementTypeId
           join modelProcesses on modelProcesses.id = processElements.modelProcessId

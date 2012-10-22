@@ -9,4 +9,12 @@ class RelationService {
     Relation.create(Relation(NotAssigned, 1, x1, y1, x2, y2, value, relId1))
     Relation.create(Relation(NotAssigned, 1, x1, y1, x2, y2, value, relId2))
   }
+  
+  //TODO: How does relation deleting work? This will delete just half of relation
+  def delete(id: Int) = Relation.delete(id)
+  
+  def deleteByProcess(id: Int) = Relation.deleteByProcess(id)
+  
+  def findByModel(id: Int): List[Relation] = Relation.findByModel(id)
+ 
 }

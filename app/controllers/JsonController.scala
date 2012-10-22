@@ -1,6 +1,5 @@
 package controllers
 
-import models.JsonObject
 import json._
 import play.api._
 import play.api.mvc._
@@ -32,7 +31,7 @@ object JsonController extends Controller {
     val jsonElements = JsonObject.findAll
     Ok(toJson(jsonElements))
   }*/
-
+  
   def getElements(elementType: String) = Action { implicit request =>
     elementType match {
       case "swimlane" => Ok(toJson(Swimlane.findAll))
