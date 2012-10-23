@@ -106,8 +106,9 @@
 	var ActivityElement = Backbone.Model.extend({
 		
 		render: function(element) {
-	      this.set({element: RaphaelElement.rect(element.cx, element.cy, 60, 40, 2)});
 		  var activity =  RaphaelElement.rect(element.cx, element.cy, 60, 40, 2);
+	      this.set({element: activity});
+		  
 		  var color = Raphael.getColor();
 	      activity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
 	      activity.drag(move, dragger, up);    
@@ -118,8 +119,9 @@
 	
 	  
 	  render: function(element) {
-		this.set({element: RaphaelElement.circle(element.cx, element.cy, 20)});
-		var start = RaphaelElement.circle(element.cx, element.cy, 20);
+		  var start = RaphaelElement.circle(element.cx, element.cy, 20);
+		  this.set({element: start});
+		
 	    var color = Raphael.getColor();
 	    start.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
 	    start.drag(move, dragger, up);
@@ -207,8 +209,8 @@
 	
 	connections = [];
 
-    var testi = StartElements.at(0);
-    var toinentesti = ActivityElements.at(0).get("element");
+    //var testi = StartElements.at(0);
+    //var toinentesti = ActivityElements.at(0).get("element");
     
 	  // täytyy tehdä funktio joka katsoo mitkä muodot ovat yhteydessä
 		// toisiinsa.
