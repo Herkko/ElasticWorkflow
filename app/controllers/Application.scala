@@ -39,11 +39,11 @@ object Application extends Controller {
   /**
    * just trying to do stuff with backbone
    */
- /* def showBackboneAttempt = Action { implicit request =>
-    Ok(views.html.jvsTest())
-  }*/
-  
   def showBackboneAttempt = Action { implicit request =>
+    Ok(views.html.jvsTest())
+  }
+  
+  def showEditPage = Action { implicit request =>
     Ok(views.html.edit())
   }
   
