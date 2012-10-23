@@ -1,5 +1,4 @@
-   
-   //funktio viivoille.
+//funktio viivoille.
    Raphael.fn.connection = function (obj1, obj2, line, bg) {
 	    
 	  if (obj1.line && obj1.from && obj1.to) {
@@ -72,9 +71,6 @@
 	  }
 }; 
    
-   
-   
-   
    window.onload = function(){
       
      //funktiot palikoiden liikuttamista varten
@@ -85,7 +81,7 @@
 	this.animate({"fill-opacity": .3}, 500);
 	};
 	
-       var move = function (dx, dy) {
+      var move = function (dx, dy) {
 		 var att = this.type == "rect" ? {x: this.ox + dx, y: this.oy + dy} : {cx: this.ox + dx, cy: this.oy + dy};
 		 this.attr(att);
 		  for (var i = connections.length; i--;) {
@@ -94,40 +90,118 @@
 		  r.safari();
        }; 
 	
-       var  up = function () {
+     var  up = function () {
 	  this.animate({"fill-opacity": 0}, 500);
 	}; 
       
+
+	raphaelElement = Raphael("mainArea", 500, 500);
+	
+	
+	//create json models, fields are automatically derived from json.
+			
+			
+	var ActivityElement = Backbone.Model.extend({
+	  render: function(element) {
+	   var activity =  RaphaelElement.rect(element.cx, element.cy, 60, 40, 2);
+	    var color = Raphael.getColor();
+	      activity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+	      activity.drag(move, dragger, up);
+	    
+	    
+	  }
+	});
+	
+	var StartElement = Backbone.Model.extend({
+	  render: function(element) {
+	    RaphaelElement.circle(element.cx, element.cy, 20);
+	    
+	  }
+	});
+
 	
 	
 	
+	//url defines where you can get list of json elements
+	var ActivityList = Backbone.Collection.extend({
+		model: ActivityElement,
+		url: '/json/activity'
+	});
+
+	var StartList = Backbone.Collection.extend({
+		model: StartElement,
+		url: '/json/start'
+	});
+
+	//create new instance of ElementList
+	var ActivityElements = new ActivityList;
+	var StartElements = new StartList;
+
 	
-	r = Raphael("mainArea", 500, 500);
+	
+	//Iterate through all the elements, render template for each element and return a list of templates
+	var ElementsView = Backbone.View.extend({
+		//template: _.template($('#elementList_template').html()),
+		render: function(eventName) {
+			_.each(this.model.models, function(element){
+				//var lTemplate = this.template(element.toJSON());
+				//$(this.el).append(lTemplate);
+			    element.render(element.toJSON());
+			}, this);
+			return this;
+		}
+	});
+
+	var AppView = Backbone.View.extend({
+		el: "body",
+		
+		events: {
+			'click .clickable': 'handleClick',
+			'change': 'handleChange'
+		},
+		
+		//get all element templates and append them to html div with id #elements
+		render: function(){
+			var activityElementsView = new ElementsView({model:ActivityElements});
+			var startElementsView = new ElementsView({model:StartElements});
+			var lHtml = startElementsView.render();
+			var kHtml = activityElementsView.render();//.el;
+			
+			
+		//	$('#elements').html(lHtml);
+		},
+
+		//fetch the list of elements and do a render method
+		initialize: function(){
+			var lOptions = {};
+			lOptions.success = this.render;
+			ActivityElements.fetch(lOptions);
+			StartElements.fetch(lOptions);
+			
+		},
+		
+		handleClick: function() {
+		  console.log("Something was clicked");
+		},
+		
+		handleChange: function() {
+		  console.log("Something was changed");
+		}
+	});
+
+	
+	
+	var App = new AppView;
+
+
+
 	
 	connections = [];
-	
-	//Nämä pitää alustaa erikseen JSON functiolla
-	shapes = [ r.ellipse(190, 100, 30, 20),
-		   r.rect(290, 80, 60, 40, 10),
-		   r.rect(290, 180, 60, 40, 2),
-		   r.ellipse(450, 100, 20, 20)
-		   ]; 
-		 
-		
-	var testipallo  = r.circle(50,50,30,30);	   
-	 var teksti = r.text(testipallo.attr('cx'),testipallo.attr('cy'), "testi");
-	 for (var i = 0, ii = shapes.length; i < ii; i++) {
-	      var color = Raphael.getColor();
-	      
-	      var teksti = r.text(shapes[i].attr('cx'),shapes[i].attr('cy'), "testi");
-	      shapes[i].attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-	      shapes[i].drag(move, dragger, up);
-	      //drag functions for onMove, OnStart, onEnd
-	      } 
+
     
 	  //täytyy tehdä funktio joka katsoo mitkä muodot ovat yhteydessä toisiinsa.
     
-      connections.push(r.connection(shapes[0], shapes[1], "#000"));
+    //  connections.push(r.connection(shapes[0], shapes[1], "#000"));
     //  connections.push(r.connection(shapes[1], shapes[2], "#000", "#000|5"));
      // connections.push(r.connection(shapes[1], shapes[3], "#000", "#000")); 
       

@@ -118,7 +118,7 @@
 	 var teksti = r.text(testipallo.attr('cx'),testipallo.attr('cy'), "testi");
 	 for (var i = 0, ii = shapes.length; i < ii; i++) {
 	      var color = Raphael.getColor();
-	      
+	       var teksti = r.text(shapes[i].attr('cx'),shapes[i].attr('cy'), "testi");
 	      shapes[i].attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
 	      shapes[i].drag(move, dragger, up);
 	      //drag functions for onMove, OnStart, onEnd
