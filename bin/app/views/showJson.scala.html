@@ -1,0 +1,15 @@
+@(elements: List[String])
+
+@main("Return json string") {
+  @for(element <- elements) {
+    @element
+  }
+  <script>
+   var RaphaelElement;
+	  var jsonlista = { @elements };
+	      RaphaelElement = Raphael(100, 100, 500, 500);
+	      var box1 = RaphaelElement.rect(10,10,400,200,1);
+	    
+	      RaphaelElement.add([jsonlista]);
+</script>
+}
