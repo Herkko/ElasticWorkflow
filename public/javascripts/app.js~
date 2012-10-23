@@ -85,9 +85,9 @@
 		 var att = this.type == "rect" ? {x: this.ox + dx, y: this.oy + dy} : {cx: this.ox + dx, cy: this.oy + dy};
 		 this.attr(att);
 		  for (var i = connections.length; i--;) {
-		    RaphaelElement.connection(connections[i]);
+		    r.connection(connections[i]);
 		  }
-		  RaphaelElement.safari();
+		  r.safari();
        }; 
 	
      var  up = function () {
@@ -114,10 +114,10 @@
 	
 	var StartElement = Backbone.Model.extend({
 	  render: function(element) {
-	   var start = RaphaelElement.circle(element.cx, element.cy, 20);
+	    RaphaelElement.circle(element.cx, element.cy, 20);
 	    var color = Raphael.getColor();
-	    start.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-	    start.drag(move, dragger, up);
+	    activity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+	    activity.drag(move, dragger, up);
 	  }
 	});
 
