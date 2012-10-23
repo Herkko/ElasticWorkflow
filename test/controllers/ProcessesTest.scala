@@ -1,13 +1,12 @@
 package controllers
 
-import org.specs2.mutable._
+/*import org.specs2.mutable._
 
 import play.api.test._
 import play.api.test.Helpers._
 
 class ProcessesTest extends Specification {
 	
- 
   "Can create and list new models and processes" in {
     running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
     routeAndCall(FakeRequest(GET, "/models/new"))
@@ -20,4 +19,7 @@ class ProcessesTest extends Specification {
     contentAsString(result) must contain("Process: 1")
     }
   }
-}
+}*/
+
+//  status(result) should equal (SEE_OTHER)
+  //    redirectLocation(result) should equal (Some(routes.Application.index.url))

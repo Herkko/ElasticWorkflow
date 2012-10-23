@@ -6,19 +6,21 @@ import anorm._
 import anorm.SqlQuery
 import anorm.SqlParser._
 
-case class Relation(id: Pk[Int], relationTypeId: Int, startPointId: Int, endPointId: Int, value: String, relationId: Int)
+case class Relation(id: Pk[Int], relationTypeId: Int, x1: Int, y1: Int, x2: Int, y2: Int, value: String, relationId: Int)
 
 object Relation {
 
   val parse = {
     get[Pk[Int]]("id") ~
       get[Int]("relationTypeId") ~
-      get[Int]("startPointId") ~
-      get[Int]("endPointId") ~
+      get[Int]("x1") ~
+      get[Int]("y1") ~
+      get[Int]("x2") ~
+      get[Int]("y2") ~
       get[String]("value") ~
       get[Int]("relationId") map {
-        case id ~ relationTypeId ~ startPointId ~ endPointId ~ value ~ relationId =>
-          Relation(id, relationTypeId, startPointId, endPointId, value, relationId)
+        case id ~ relationTypeId ~ x1 ~ y1 ~ x2 ~ y2 ~ value ~ relationId =>
+          Relation(id, relationTypeId,  x1, y1, x2, y2, value, relationId)
       }
   }
 
@@ -38,11 +40,13 @@ object Relation {
    */
   def create(relation: Relation): Boolean = {
     DB.withConnection { implicit connection =>
-      SQL("""insert into relations values ({id}, {relationTypeId}, {startPointId}, {endPointId}, {value}, {relationId})""").on(
+      SQL("""insert into relations values ({id}, {relationTypeId}, {x1}, {y1}, {x2}, {y2}, {value}, {relationId})""").on(
         "id" -> relation.id,
         "relationTypeId" -> relation.relationTypeId,
-        "startPointId" -> relation.startPointId,
-        "endPointId" -> relation.endPointId,
+        "x1" -> relation.x1,
+        "y1" -> relation.y1,
+        "x2" -> relation.x2,
+        "y2" -> relation.y2,
         "value" -> relation.value,
         "relationId" -> relation.relationId).executeUpdate() == 1
     }
