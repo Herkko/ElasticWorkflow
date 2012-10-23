@@ -8,19 +8,25 @@
         <script src="@routes.Assets.at("javascripts/raphael.js")"></script>
 		<script src="@routes.Assets.at("javascripts/underscore.js")"></script>
 		<script src="@routes.Assets.at("javascripts/backbone.js")"></script>
-	<script type="text/template" id="elementList_template">
+<!--	<script type="text/template" id="elementList_template">
 		<ol>Element
 		<li class="clickable"><input value=<%= type %>></input></li>
   		<li class="clickable"><%= cx %></li>
 		<li class="clickable"><%= cy %></li>
 		</ol>
 	</script>
-
+-->
 	<script type="text/javascript"> 
+		var RaphaelElement;
+		
 		$(function(){
-
+			RaphaelElement = Raphael(0, 0, "100%", "100%");
 			//create json models, fields are automatically derived from json.
-			var Element = Backbone.Model.extend();
+			var Element = Backbone.Model.extend({
+			  render: function(element) {
+			    RaphaelElement.circle(element.cx, element.cy, 25);
+			  }
+			});
 
 			//url defines where you can get list of json elements
 			var ElementList = Backbone.Collection.extend({
@@ -33,11 +39,12 @@
 
 			//Iterate through all the elements, render template for each element and return a list of templates
 			var ElementsView = Backbone.View.extend({
-				template: _.template($('#elementList_template').html()),
+				//template: _.template($('#elementList_template').html()),
 				render: function(eventName) {
 					_.each(this.model.models, function(element){
-						var lTemplate = this.template(element.toJSON());
-						$(this.el).append(lTemplate);
+						//var lTemplate = this.template(element.toJSON());
+						//$(this.el).append(lTemplate);
+					   element.render(element.toJSON());
 					}, this);
 					return this;
 				}
@@ -54,8 +61,8 @@
 				//get all element templates and append them to html div with id #elements
 				render: function(){
 					var elementsView = new ElementsView({model:Elements});
-					var lHtml = elementsView.render().el;
-					$('#elements').html(lHtml);
+					var lHtml = elementsView.render();//.el;
+				//	$('#elements').html(lHtml);
 				},
 
 				//fetch the list of elements and do a render method
