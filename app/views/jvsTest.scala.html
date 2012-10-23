@@ -20,22 +20,35 @@
 		var RaphaelElement;
 		
 		$(function(){
-			RaphaelElement = Raphael(0, 0, "100%", "100%");
+			RaphaelElement = Raphael(10, 10, "100%", "100%");
 			//create json models, fields are automatically derived from json.
-			var Element = Backbone.Model.extend({
+			var ActivityElement = Backbone.Model.extend({
 			  render: function(element) {
-			    RaphaelElement.circle(element.cx, element.cy, 25);
+			    RaphaelElement.rect(element.cx, element.cy, 60, 40, 2);
+			  }
+			});
+			
+			var StartElement = Backbone.Model.extend({
+			  render: function(element) {
+			   RaphaelElement.circle(element.cx, element.cy, 20)
 			  }
 			});
 
 			//url defines where you can get list of json elements
-			var ElementList = Backbone.Collection.extend({
-				model: Element,
-				url: '/json'
+			var ActivityList = Backbone.Collection.extend({
+				model: ActivityElement,
+				url: '/json/activity'
+			});
+			
+			
+			var StartList = Backbone.Collection.extend({
+				model: StartElement,
+				url: '/json/start'
 			});
 
 			//create new instance of ElementList
-			var Elements = new ElementList;
+			var ActivityElements = new ActivityList;
+			var StartElements = new StartList;
 
 			//Iterate through all the elements, render template for each element and return a list of templates
 			var ElementsView = Backbone.View.extend({
@@ -60,8 +73,11 @@
 				
 				//get all element templates and append them to html div with id #elements
 				render: function(){
-					var elementsView = new ElementsView({model:Elements});
-					var lHtml = elementsView.render();//.el;
+					var activityElementsView = new ElementsView({model:ActivityElements});
+					var startElementsView = new ElementsView({model:StartElements});
+					var lHtml = startElementsView.render();
+					var kHtml = activityElementsView.render();//.el;
+					
 				//	$('#elements').html(lHtml);
 				},
 
@@ -69,7 +85,8 @@
 				initialize: function(){
 					var lOptions = {};
 					lOptions.success = this.render;
-					Elements.fetch(lOptions);
+					ActivityElements.fetch(lOptions);
+					
 				},
 				
 				handleClick: function() {

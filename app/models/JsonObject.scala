@@ -49,5 +49,6 @@ object JsonObject {
           where processElements.elementTypeId = elementTypes.id
           and models.id = {id}
          """).on('id -> id).as(parse *)
+         
   }
 }
