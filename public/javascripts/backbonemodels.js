@@ -15,7 +15,11 @@
 	
        var  up = function () {
     	   this.animate({"fill-opacity": 0}, 500);
-       }; 
+       };
+       
+       var  upStart = function () {
+    	   this.animate({"fill-opacity": 1}, 500);
+       };
 
 	var ActivityElement = Backbone.Model.extend({
 		
@@ -36,9 +40,21 @@
 		  this.set({element: start});
 		
 	    var color = Raphael.getColor();
-	    start.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-	    start.drag(move, dragger, up);
+	    start.attr({fill: color, stroke: color, "fill-opacity": 1, "stroke-width": 2, cursor: "move"});
+	    start.drag(move, dragger, upStart);
 	  }
+	});
+	
+	var EndElement = Backbone.Model.extend({
+		 
+		  render: function(element) {
+			  var end = RaphaelElement.circle(element.cx, element.cy, 20);
+			  this.set({element: end});
+			
+		    var color = Raphael.getColor();
+		    end.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+		    end.drag(move, dragger, up);
+		  }
 	});
 
 	
@@ -54,8 +70,14 @@
 		url: '/json/start'
 	});
 	
+	var EndList = Backbone.Collection.extend({
+		model: EndElement,
+		url: '/json/end'
+	});
+	
 	var ActivityElements = new ActivityList;
 	var StartElements = new StartList;
+	var EndElements = new EndList;
 
 	// Iterate through all the elements, render template for each element and
 	// return a list of templates
@@ -92,6 +114,11 @@
 				startElementsView.render();
 			}
 			
+			var endSuccess = function(){
+				var endElementsView = new ElementsView({model:EndElements});
+				endElementsView.render();
+			}
+			
 			ActivityElements.fetch({
 				success : activitySuccess
 			});
@@ -100,7 +127,9 @@
 				success: startSuccess 
 			});
 			
-			
+			EndElements.fetch({
+				success: endSuccess 
+			});
 		},
 		
 		handleClick: function() {
