@@ -36,7 +36,7 @@
 	})
 
 
-	var AppViewTest = Backbone.View.extend({
+	var AppView = Backbone.View.extend({
 		el: "body",
 		
 		events: {
