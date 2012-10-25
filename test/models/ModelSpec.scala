@@ -6,6 +6,8 @@ import anorm.SQL
 import org.specs2.mutable._
 import play.api.test._
 import play.api.test.Helpers._
+import anorm._
+import java.util.Date
 
 class ModelSpec extends Specification {
 
@@ -21,7 +23,7 @@ class ModelSpec extends Specification {
       success
     }
   }
-  
+
   "The Model class" should {
     "be persisted" in {
       running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
@@ -38,5 +40,63 @@ class ModelSpec extends Specification {
     }
   }
 
-  
+  "Model model" should {
+
+    "be created and retrieved by id" in {
+      running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+        val modelId = Model.create(NotAssigned, "Name1", new Date())
+        val result = Model.read(modelId)
+
+        result.id.toString().toInt must equalTo(modelId)
+        result.name must equalTo("Name1")
+      }
+    }
+
+    "find all models when some models exist" in {
+      running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+        Model.create(NotAssigned, "Name1", new Date())
+        Model.create(NotAssigned, "Name2", new Date())
+        Model.create(NotAssigned, "Name3", new Date())
+
+        Model.findAll.size must equalTo(3)
+      }
+    }
+    
+    "find all models when no models exist" in {
+      running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+        Model.findAll.size must equalTo(0)
+      }
+    }
+
+    "be able to have same name with other model" in {
+      running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+        Model.create(NotAssigned, "Name1", new Date())
+        Model.create(NotAssigned, "Name2", new Date())
+        Model.create(NotAssigned, "Name2", new Date())
+
+        Model.findAll.size must equalTo(3)
+      }
+    }
+
+    "be able to check if model with such id exists" in {
+
+      "if model exists" in {
+        running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+          val id = Model.create(NotAssigned, "Name1", new Date())
+
+          Model.contains(id) must beTrue
+        }
+      }
+
+      "if model doesn't exist" in {
+        running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+          val id = Model.create(NotAssigned, "Name1", new Date())
+
+          Model.contains(id + 1) must beFalse
+        }
+      }
+    }
+
+  }
+
 }

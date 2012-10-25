@@ -7,8 +7,8 @@ import java.util.Date
 class ProcessService {
 
   def create(modelId: Int): Int = {
-    val processId: Int = Process.create(Process(NotAssigned, "Process", new Date()))
-    ModelProcess.create(ModelProcess(NotAssigned, modelId, processId, new Date()))
+    val processId: Int = Process.create(NotAssigned, "Process", new Date())
+    ModelProcess.create(NotAssigned, modelId, processId)
   }
 
   def delete(id: Int) = {

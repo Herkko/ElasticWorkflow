@@ -38,17 +38,17 @@ object Relation {
    * Insert new relation to database.
    * @return
    */
-  def create(relation: Relation): Boolean = {
+  def create(id: Pk[Int], relationTypeId: Int, x1: Int, y1: Int, x2: Int, y2: Int, value: String, relationId: Int): Boolean = {
     DB.withConnection { implicit connection =>
       SQL("""insert into relations values ({id}, {relationTypeId}, {x1}, {y1}, {x2}, {y2}, {value}, {relationId})""").on(
-        "id" -> relation.id,
-        "relationTypeId" -> relation.relationTypeId,
-        "x1" -> relation.x1,
-        "y1" -> relation.y1,
-        "x2" -> relation.x2,
-        "y2" -> relation.y2,
-        "value" -> relation.value,
-        "relationId" -> relation.relationId).executeUpdate() == 1
+        "id" -> id,
+        "relationTypeId" -> relationTypeId,
+        "x1" -> x1,
+        "y1" -> y1,
+        "x2" -> x2,
+        "y2" -> y2,
+        "value" -> value,
+        "relationId" -> relationId).executeUpdate() == 1
     }
   }
 

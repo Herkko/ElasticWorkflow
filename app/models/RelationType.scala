@@ -24,11 +24,11 @@ object RelationType {
   /**
    * Insert new relation type to database.
    */
-  def create(relationType: RelationType): Boolean = {
+  def create(id: String, relationType: String): Boolean = {
     DB.withConnection { implicit connection =>
       SQL("""insert into relationTypes values ({id}, {relationType})""").on(
-        "id" -> relationType.id,
-        "relationType" -> relationType.relationType).executeUpdate() == 1
+        "id" -> id,
+        "relationType" -> relationType).executeUpdate() == 1
     }
   }
 }

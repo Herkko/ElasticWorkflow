@@ -6,7 +6,7 @@ import java.util.Date
 
 class ModelService {
 
-  def create(): Int = Model.create(Model(NotAssigned, "Model", new Date()))
+  def create(): Int = Model.create(NotAssigned, "Model", new Date())
 
   def read(id: Int) = Model.read(id)
 

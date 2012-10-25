@@ -18,7 +18,6 @@ CREATE TABLE modelProcesses(
 	id int NOT NULL AUTO_INCREMENT,
 	modelId int NOT NULL AUTO_INCREMENT,
 	processId int NOT NULL AUTO_INCREMENT,
-	dateCreated Date,
 	PRIMARY KEY (id),
 	FOREIGN KEY (modelId) REFERENCES models (id),
 	FOREIGN KEY (processId) REFERENCES processes (id)

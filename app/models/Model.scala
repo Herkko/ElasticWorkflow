@@ -25,14 +25,14 @@ object Model {
   /**
    * Insert new model to database.
    */
-  def create(model: Model): Int = {
+  def create(id: Pk[Int], name: String, dateCreated: Date): Int = {
     DB.withConnection { implicit connection =>
       SQL(""" insert into models values ({id}, {name}, {dateCreated})""").on(
-        "id" -> model.id,
-        "name" -> model.name,
-        "dateCreated" -> model.dateCreated).executeInsert()
+        "id" -> id,
+        "name" -> name,
+        "dateCreated" -> dateCreated).executeInsert()
     } match {
-      case Some(long) => long.intValue()
+      case Some(pk) => pk.intValue()
       case None => throw new Exception("Model couldn't be added to database")
     }
   }
