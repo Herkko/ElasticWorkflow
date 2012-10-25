@@ -212,10 +212,10 @@
     //var testi = StartElements.at(0);
     //var toinentesti = ActivityElements.at(0).get("element");
     
-	  // täytyy tehdä funktio joka katsoo mitkä muodot ovat yhteydessä
+	  // taytyy tehda funktio joka katsoo mitka muodot ovat yhteydessa
 		// toisiinsa.
     
-    // T�M� TOIMII!!!
+    // TAMA TOIMII!!!
     //connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
     // connections.push(r.connection(shapes[1], shapes[2], "#000", "#000|5"));
      // connections.push(r.connection(shapes[1], shapes[3], "#000", "#000"));
