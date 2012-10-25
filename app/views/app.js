@@ -1,5 +1,3 @@
-
-
 //funktio viivoille.
    Raphael.fn.connection = function (obj1, obj2, line, bg) {
 	    
@@ -71,157 +69,205 @@
 	    to: obj2
 	    };
 	  }
-}; 
-   
-   window.onload = function(){
-      
-     // funktiot palikoiden liikuttamista varten
-     
-      var dragger = function () {
-	this.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
-	this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
-	this.animate({"fill-opacity": .3}, 500);
-	};
-	
-      var move = function (dx, dy) {
-		 var att = this.type == "rect" ? {x: this.ox + dx, y: this.oy + dy} : {cx: this.ox + dx, cy: this.oy + dy};
-		 this.attr(att);
-		  for (var i = connections.length; i--;) {
 
-		    RaphaelElement.connection(connections[i]);
+
+  
+
+
+window.onload = function(){
+	
+	 connections = [];
+
+	 var RaphaelElement = Raphael(10, 10, "100%", "100%");
+	 var swimlane2 = RaphaelElement.rect(20, 20, 700, 230, 1);
+	 
+		var dragger = function () {
+	    	  this.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
+	    	  this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
+	    	  this.animate({"fill-opacity": .3}, 500);
+	      };
+		
+	      var move = function (dx, dy) {
+			 var att = this.type == "rect" ? {x: this.ox + dx, y: this.oy + dy} : {cx: this.ox + dx, cy: this.oy + dy};
+			 this.attr(att);
+			  for (var i = connections.length; i--;) {
+			    RaphaelElement.connection(connections[i]);
+			  }
+			  RaphaelElement.safari();
+	       }; 
+		
+	       var  up = function () {
+	    	   this.animate({"fill-opacity": 0}, 500);
+	       };
+	       
+	       var  upStart = function () {
+	    	   this.animate({"fill-opacity": 1}, 500);
+	       };
+
+		var ActivityElement = Backbone.Model.extend({
+			
+			render: function(element) {
+			  var activity =  RaphaelElement.rect(element.cx, element.cy, 60, 40, 4);
+		      this.set({element: activity});
+			  
+			  var color = Raphael.getColor();
+		      activity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+		      activity.drag(move, dragger, up);    
 		  }
-		  RaphaelElement.safari();
-       }; 
-	
-     var  up = function () {
-	  this.animate({"fill-opacity": 0}, 500);
-	}; 
-      
-
-
-	RaphaelElement = Raphael("mainArea", 500, 500);
-
-	
-	
-	// create json models, fields are automatically derived from json.
-			
-			
-	var ActivityElement = Backbone.Model.extend({
+		});
 		
-		render: function(element) {
-	      this.set({element: RaphaelElement.rect(element.cx, element.cy, 60, 40, 2)});
-		  var activity =  RaphaelElement.rect(element.cx, element.cy, 60, 40, 2);
-		  var color = Raphael.getColor();
-	      activity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-	      activity.drag(move, dragger, up);    
-	  }
-	});
-	
-	var StartElement = Backbone.Model.extend({
-	
-	  
-	  render: function(element) {
-	      this.set({element: RaphaelElement.circle(element.cx, element.cy, 20)});
-	      var start = RaphaelElement.circle(element.cx, element.cy, 20);
-
-	    var color = Raphael.getColor();
-	    start.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-	    start.drag(move, dragger, up);
-	  }
-	});
-
-	
-	
-	
-	// url defines where you can get list of json elements
-	var ActivityList = Backbone.Collection.extend({
-		model: ActivityElement,
-		url: '/json/activity'
-	});
-
-	var StartList = Backbone.Collection.extend({
-		model: StartElement,
-		url: '/json/start'
-	});
-
-	// create new instance of ElementList
-	var ActivityElements = new ActivityList;
-	var StartElements = new StartList;
-
-	
-	
-	// Iterate through all the elements, render template for each element and
-	// return a list of templates
-	var ElementsView = Backbone.View.extend({
-		// template: _.template($('#elementList_template').html()),
-		render: function(eventName) {
-			_.each(this.model.models, function(element){
-				// var lTemplate = this.template(element.toJSON());
-				// $(this.el).append(lTemplate);
-			    element.render(element.toJSON());
-			}, this);
-			return this;
-		}
-	});
-
-	var AppView = Backbone.View.extend({
-		el: "body",
-		
-		events: {
-			'click .clickable': 'handleClick',
-			'change': 'handleChange'
-		},
-		
-		// get all element templates and append them to html div with id
-		// #elements
-		render: function(){
-			var activityElementsView = new ElementsView({model:ActivityElements});
-			var startElementsView = new ElementsView({model:StartElements});
-			var lHtml = startElementsView.render();
-			var kHtml = activityElementsView.render();// .el;
+		var StartElement = Backbone.Model.extend({
+		 
+		  render: function(element) {
+			  var start = RaphaelElement.circle(element.cx, element.cy, 20);
+			  this.set({element: start});
 			
-			
-		// $('#elements').html(lHtml);
-		},
-
-		// fetch the list of elements and do a render method
-		initialize: function(){
-			var lOptions = {};
-			lOptions.success = this.render;
-			ActivityElements.fetch(lOptions);
-			StartElements.fetch(lOptions);
-			
-		},
+		    var color = Raphael.getColor();
+		    start.attr({fill: color, stroke: color, "fill-opacity": 1, "stroke-width": 2, cursor: "move"});
+		    start.drag(move, dragger, upStart);
+		  }
+		});
 		
-		handleClick: function() {
-		  console.log("Something was clicked");
-		},
+		var EndElement = Backbone.Model.extend({
+			 
+			  render: function(element) {
+				  var end = RaphaelElement.circle(element.cx, element.cy, 20);
+				  this.set({element: end});
+				
+			    var color = Raphael.getColor();
+			    end.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+			    end.drag(move, dragger, up);
+			  }
+		});
 		
-		handleChange: function() {
-		  console.log("Something was changed");
-		}
-	});
+		var SwimlaneElement = Backbone.Model.extend({
+			 
+			  render: function(element) {
+				  var swimlane = RaphaelElement.rect(element.cx, element.cy, 500, 300, 1);
+				  this.set({element: swimlane});
+				  swimlane.attr({fill: red, stroke: black, "stroke-width": 2});
+				  swimlane.toBack();
+			  }
+		});
 
-	
-	
-	var App = new AppViewTest;
+		
+		
+		
+		var ActivityList = Backbone.Collection.extend({
+			model: ActivityElement,
+			url: '/json/activity'
+		});
 
+		var StartList = Backbone.Collection.extend({
+			model: StartElement,
+			url: '/json/start'
+		});
+		
+		var EndList = Backbone.Collection.extend({
+			model: EndElement,
+			url: '/json/end'
+		});
+		
+		var SwimlaneList = Backbone.Collection.extend({
+			model: SwimlaneElement,
+			url: '/json/swimlane'
+		});
+		
+		var ActivityElements = new ActivityList;
+		var StartElements = new StartList;
+		var EndElements = new EndList;
+		var SwimlaneElements = new SwimlaneList;
 
+		// Iterate through all the elements, render template for each element and
+		// return a list of templates
+		var ElementsView = Backbone.View.extend({
+			
+			render: function(eventName) {
+				_.each(this.model.models, function(element){
+				    element.render(element.toJSON());
+				}, this);
+				return this;
+			}
+		});
 
-	
-	connections = [];
+		var AppView = Backbone.View.extend({
+			el: "body",
+			
+			events: {
+				'click .clickable': 'handleClick',
+				'change': 'handleChange'
+			},
+			
 
-    var testi = StartElements.at(0);
-    var toinentesti = ActivityElements.at(0).get("element");
-    
-	  // täytyy tehdä funktio joka katsoo mitkä muodot ovat yhteydessä
-		// toisiinsa.
-    
-    // T�M� TOIMII!!!
-    //connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
-    // connections.push(r.connection(shapes[1], shapes[2], "#000", "#000|5"));
-     // connections.push(r.connection(shapes[1], shapes[3], "#000", "#000"));
-      
-      
-      
-    };
+			// fetch the list of elements and do a render method
+			initialize: function(){
+				
+				var activitySuccess = function(){
+					var activityElementsView = new ElementsView({model:ActivityElements});
+					activityElementsView.render();
+					connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
+					connections.push(RaphaelElement.connection(EndElements.at(0).get("element"), ActivityElements.at(2).get("element"), "#000"));
+					connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
+					connections.push(RaphaelElement.connection(ActivityElements.at(1).get("element"), ActivityElements.at(2).get("element"), "#000"));
+				}
+				
+				var startSuccess = function(){
+					var startElementsView = new ElementsView({model:StartElements});
+					startElementsView.render();
+					connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
+					connections.push(RaphaelElement.connection(EndElements.at(0).get("element"), ActivityElements.at(2).get("element"), "#000"));
+					connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
+					connections.push(RaphaelElement.connection(ActivityElements.at(1).get("element"), ActivityElements.at(2).get("element"), "#000"));
+				}
+				
+				var endSuccess = function(){
+					var endElementsView = new ElementsView({model:EndElements});
+					endElementsView.render();
+					connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
+					connections.push(RaphaelElement.connection(EndElements.at(0).get("element"), ActivityElements.at(2).get("element"), "#000"));
+					connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
+					connections.push(RaphaelElement.connection(ActivityElements.at(1).get("element"), ActivityElements.at(2).get("element"), "#000"));
+				}
+				/*
+				var swimlaneSuccess = function(){
+					var swimlaneElementsView = new ElementsView({model:SwimlaneElements});
+					swimlaneElementsView.render();
+					connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
+					connections.push(RaphaelElement.connection(EndElements.at(0).get("element"), ActivityElements.at(2).get("element"), "#000"));
+					connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
+					connections.push(RaphaelElement.connection(ActivityElements.at(1).get("element"), ActivityElements.at(2).get("element"), "#000"));
+				}
+				*/
+				ActivityElements.fetch({
+					success : activitySuccess
+				});
+				
+				StartElements.fetch({
+					success: startSuccess 
+				});
+				
+				EndElements.fetch({
+					success: endSuccess 
+				});
+				/*
+				SwimlaneElements.fetch({
+					success: swimlaneSuccess
+				});
+				*/
+			},
+			
+			handleClick: function() {
+			  console.log("Something was clicked");
+			},
+			
+			handleChange: function() {
+			  console.log("Something was changed");
+			}
+			
+				
+		});
+		var App = new AppView;
+		
+			
+	 
+};
