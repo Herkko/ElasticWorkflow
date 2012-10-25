@@ -55,8 +55,8 @@ object Processes extends Controller {
     val elem2 = processElementService.createStart(modelProcess, 70, y + 70);
     val elem3 = processElementService.createEnd(modelProcess, 270, y + 70);
     val elem4 = processElementService.createActivity(modelProcess, 170, y + 90);
-    val elem5 = processElementService.createActivity(modelProcess, 200, y + 90);
-    val elem6 = processElementService.createActivity(modelProcess, 230, y + 90);
+    val elem5 = processElementService.createActivity(modelProcess, 250, y + 90);
+    val elem6 = processElementService.createActivity(modelProcess, 320, y + 90);
 
     val rel = relationService.create(70, y + 70, 170, y + 90, "Relation between Start and End?", elem2, elem3);
   }

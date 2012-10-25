@@ -109,8 +109,9 @@
 	var ActivityElement = Backbone.Model.extend({
 		
 		render: function(element) {
-	      this.set({element: RaphaelElement.rect(element.cx, element.cy, 60, 40, 2)});
 		  var activity =  RaphaelElement.rect(element.cx, element.cy, 60, 40, 2);
+	      this.set({element: activity});
+		  
 		  var color = Raphael.getColor();
 	      activity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
 	      activity.drag(move, dragger, up);    
@@ -121,9 +122,10 @@
 	
 	  
 	  render: function(element) {
-	      this.set({element: RaphaelElement.circle(element.cx, element.cy, 20)});
-	      var start = RaphaelElement.circle(element.cx, element.cy, 20);
 
+		  var start = RaphaelElement.circle(element.cx, element.cy, 20);
+		  this.set({element: start});
+		
 	    var color = Raphael.getColor();
 	    start.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
 	    start.drag(move, dragger, up);
@@ -177,8 +179,8 @@
 		render: function(){
 			var activityElementsView = new ElementsView({model:ActivityElements});
 			var startElementsView = new ElementsView({model:StartElements});
-			var lHtml = startElementsView.render();
-			var kHtml = activityElementsView.render();// .el;
+			startElementsView.render();
+			activityElementsView.render();// .el;
 			
 			
 		// $('#elements').html(lHtml);
@@ -187,10 +189,10 @@
 		// fetch the list of elements and do a render method
 		initialize: function(){
 			var lOptions = {};
-			lOptions.success = this.render;
+			//lOptions.success = this.render;
 			ActivityElements.fetch(lOptions);
 			StartElements.fetch(lOptions);
-			
+			this.render();
 		},
 		
 		handleClick: function() {
@@ -211,14 +213,14 @@
 	
 	connections = [];
 
-    var testi = StartElements.at(0);
-    var toinentesti = ActivityElements.at(0).get("element");
+    //var testi = StartElements.at(0);
+    //var toinentesti = ActivityElements.at(0).get("element");
     
-	  // täytyy tehdä funktio joka katsoo mitkä muodot ovat yhteydessä
+	  // taytyy tehda funktio joka katsoo mitka muodot ovat yhteydessa
 		// toisiinsa.
     
-    // T�M� TOIMII!!!
-    //connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
+    // TAMA TOIMII!!!
+    connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
     // connections.push(r.connection(shapes[1], shapes[2], "#000", "#000|5"));
      // connections.push(r.connection(shapes[1], shapes[3], "#000", "#000"));
       
