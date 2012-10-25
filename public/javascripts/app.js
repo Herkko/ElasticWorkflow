@@ -230,7 +230,7 @@ window.onload = function(){
 					connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
 					connections.push(RaphaelElement.connection(ActivityElements.at(1).get("element"), ActivityElements.at(2).get("element"), "#000"));
 				}
-				
+				/*
 				var swimlaneSuccess = function(){
 					var swimlaneElementsView = new ElementsView({model:EndElements});
 					swimlaneElementsView.render();
@@ -239,6 +239,7 @@ window.onload = function(){
 					connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
 					connections.push(RaphaelElement.connection(ActivityElements.at(1).get("element"), ActivityElements.at(2).get("element"), "#000"));
 				}
+				*/
 				
 				ActivityElements.fetch({
 					success : activitySuccess
@@ -252,9 +253,9 @@ window.onload = function(){
 					success: endSuccess 
 				});
 				
-				SwimlaneElements.fetch({
+				/*SwimlaneElements.fetch({
 					success: swimlaneSuccess
-				});
+				});*/
 			},
 			
 			handleClick: function() {
