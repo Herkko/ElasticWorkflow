@@ -1,5 +1,3 @@
-
-
 //funktio viivoille.
    Raphael.fn.connection = function (obj1, obj2, line, bg) {
 	    
@@ -176,7 +174,7 @@
 			var activityElementsView = new ElementsView({model:ActivityElements});
 			var startElementsView = new ElementsView({model:StartElements});
 			startElementsView.render();
-			activityElementsView.render();// .el;
+			activityElementsView.render();
 			
 			
 		// $('#elements').html(lHtml);
@@ -185,10 +183,11 @@
 		// fetch the list of elements and do a render method
 		initialize: function(){
 			var lOptions = {};
-			//lOptions.success = this.render;
+			//lOptions.success = this.render();
 			ActivityElements.fetch(lOptions);
 			StartElements.fetch(lOptions);
 			this.render();
+			
 		},
 		
 		handleClick: function() {
@@ -216,7 +215,7 @@
 		// toisiinsa.
     
     // TAMA TOIMII!!!
-    connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
+    //connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
     // connections.push(r.connection(shapes[1], shapes[2], "#000", "#000|5"));
      // connections.push(r.connection(shapes[1], shapes[3], "#000", "#000"));
       
