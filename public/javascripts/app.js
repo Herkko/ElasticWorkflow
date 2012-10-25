@@ -149,11 +149,8 @@
 	// Iterate through all the elements, render template for each element and
 	// return a list of templates
 	var ElementsView = Backbone.View.extend({
-		// template: _.template($('#elementList_template').html()),
 		render: function(eventName) {
 			_.each(this.model.models, function(element){
-				// var lTemplate = this.template(element.toJSON());
-				// $(this.el).append(lTemplate);
 			    element.render(element.toJSON());
 			}, this);
 			return this;
@@ -172,8 +169,8 @@
 		// #elements
 		render: function(){
 			var activityElementsView = new ElementsView({model:ActivityElements});
-			var startElementsView = new ElementsView({model:StartElements});
-			startElementsView.render();
+			//var startElementsView = new ElementsView({model:StartElements});
+			//startElementsView.render();
 			activityElementsView.render();
 			
 			
@@ -183,10 +180,10 @@
 		// fetch the list of elements and do a render method
 		initialize: function(){
 			var lOptions = {};
-			//lOptions.success = this.render();
+			lOptions.success = this.render();
 			ActivityElements.fetch(lOptions);
-			StartElements.fetch(lOptions);
-			this.render();
+			//StartElements.fetch(this.render());
+			//this.render();
 			
 		},
 		
