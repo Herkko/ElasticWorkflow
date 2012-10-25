@@ -97,15 +97,13 @@
 	  this.animate({"fill-opacity": 0}, 500);
 	}; 
       
-
-
 	RaphaelElement = Raphael("mainArea", 500, 500);
 
 	
 	
 	// create json models, fields are automatically derived from json.
 			
-			
+	/*		
 	var ActivityElement = Backbone.Model.extend({
 		
 		render: function(element) {
@@ -122,15 +120,10 @@
 	
 	  
 	  render: function(element) {
-<<<<<<< HEAD
-	      this.set({element: RaphaelElement.circle(element.cx, element.cy, 20)});
-	      var start = RaphaelElement.circle(element.cx, element.cy, 20);
 
-=======
 		  var start = RaphaelElement.circle(element.cx, element.cy, 20);
 		  this.set({element: start});
 		
->>>>>>> 55f6ede80c695d4e88421bcf5287b48f217cfa94
 	    var color = Raphael.getColor();
 	    start.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
 	    start.drag(move, dragger, up);
@@ -160,11 +153,9 @@
 	// Iterate through all the elements, render template for each element and
 	// return a list of templates
 	var ElementsView = Backbone.View.extend({
-		// template: _.template($('#elementList_template').html()),
+		
 		render: function(eventName) {
 			_.each(this.model.models, function(element){
-				// var lTemplate = this.template(element.toJSON());
-				// $(this.el).append(lTemplate);
 			    element.render(element.toJSON());
 			}, this);
 			return this;
@@ -185,16 +176,15 @@
 			var activityElementsView = new ElementsView({model:ActivityElements});
 			var startElementsView = new ElementsView({model:StartElements});
 			startElementsView.render();
-			activityElementsView.render();// .el;
+			activityElementsView.render();
 			
 			
-		// $('#elements').html(lHtml);
+		
 		},
 
 		// fetch the list of elements and do a render method
 		initialize: function(){
 			var lOptions = {};
-			//lOptions.success = this.render;
 			ActivityElements.fetch(lOptions);
 			StartElements.fetch(lOptions);
 			this.render();
@@ -210,25 +200,15 @@
 	});
 
 	
+	 */
+	var ActivityElements = new ActivityList;
+	var StartElements = new StartList;
 	
 	var App = new AppView;
 
-
-
-	
 	connections = [];
-
-    //var testi = StartElements.at(0);
-    //var toinentesti = ActivityElements.at(0).get("element");
-    
-	  // taytyy tehda funktio joka katsoo mitka muodot ovat yhteydessa
-		// toisiinsa.
-    
-    // TAMA TOIMII!!!
-    connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
-    // connections.push(r.connection(shapes[1], shapes[2], "#000", "#000|5"));
-     // connections.push(r.connection(shapes[1], shapes[3], "#000", "#000"));
-      
-      
+      // luo yhteydet elementtien välille
+      connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
+   
       
     };
