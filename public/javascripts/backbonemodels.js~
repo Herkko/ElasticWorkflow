@@ -59,22 +59,23 @@
 			'change': 'handleChange'
 		},
 		
-		// get all element templates and append them to html div with id
-		// #elements
-		render: function(){
-			var activityElementsView = new ElementsView({model:ActivityElements});
-			var startElementsView = new ElementsView({model:StartElements});
-			startElementsView.render();
-			activityElementsView.render();
-		
-		},
 
 		// fetch the list of elements and do a render method
 		initialize: function(){
 			var lOptions = {};
-			ActivityElements.fetch(lOptions);
-			StartElements.fetch(lOptions);
-			this.render();
+			
+			ActivityElements.fetch(success: function(){
+			  var activityElementsView = new ElementsView({model:ActivityElements});
+			  activityElementsView.render();
+			});
+			
+			StartElements.fetch(success: function(){
+			  var startElementsView = new ElementsView({model:StartElements});
+			  startElementsView.render();
+			  
+			});
+			
+			
 		},
 		
 		handleClick: function() {

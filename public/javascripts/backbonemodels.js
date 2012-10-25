@@ -1,4 +1,22 @@
-			
+	var dragger = function () {
+    	  this.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
+    	  this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
+    	  this.animate({"fill-opacity": .3}, 500);
+      };
+	
+      var move = function (dx, dy) {
+		 var att = this.type == "rect" ? {x: this.ox + dx, y: this.oy + dy} : {cx: this.ox + dx, cy: this.oy + dy};
+		 this.attr(att);
+		  for (var i = connections.length; i--;) {
+		    RaphaelElement.connection(connections[i]);
+		  }
+		  RaphaelElement.safari();
+       }; 
+	
+       var  up = function () {
+    	   this.animate({"fill-opacity": 0}, 500);
+       }; 
+
 	var ActivityElement = Backbone.Model.extend({
 		
 		render: function(element) {
@@ -59,22 +77,30 @@
 			'change': 'handleChange'
 		},
 		
-		// get all element templates and append them to html div with id
-		// #elements
-		render: function(){
-			var activityElementsView = new ElementsView({model:ActivityElements});
-			var startElementsView = new ElementsView({model:StartElements});
-			startElementsView.render();
-			activityElementsView.render();
-		
-		},
 
 		// fetch the list of elements and do a render method
 		initialize: function(){
 			var lOptions = {};
-			ActivityElements.fetch(lOptions);
-			StartElements.fetch(lOptions);
-			this.render();
+			
+			var activitySuccess = function(){
+				var activityElementsView = new ElementsView({model:ActivityElements});
+				activityElementsView.render();
+			}
+			
+			var startSuccess = function(){
+				var startElementsView = new ElementsView({model:StartElements});
+				startElementsView.render();
+			}
+			
+			ActivityElements.fetch({
+				success : activitySuccess
+			});
+			
+			StartElements.fetch({
+				success: startSuccess 
+			});
+			
+			
 		},
 		
 		handleClick: function() {
