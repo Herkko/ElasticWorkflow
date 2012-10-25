@@ -1,3 +1,5 @@
+
+
 //funktio viivoille.
    Raphael.fn.connection = function (obj1, obj2, line, bg) {
 	    
@@ -11,7 +13,7 @@
 	  var bb1 = obj1.getBBox(),
 	      bb2 = obj2.getBBox(),
 	      
-	  //reunapisteiden kohdat haettu p:hen    
+	  // reunapisteiden kohdat haettu p:hen
 	  p = [{x: bb1.x + bb1.width / 2, y: bb1.y - 1},
 	  {x: bb1.x + bb1.width / 2, y: bb1.y + bb1.height + 1},
 	  {x: bb1.x - 1, y: bb1.y + bb1.height / 2},
@@ -73,7 +75,7 @@
    
    window.onload = function(){
       
-     //funktiot palikoiden liikuttamista varten
+     // funktiot palikoiden liikuttamista varten
      
       var dragger = function () {
 	this.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
@@ -85,6 +87,7 @@
 		 var att = this.type == "rect" ? {x: this.ox + dx, y: this.oy + dy} : {cx: this.ox + dx, cy: this.oy + dy};
 		 this.attr(att);
 		  for (var i = connections.length; i--;) {
+
 		    RaphaelElement.connection(connections[i]);
 		  }
 		  RaphaelElement.safari();
@@ -95,26 +98,32 @@
 	}; 
       
 
+
 	RaphaelElement = Raphael("mainArea", 500, 500);
+
 	
 	
-	//create json models, fields are automatically derived from json.
+	// create json models, fields are automatically derived from json.
 			
 			
 	var ActivityElement = Backbone.Model.extend({
-	  render: function(element) {
-	   var activity =  RaphaelElement.rect(element.cx, element.cy, 60, 40, 2);
-	    var color = Raphael.getColor();
+		
+		render: function(element) {
+	      this.set({element: RaphaelElement.rect(element.cx, element.cy, 60, 40, 2)});
+		  var activity =  RaphaelElement.rect(element.cx, element.cy, 60, 40, 2);
+		  var color = Raphael.getColor();
 	      activity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-	      activity.drag(move, dragger, up);
-	    
-	    
+	      activity.drag(move, dragger, up);    
 	  }
 	});
 	
 	var StartElement = Backbone.Model.extend({
+	
+	  
 	  render: function(element) {
-	   var start = RaphaelElement.circle(element.cx, element.cy, 20);
+	      this.set({element: RaphaelElement.circle(element.cx, element.cy, 20)});
+	      var start = RaphaelElement.circle(element.cx, element.cy, 20);
+
 	    var color = Raphael.getColor();
 	    start.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
 	    start.drag(move, dragger, up);
@@ -124,7 +133,7 @@
 	
 	
 	
-	//url defines where you can get list of json elements
+	// url defines where you can get list of json elements
 	var ActivityList = Backbone.Collection.extend({
 		model: ActivityElement,
 		url: '/json/activity'
@@ -135,19 +144,20 @@
 		url: '/json/start'
 	});
 
-	//create new instance of ElementList
+	// create new instance of ElementList
 	var ActivityElements = new ActivityList;
 	var StartElements = new StartList;
 
 	
 	
-	//Iterate through all the elements, render template for each element and return a list of templates
+	// Iterate through all the elements, render template for each element and
+	// return a list of templates
 	var ElementsView = Backbone.View.extend({
-		//template: _.template($('#elementList_template').html()),
+		// template: _.template($('#elementList_template').html()),
 		render: function(eventName) {
 			_.each(this.model.models, function(element){
-				//var lTemplate = this.template(element.toJSON());
-				//$(this.el).append(lTemplate);
+				// var lTemplate = this.template(element.toJSON());
+				// $(this.el).append(lTemplate);
 			    element.render(element.toJSON());
 			}, this);
 			return this;
@@ -162,18 +172,19 @@
 			'change': 'handleChange'
 		},
 		
-		//get all element templates and append them to html div with id #elements
+		// get all element templates and append them to html div with id
+		// #elements
 		render: function(){
 			var activityElementsView = new ElementsView({model:ActivityElements});
 			var startElementsView = new ElementsView({model:StartElements});
 			var lHtml = startElementsView.render();
-			var kHtml = activityElementsView.render();//.el;
+			var kHtml = activityElementsView.render();// .el;
 			
 			
-		//	$('#elements').html(lHtml);
+		// $('#elements').html(lHtml);
 		},
 
-		//fetch the list of elements and do a render method
+		// fetch the list of elements and do a render method
 		initialize: function(){
 			var lOptions = {};
 			lOptions.success = this.render;
@@ -200,12 +211,16 @@
 	
 	connections = [];
 
+    var testi = StartElements.at(0);
+    var toinentesti = ActivityElements.at(0).get("element");
     
-	  //täytyy tehdä funktio joka katsoo mitkä muodot ovat yhteydessä toisiinsa.
+	  // täytyy tehdä funktio joka katsoo mitkä muodot ovat yhteydessä
+		// toisiinsa.
     
-    //  connections.push(r.connection(shapes[0], shapes[1], "#000"));
-    //  connections.push(r.connection(shapes[1], shapes[2], "#000", "#000|5"));
-     // connections.push(r.connection(shapes[1], shapes[3], "#000", "#000")); 
+    // T�M� TOIMII!!!
+    //connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
+    // connections.push(r.connection(shapes[1], shapes[2], "#000", "#000|5"));
+     // connections.push(r.connection(shapes[1], shapes[3], "#000", "#000"));
       
       
       
