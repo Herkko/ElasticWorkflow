@@ -69,19 +69,9 @@
 	    to: obj2
 	    };
 	  }
-<<<<<<< HEAD
-}; 
-   
-   window.onload = function(){
-      
-     // funktiot palikoiden liikuttamista varten
-  
-       RaphaelElement = Raphael(10, 10, "100%", "100%");
-
-       var App = new AppView;
-=======
 
 
+   };
   
 
 
