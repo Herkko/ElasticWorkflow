@@ -82,13 +82,13 @@
 				},
 
 				//fetch the list of elements and do a render method
-				initialize: function(){
-					var lOptions = {};
-					lOptions.success = this.render;
-					ActivityElements.fetch(lOptions);
-					StartElements.fetch(lOptions);
-					
-				},
+                initialize: function(){
+                    var lOptions = {};
+                    lOptions.success = this.render;
+                    ActivityElements.fetch(lOptions);
+                    StartElements.fetch(lOptions);
+                    
+                },
 				
 				handleClick: function() {
 				  console.log("Something was clicked");
