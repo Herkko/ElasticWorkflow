@@ -100,9 +100,6 @@
 	RaphaelElement = Raphael(10,10, "100%", "100%");
 
 	
-	var ActivityElements = new ActivityList;
-	var StartElements = new StartList;
-	
 	var App = new AppView;
 
 	connections = [];

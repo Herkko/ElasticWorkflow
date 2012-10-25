@@ -35,7 +35,9 @@
 		model: StartElement,
 		url: '/json/start'
 	});
-
+	
+	var ActivityElements = new ActivityList;
+	var StartElements = new StartList;
 
 	// Iterate through all the elements, render template for each element and
 	// return a list of templates

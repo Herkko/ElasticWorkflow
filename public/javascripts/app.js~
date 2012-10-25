@@ -97,7 +97,7 @@
 	  this.animate({"fill-opacity": 0}, 500);
 	}; 
       
-	RaphaelElement = Raphael(10,10, 100%, 100%);
+	RaphaelElement = Raphael(10,10, "100%", "100%");
 
 	
 	var ActivityElements = new ActivityList;
