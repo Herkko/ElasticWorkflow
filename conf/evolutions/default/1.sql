@@ -43,6 +43,7 @@ INSERT INTO elementTypes(id, name, elementType, description, picture) VALUES (1,
 INSERT INTO elementTypes VALUES (2, 'Start', 2, 'circle', 0);
 INSERT INTO elementTypes VALUES (3, 'End', 3, 'circle', 0);
 INSERT INTO elementTypes VALUES (4, 'Activity', 4, 'rect', 0);
+INSERT INTO elementTypes VALUES (5, 'Gateway', 5, 'circle', 0);
 
 CREATE TABLE processElements (
 	modelProcessId int NOT NULL AUTO_INCREMENT,

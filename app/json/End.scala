@@ -9,7 +9,7 @@ import play.api.libs.json._
 
 case class End(cx: Int, cy: Int)
 
-object End {
+object End extends Element {
 
   implicit object EndFormat extends Format[End] {
     def reads(json: JsValue) = End(

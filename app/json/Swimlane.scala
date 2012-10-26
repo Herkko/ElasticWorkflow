@@ -9,7 +9,7 @@ import play.api.libs.json._
 
 case class Swimlane(cx: Int, cy: Int)
 
-object Swimlane {
+object Swimlane extends Element {
   
   implicit object SwimlaneFormat extends Format[Swimlane] {
     def reads(json: JsValue) = Swimlane(

@@ -9,7 +9,7 @@ import play.api.libs.json._
 
 case class Activity(cx: Int, cy: Int)
 
-object Activity {
+object Activity extends Element {
 
   implicit object ActivityFormat extends Format[Activity] {
     def reads(json: JsValue) = Activity(
