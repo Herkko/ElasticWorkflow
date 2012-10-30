@@ -51,8 +51,8 @@ CREATE TABLE processElements (
 	relationId int NOT NULL AUTO_INCREMENT,
 	value varchar,
 	size int,
-	xCoord int,
-	yCoord int,
+	x int,
+	y int,
 	PRIMARY KEY (relationId),
 	FOREIGN KEY (modelProcessId) REFERENCES modelProcesses (id),
 	FOREIGN KEY (elementTypeId) REFERENCES elementTypes (id)
@@ -61,16 +61,14 @@ CREATE TABLE processElements (
 
 CREATE TABLE relations(
 	id int NOT NULL AUTO_INCREMENT,
+	startId int NOT NULL AUTO_INCREMENT,
+	endId int NOT NULL AUTO_INCREMENT,
 	relationTypeId int NOT NULL AUTO_INCREMENT,
-	x1 int,
-	y1 int,
-	x2 int, 
-	y2 int,
 	value varchar,
-	relationId int NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (id),
-	FOREIGN KEY (relationTypeId) REFERENCES relationTypes (id),
-	FOREIGN KEY (relationId) REFERENCES processElements (relationId)	
+	FOREIGN KEY (startId) REFERENCES processElements (relationId),	
+	FOREIGN KEY (endId) REFERENCES processElements (relationId),	
+	FOREIGN KEY (relationTypeId) REFERENCES relationTypes (id)
 );
 
 # --- !Downs 

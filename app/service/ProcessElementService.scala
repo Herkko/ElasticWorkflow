@@ -20,5 +20,7 @@ class ProcessElementService {
   def createGateway(modelProcessId: Int, x: Int, y: Int): Int =
     ProcessElement.create(modelProcessId, 5, NotAssigned, "Gateway", 0, x, y)
 
+  def update(id: Int, value: String, size: Int, x: Int, y: Int) = ProcessElement.update(id, value, size, x, y)
+  
   def deleteByProcess(id: Int) = ProcessElement.deleteByProcess(id)
 }

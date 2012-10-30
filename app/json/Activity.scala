@@ -7,45 +7,48 @@ import anorm.SqlParser._
 import play.api.libs.json.Json.toJson
 import play.api.libs.json._
 
-case class Activity(cx: Int, cy: Int)
+case class Activity(modelProcessId: Int, elementTypeId: Int, relationId: Int, value: String, size: Int, x: Int, y: Int) //(cx: Int, cy: Int)
 
-object Activity extends Element {
+object Activity {
 
-  implicit object ActivityFormat extends Format[Activity] {
+  /*implicit object ActivityFormat extends Format[Activity] {
     def reads(json: JsValue) = Activity(
-      (json \ "cx").as[Int],
-      (json \ "cy").as[Int])
+      (json \ "modelProcessId").as[Int],
+      (json \ "elementTypeId").as[Int],
+      (json \ "relationId").as[Int],
+      (json \ "value").as[String],
+      (json \ "size").as[Int],
+      (json \ "x").as[Int],
+      (json \ "y").as[Int])
 
     def writes(element: Activity) = JsObject(Seq(
-      "cx" -> JsNumber(element.cx),
-      "cy" -> JsNumber(element.cy)))
+      "modelProcessId" -> JsNumber(element.modelProcessId),
+      "elemenTypeId" -> JsNumber(element.elementTypeId),
+      "relationId" -> JsNumber(element.relationId),
+      "value" -> JsString(element.value),
+      "size" -> JsNumber(element.size),
+      "x" -> JsNumber(element.x),
+      "y" -> JsNumber(element.y)))
   }
 
   val parse = {
-    get[Int]("xCoord") ~
-      get[Int]("yCoord") map {
-        case cx ~ cy =>
-          Activity(cx, cy)
+    get[Int]("modelProcessId") ~
+      get[Int]("elementTypeId") ~
+      get[Int]("relationId") ~
+      get[String]("value") ~
+      get[Int]("size") ~
+      get[Int]("x") ~
+      get[Int]("y") map {
+        case modelProcessId ~ elementTypeId ~ relationId ~ value ~ size ~ x ~ y =>
+          Activity(modelProcessId, elementTypeId, relationId, value, size, x, y)
       }
+  }*/
+
+  def findAll(): List[Element] = DB.withConnection { implicit connection =>
+    Element.findType("Activity")
   }
 
-  def findAll(): List[Activity] = DB.withConnection { implicit connection =>
-    SQL("""select processElements.xCoord, processElements.yCoord
-          from processElements
-          join elementTypes on elementTypes.id = processElements.elementTypeId
-          and elementTypes.name = 'Activity'
-         """).as(parse *)
-  }
-
-  def findByModel(id: Int): List[Activity] = DB.withConnection { implicit connection =>
-    SQL("""select processElements.xCoord, processElements.yCoord
-          from processElements
-          join elementTypes on elementTypes.id = processElements.elementTypeId
-          join modelProcesses on modelProcesses.id = processElements.modelProcessId
-          join models on models.id = modelProcesses.modelId
-          join processes on processes.id = modelProcesses.processId
-          where models.id = {id}
-          and elementTypes.name = 'Activity'
-         """).on('id -> id).as(parse *)
+  def findByModel(id: Int): List[Element] = DB.withConnection { implicit connection =>
+    Element.findTypeByModel(id, "Activity")
   }
 }

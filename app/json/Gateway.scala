@@ -7,45 +7,48 @@ import anorm.SqlParser._
 import play.api.libs.json.Json.toJson
 import play.api.libs.json._
 
-case class Gateway(cx: Int, cy: Int)
+case class Gateway(modelProcessId: Int, elementTypeId: Int, relationId: Int, value: String, size: Int, x: Int, y: Int) //(cx: Int, cy: Int)
 
-object Gateway extends Element {
-
+object Gateway {
+/*
   implicit object GatewayFormat extends Format[Gateway] {
     def reads(json: JsValue) = Gateway(
-      (json \ "cx").as[Int],
-      (json \ "cy").as[Int])
+      (json \ "modelProcessId").as[Int],
+      (json \ "elementTypeId").as[Int],
+      (json \ "relationId").as[Int],
+      (json \ "value").as[String],
+      (json \ "size").as[Int],
+      (json \ "x").as[Int],
+      (json \ "y").as[Int])
 
     def writes(element: Gateway) = JsObject(Seq(
-      "cx" -> JsNumber(element.cx),
-      "cy" -> JsNumber(element.cy)))
+      "modelProcessId" -> JsNumber(element.modelProcessId),
+      "elemenTypeId" -> JsNumber(element.elementTypeId),
+      "relationId" -> JsNumber(element.relationId),
+      "value" -> JsString(element.value),
+      "size" -> JsNumber(element.size),
+      "x" -> JsNumber(element.x),
+      "y" -> JsNumber(element.y)))
   }
 
   val parse = {
-    get[Int]("xCoord") ~
-      get[Int]("yCoord") map {
-        case cx ~ cy =>
-          Gateway(cx, cy)
+    get[Int]("modelProcessId") ~
+      get[Int]("elementTypeId") ~
+      get[Int]("relationId") ~
+      get[String]("value") ~
+      get[Int]("size") ~
+      get[Int]("x") ~
+      get[Int]("y") map {
+        case modelProcessId ~ elementTypeId ~ relationId ~ value ~ size ~ x ~ y =>
+          Gateway(modelProcessId, elementTypeId, relationId, value, size, x, y)
       }
+  }*/
+
+  def findAll(): List[Element] = DB.withConnection { implicit connection =>
+    Element.findType("Gateway")
   }
 
-  def findAll(): List[Gateway] = DB.withConnection { implicit connection =>
-    SQL("""select processElements.xCoord, processElements.yCoord
-          from processElements
-          join elementTypes on elementTypes.id = processElements.elementTypeId
-          and elementTypes.name = 'Gateway'
-         """).as(parse *)
-  }
-
-  def findByModel(id: Int): List[Gateway] = DB.withConnection { implicit connection =>
-    SQL("""select processElements.xCoord, processElements.yCoord
-          from processElements
-          join elementTypes on elementTypes.id = processElements.elementTypeId
-          join modelProcesses on modelProcesses.id = processElements.modelProcessId
-          join models on models.id = modelProcesses.modelId
-          join processes on processes.id = modelProcesses.processId
-          where models.id = {id}
-          and elementTypes.name = 'Gateway'
-         """).on('id -> id).as(parse *)
+  def findByModel(id: Int): List[Element] = DB.withConnection { implicit connection =>
+    Element.findTypeByModel(id, "Gateway")
   }
 }

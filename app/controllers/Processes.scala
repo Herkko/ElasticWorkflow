@@ -57,8 +57,9 @@ object Processes extends Controller {
     val elem4 = processElementService.createActivity(modelProcess, 170, y + 90);
     val elem5 = processElementService.createActivity(modelProcess, 250, y + 90);
     val elem6 = processElementService.createActivity(modelProcess, 320, y + 90);
-    //val elem6 = processElementService.createGateway(modelProcess, 300, y + 30);
+    val elem7 = processElementService.createGateway(modelProcess, 300, y + 30);
     
-    val rel = relationService.create(70, y + 70, 170, y + 90, "Relation between Start and End?", elem2, elem3);
+    processElementService.update(elem5, "HI, I have been modified, YAY!", 10, 0, 0);
+    val rel = relationService.create(elem2, elem3, "Relation between Start and End");
   }
 }

@@ -52,13 +52,13 @@ class RelationSpec extends Specification {
       "one model with one process containing a swimlane and start element with 1 relation, will return json representation of a relation" in {
         running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
           val modelId = modelService.create()
-          val modelProcess = processService.create(modelId);
-          val elem1 = processElementService.createSwimlane(modelProcess, 20, 100);
-          val elem2 = processElementService.createStart(modelProcess, 70, 170);
-          val relation = relationService.create(20, 100, 70, 170, "The Only Relation", elem1, elem2);
+          val modelProcess = processService.create(modelId)
+          val elem1 = processElementService.createSwimlane(modelProcess, 20, 100)
+          val elem2 = processElementService.createStart(modelProcess, 70, 170)
+          val relation = relationService.create(elem1, elem2, "The Only Relation")
 
           val Some(result) = routeAndCall(FakeRequest(GET, "/json/relation"))
-          contentAsString(result) must be equalTo ("""[{"x1":20,"y1":100,"x2":70,"y2":170},{"x1":20,"y1":100,"x2":70,"y2":170}]""")
+          contentAsString(result) must be equalTo ("""[{"id":1,"startId":"""+elem1+""","endId":"""+elem2+""","relationTypeId":1,"value":"The Only Relation"}]""")
         }
       }
 
@@ -67,16 +67,16 @@ class RelationSpec extends Specification {
           val modelId = modelService.create()
           val modelProcess = processService.create(modelId);
 
-          val elem1 = processElementService.createSwimlane(modelProcess, 20, 100);
-          val elem2 = processElementService.createStart(modelProcess, 70, 170);
-          val elem3 = processElementService.createEnd(modelProcess, 270, 170);
+          val elem1 = processElementService.createSwimlane(modelProcess, 20, 100)
+          val elem2 = processElementService.createStart(modelProcess, 70, 170)
+          val elem3 = processElementService.createEnd(modelProcess, 270, 170)
 
-          val relation0 = relationService.create(20, 100, 70, 170, "The First Relation", elem1, elem2);
-          val relation1 = relationService.create(20, 100, 270, 170, "The Second Relation", elem1, elem3);
-          val relation2 = relationService.create(270, 170, 70, 170, "The Third Relation", elem3, elem2);
+          val relation0 = relationService.create(elem1, elem2, "The First Relation")
+          val relation1 = relationService.create(elem1, elem3, "The Second Relation")
+          val relation2 = relationService.create(elem3, elem2, "The Third Relation")
 
           val Some(result) = routeAndCall(FakeRequest(GET, "/json/relation"))
-          contentAsString(result) must contain("""[{"x1":20,"y1":100,"x2":70,"y2":170},{"x1":20,"y1":100,"x2":70,"y2":170},{"x1":20,"y1":100,"x2":270,"y2":170},{"x1":20,"y1":100,"x2":270,"y2":170},{"x1":270,"y1":170,"x2":70,"y2":170},{"x1":270,"y1":170,"x2":70,"y2":170}]""")
+          contentAsString(result) must contain("""[{"id":1,"startId":"""+elem1+""","endId":"""+elem2+""","relationTypeId":1,"value":"The First Relation"},{"id":2,"startId":"""+elem1+""","endId":"""+elem3+""","relationTypeId":1,"value":"The Second Relation"},{"id":3,"startId":"""+elem3+""","endId":"""+elem2+""","relationTypeId":1,"value":"The Third Relation"}]""")
         }
       }
     }
@@ -91,19 +91,19 @@ class RelationSpec extends Specification {
           val modelProcess1 = processService.create(model1);
           val elem1 = processElementService.createSwimlane(modelProcess1, 10, 10);
           val elem2 = processElementService.createStart(modelProcess1, 20, 20);
-          val relation1 = relationService.create(10, 10, 20, 20, "The Relation that belongs to first model", elem1, elem2);
+          val relation1 = relationService.create(elem1, elem2, "The Relation that belongs to first model");
           
           //Second model data
           val model2 = modelService.create()
           val modelProcess2 = processService.create(model2);
           val elem3 = processElementService.createSwimlane(modelProcess2, 30, 30);
           val elem4 = processElementService.createStart(modelProcess2, 40, 40);
-          val relation2 = relationService.create(30, 30, 40, 40, "The Relation that belongs to second model", elem3, elem4);
+          val relation2 = relationService.create(elem3, elem4, "The Relation that belongs to second model");
           
           val Some(result) = routeAndCall(FakeRequest(GET, "/json/relation/1"))
-          contentAsString(result) must beEqualTo("""[{"x1":10,"y1":10,"x2":20,"y2":20},{"x1":10,"y1":10,"x2":20,"y2":20}]""")
+          contentAsString(result) must beEqualTo("""[{"id":1,"startId":"""+elem1+""","endId":"""+elem2+""","relationTypeId":1,"value":"The Relation that belongs to first model"}]""")
           val Some(result2) = routeAndCall(FakeRequest(GET, "/json/relation/2"))
-          contentAsString(result2) must beEqualTo("""[{"x1":30,"y1":30,"x2":40,"y2":40},{"x1":30,"y1":30,"x2":40,"y2":40}]""")
+          contentAsString(result2) must beEqualTo("""[{"id":2,"startId":"""+elem3+""","endId":"""+elem4+""","relationTypeId":1,"value":"The Relation that belongs to second model"}]""")
         }
       }
 
