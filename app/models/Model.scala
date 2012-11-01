@@ -46,11 +46,7 @@ object Model {
 	    where models.id = {id}
 	   """).on('id -> id).as(parse *).head
   }
-  
-  def update(name: String) {
-    
-  } 
-  
+   
   def update(id: Int, name: String): Boolean =  {
     DB.withConnection { implicit connection =>
       SQL("""update models 

@@ -40,7 +40,7 @@ object Models extends Controller {
 
   def update(id: Int, name: String) = Action {
 	  modelService.update(id, name)
-	  Redirect(routes.Models.list())
+	  Redirect(routes.Models.read(id))
   }
   
   def delete(id: Int) = Action { implicit request =>

@@ -26,11 +26,13 @@ GET     /say/:said							    controllers.ActorUpdates.say(said: String)
 GET     /update/:id/:value						controllers.ActorUpdates.update(id: Int, value: String)
 GET	    /room									controllers.ActorUpdates.room
 
-GET     /models/update/:id?:name						controllers.Models.update(id: Int, name: String)
+#ugly methods just to test if works <(>,..,<)>
+GET     /models/:id/update/processes/:pId/:name	controllers.Processes.update(id: Int, pId: Int, name: String)
+GET     /models/update/:id/:name			    controllers.Models.update(id: Int, name: String)
 GET  	/*path  								controllers.Application.removeSlash(path: String)
 
 
-#Everything below this line is refactoring to REST! \o/
+#Everything below this line is REST methods! \o/
 
 # Home page
 GET     /                   					controllers.Application.index
@@ -44,6 +46,7 @@ GET     /                   					controllers.Application.index
 
 #Operations on processes
 #POST   /models/:id/processes				    controllers.Processes.create(id: Int)
+#PUT	/models/:id/processes/:pId/:name		controllers.Processes.update(id: Int, pId: Int, name: String)
 #DELETE /models/:id/processes/:pId				controllers.Processes.delete(id: Int, pId: Int)
 
 #Operations on relations

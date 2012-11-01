@@ -61,6 +61,14 @@ object Process {
     }
   }
 
+  def update(id: Int, name: String): Boolean =  {
+    DB.withConnection { implicit connection =>
+      SQL("""update processes
+          set name = {name} where id = {id}""").
+        on('id -> id, 'name -> name).executeUpdate() == 0
+    }
+  }
+  
   /**
    * Delete process specified by parameter id. If a process is deleted, its relations and elements also have to be 
    * deleted.
