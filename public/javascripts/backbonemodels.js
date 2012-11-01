@@ -51,14 +51,14 @@ var GatewayElement = Backbone.Model.extend({
 	
 	render: function(element) {
 		
-		var gateway = RaphaelElement.rect(element.cx, element.cy, 60, 60, 1);
-		//var gateway = RaphaelElement.path('M' + element.cx + ',' + element.cy + 'L' + (element.cx-50) + ',' + (element.cy+50) + 'L' + (element.cx) + ',' + (element.cy+100) + 'L' + (element.cx+50) + ',' + (element.cy+50) + 'Z');
+		//var gateway = RaphaelElement.rect(element.cx, element.cy, 60, 60, 1);
+		var gateway = RaphaelElement.path('M' + element.cx + ',' + element.cy + 'L' + (element.cx-50) + ',' + (element.cy+50) + 'L' + (element.cx) + ',' + (element.cy+100) + 'L' + (element.cx+50) + ',' + (element.cy+50) + 'Z');
 		this.set({element: gateway});
 		//var gbbox = Raphael.pathBBox('M' + element.cx + ',' + element.cy + 'L' + (element.cx-50) + ',' + (element.cy+50) + 'L' + (element.cx) + ',' + (element.cy+100) + 'L' + (element.cx+50) + ',' + (element.cy+50) + 'Z');
 		var color = Raphael.getColor();
 		gateway.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-		gateway.drag(move, dragger, up);
-		gateway.animate({transform:"r45"},10);
+		gateway.drag(movePath, dragger, up);
+		//gateway.animate({transform:"r45"},10);
 		
 		
 	    
