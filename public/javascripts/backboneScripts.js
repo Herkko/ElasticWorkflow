@@ -3,13 +3,13 @@ var roundElement = Backbone.Model.extend({
 	name: 'CircleElementX', 
 	Value: 'empty',
 	type: 'circle',
-	cx: 0,
-	cy: 0,
-	r: 10 
+	coordinateX: 0,
+	coordinateY: 0,
+	radius: 10 
       },
        Render: function(){
      // code to create raphael objects
-     var rCircle = paper.circle(cx, cy, r);
+     var rCircle = paper.circle(coordinateX, coordinateY, radius);
     }, Update: function(){
      //hakee JSON ja muodostaa modelin       
     }
@@ -40,12 +40,12 @@ var startElement = roundElement.extend({
 	name: 'CircleElementX', 
 	Value: 'empty',
 	type: 'circle',
-	cx: 0,
-	cy: 0,
-	r: 10 
+	coordinateX: 0,
+	coordinateY: 0,
+	radius: 10 
       },
       Render: function(){
-        var rCircle = paper.circle(cx, cy, r);
+        var rCircle = paper.circle(coordinateX, coordinateY, radius);
         rCircle.attr("fill", "#585858 ");
         rCircle.attr("stroke", "#080808 ");
       }, Update: function(){
@@ -58,12 +58,12 @@ var endElement = roundElement.extend({
 	name: 'CircleElementX', 
 	Value: 'empty',
 	type: 'circle',
-	cx: 0,
-	cy: 0,
-	r: 10 
+	coordinateX: 0,
+	coordinateY: 0,
+	radius: 10 
       },
       Render: function(){
-        var rCircle = paper.circle(cx, cy, r);
+        var rCircle = paper.circle(coordinateX, coordinateY, radius);
       }, Update: function(){
         //hakee JSON ja muodostaa modelin 
       }

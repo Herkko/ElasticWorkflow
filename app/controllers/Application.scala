@@ -2,9 +2,6 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-import models._
-import java.util.Date
-import anorm._
 
 object Application extends Controller {
 
@@ -36,6 +33,9 @@ object Application extends Controller {
     Ok(views.html.jsTest())
   }
   
+   def showEdit = Action { implicit request =>
+    Ok(views.html.edit())
+  }
   /**
    * just trying to do stuff with backbone
    */
@@ -43,8 +43,7 @@ object Application extends Controller {
     Ok(views.html.jvsTest())
   }
   
-  def showBackboneAttempt = Action { implicit request =>
+  def showEditPage = Action { implicit request =>
     Ok(views.html.edit())
   }
-  
 }

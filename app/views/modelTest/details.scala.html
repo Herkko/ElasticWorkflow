@@ -30,10 +30,8 @@
 	  <dl class="relations">
       @for(relation <- relations) {
         <dt>Relation id: @relation.id</dt>
-        <dd>Belongs to element with id: @relation.relationId</dd>
+        <dd>Between elements: @relation.startId -> @relation.endId</dd>
         <dd>Description: @relation.value</dd>
-        <dd>Start Point: @relation.startPointId</dd>
-        <dd>End Point:   @relation.endPointId</dd>
         <br>
       }
 	  <br>

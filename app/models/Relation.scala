@@ -6,19 +6,18 @@ import anorm._
 import anorm.SqlQuery
 import anorm.SqlParser._
 
-case class Relation(id: Pk[Int], relationTypeId: Int, startPointId: Int, endPointId: Int, value: String, relationId: Int)
+case class Relation(id: Pk[Int], startId: Int, endId: Int, relationTypeId: Int, value: String)
 
 object Relation {
 
   val parse = {
     get[Pk[Int]]("id") ~
+      get[Int]("startId") ~
+      get[Int]("endId") ~
       get[Int]("relationTypeId") ~
-      get[Int]("startPointId") ~
-      get[Int]("endPointId") ~
-      get[String]("value") ~
-      get[Int]("relationId") map {
-        case id ~ relationTypeId ~ startPointId ~ endPointId ~ value ~ relationId =>
-          Relation(id, relationTypeId, startPointId, endPointId, value, relationId)
+      get[String]("value") map {
+        case id ~ startId ~ endId ~ relationTypeId ~ value =>
+          Relation(id, startId, endId, relationTypeId, value)
       }
   }
 
@@ -36,15 +35,14 @@ object Relation {
    * Insert new relation to database.
    * @return
    */
-  def create(relation: Relation): Boolean = {
+  def create(id: Pk[Int], startId: Int, endId: Int, relationTypeId: Int, value: String): Boolean = {
     DB.withConnection { implicit connection =>
-      SQL("""insert into relations values ({id}, {relationTypeId}, {startPointId}, {endPointId}, {value}, {relationId})""").on(
-        "id" -> relation.id,
-        "relationTypeId" -> relation.relationTypeId,
-        "startPointId" -> relation.startPointId,
-        "endPointId" -> relation.endPointId,
-        "value" -> relation.value,
-        "relationId" -> relation.relationId).executeUpdate() == 1
+      SQL("""insert into relations values ({id}, {startId}, {endId}, {relationTypeId}, {value})""").on(
+        "id" -> id,
+        "startId" -> startId,
+        "endId" -> endId,
+        "relationTypeId" -> relationTypeId,
+        "value" -> value).executeUpdate() == 1
     }
   }
 
@@ -62,7 +60,7 @@ object Relation {
     DB.withConnection { implicit connection =>
       SQL(""" 
           select relations.* from relations
-          join processElements on processElements.relationId = relations.relationId
+          join processElements on processElements.relationId = relations.startId
           join modelProcesses on modelProcesses.id = processElements.modelProcessId
           join models on models.id = modelProcesses.modelId
           join processes on processes.id = modelProcesses.processId
@@ -88,7 +86,7 @@ object Relation {
   def deleteByProcess(id: Int): Boolean = {
     DB.withConnection { implicit connection =>
       SQL("""delete from relations
-          where relationId in (
+          where startId in (
           select relationId from processElements
           where modelProcessId in (select id from modelProcesses where processId in (select id from processes where id = {id})))
         """).on('id -> id).executeUpdate() == 0

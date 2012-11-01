@@ -18,7 +18,6 @@ CREATE TABLE modelProcesses(
 	id int NOT NULL AUTO_INCREMENT,
 	modelId int NOT NULL AUTO_INCREMENT,
 	processId int NOT NULL AUTO_INCREMENT,
-	dateCreated Date,
 	PRIMARY KEY (id),
 	FOREIGN KEY (modelId) REFERENCES models (id),
 	FOREIGN KEY (processId) REFERENCES processes (id)
@@ -43,7 +42,8 @@ CREATE TABLE elementTypes(
 INSERT INTO elementTypes(id, name, elementType, description, picture) VALUES (1, 'Swimlane', 1, 'rect', 0);
 INSERT INTO elementTypes VALUES (2, 'Start', 2, 'circle', 0);
 INSERT INTO elementTypes VALUES (3, 'End', 3, 'circle', 0);
-INSERT INTO elementTypes VALUES (4, 'Action', 4, 'rect', 0);
+INSERT INTO elementTypes VALUES (4, 'Activity', 4, 'rect', 0);
+INSERT INTO elementTypes VALUES (5, 'Gateway', 5, 'circle', 0);
 
 CREATE TABLE processElements (
 	modelProcessId int NOT NULL AUTO_INCREMENT,
@@ -51,8 +51,8 @@ CREATE TABLE processElements (
 	relationId int NOT NULL AUTO_INCREMENT,
 	value varchar,
 	size int,
-	xCoord int,
-	yCoord int,
+	x int,
+	y int,
 	PRIMARY KEY (relationId),
 	FOREIGN KEY (modelProcessId) REFERENCES modelProcesses (id),
 	FOREIGN KEY (elementTypeId) REFERENCES elementTypes (id)
@@ -61,14 +61,14 @@ CREATE TABLE processElements (
 
 CREATE TABLE relations(
 	id int NOT NULL AUTO_INCREMENT,
+	startId int NOT NULL AUTO_INCREMENT,
+	endId int NOT NULL AUTO_INCREMENT,
 	relationTypeId int NOT NULL AUTO_INCREMENT,
-	startPointId int,
-	endPointId int,
 	value varchar,
-	relationId int NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (id),
-	FOREIGN KEY (relationTypeId) REFERENCES relationTypes (id),
-	FOREIGN KEY (relationId) REFERENCES processElements (relationId)	
+	FOREIGN KEY (startId) REFERENCES processElements (relationId),	
+	FOREIGN KEY (endId) REFERENCES processElements (relationId),	
+	FOREIGN KEY (relationTypeId) REFERENCES relationTypes (id)
 );
 
 # --- !Downs 

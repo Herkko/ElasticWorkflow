@@ -49,5 +49,29 @@ object JsonObject {
           where processElements.elementTypeId = elementTypes.id
           and models.id = {id}
          """).on('id -> id).as(parse *)
+         
   }
 }
+
+
+  /*
+  implicit object JsonFormat extends Format[JsonObject] {
+    def reads(json: JsValue) = JsonObject(
+      (json \ "type").as[String],
+      (json \ "cx").as[Int],
+      (json \ "cy").as[Int])
+
+    def writes(jsonObject: JsonObject) = JsObject(Seq(
+      "type" -> JsString(jsonObject.`type`),
+      "cx" -> JsNumber(jsonObject.cx),
+      "cy" -> JsNumber(jsonObject.cy)))
+  }
+
+  /**
+   * Find all the elements from the database and create json object of each element, using Jerkson. This method can be
+   * accessed by path /json.
+   */
+  def showAll = Action { implicit request =>
+    val jsonElements = JsonObject.findAll
+    Ok(toJson(jsonElements))
+  }*/
