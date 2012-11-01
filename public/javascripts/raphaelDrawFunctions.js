@@ -51,6 +51,7 @@ Raphael.fn.connection = function(obj1, obj2, line, bg) {
             y3 = [0, 0, 0, 0, y1 + dy, y1 - dy, y4, y4][res[1]].toFixed(3);
 
     var path = ["M", x1.toFixed(3), y1.toFixed(3), "C", x2, y2, x3, y3, x4.toFixed(3), y4.toFixed(3)].join(",");
+    //path.attr({stroke:'#FF0000', 'stroke-width': 2 ,'arrow-end': 'classic-wide-long'});
 
     if (line && line.line) {
         line.bg && line.bg.attr({path: path});
@@ -59,7 +60,7 @@ Raphael.fn.connection = function(obj1, obj2, line, bg) {
         var color = typeof line == "string" ? line : "#000";
         return {
             bg: bg && bg.split && this.path(path).attr({stroke: bg.split("|")[0], fill: "none", "stroke-width": bg.split("|")[1] || 3}),
-            line: this.path(path).attr({stroke: color, fill: "none"}),
+            line: this.path(path).attr({stroke: color, 'stroke-width': 2, fill: "none", 'arrow-end': 'block-wide-long'}),
             from: obj1,
             to: obj2
         };

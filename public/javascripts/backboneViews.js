@@ -35,7 +35,7 @@ var AppView = Backbone.View.extend({
         }
 
         var swimlaneSuccess = function() {
-            var swimlaneElementsView = new ElementsView({model: EndElements});
+            var swimlaneElementsView = new ElementsView({model: SwimlaneElements});
             swimlaneElementsView.render();
             connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
             connections.push(RaphaelElement.connection(EndElements.at(0).get("element"), ActivityElements.at(2).get("element"), "#000"));
