@@ -38,6 +38,11 @@ object Models extends Controller {
     }
   }
 
+  def update(id: Int, name: String) = Action {
+	  modelService.update(id, name)
+	  Redirect(routes.Models.list())
+  }
+  
   def delete(id: Int) = Action { implicit request =>
     Ok(views.html.modelTest.list(modelService.findAll))
   }

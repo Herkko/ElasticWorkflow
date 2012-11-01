@@ -41,7 +41,7 @@ class StartSpec extends Specification {
           processElementService.createStart(process, 0, 0);
 
           val Some(result) = routeAndCall(FakeRequest(GET, "/json/start"))
-          contentAsString(result) must be equalTo ("""[{"cx":0,"cy":0}]""")
+          contentAsString(result) must be equalTo ("""[{"modelProcessId":1,"elementTypeId":2,"relationId":1,"value":"Start","size":0,"x":0,"y":0}]""")
         }
       }
       
@@ -55,7 +55,7 @@ class StartSpec extends Specification {
           processElementService.createStart(process2, 3, 3);
 
           val Some(result) = routeAndCall(FakeRequest(GET, "/json/start"))
-          contentAsString(result) must be equalTo ("""[{"cx":1,"cy":1},{"cx":2,"cy":2},{"cx":3,"cy":3}]""")
+          contentAsString(result) must be equalTo ("""[{"modelProcessId":1,"elementTypeId":2,"relationId":1,"value":"Start","size":0,"x":1,"y":1},{"modelProcessId":2,"elementTypeId":2,"relationId":2,"value":"Start","size":0,"x":2,"y":2},{"modelProcessId":2,"elementTypeId":2,"relationId":3,"value":"Start","size":0,"x":3,"y":3}]""")
         }
       }
     }

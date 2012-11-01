@@ -7,39 +7,42 @@ import anorm.SqlParser._
 import play.api.libs.json.Json.toJson
 import play.api.libs.json._
 
-case class Relation(x1: Int, y1: Int, x2: Int, y2: Int);
+case class Relation(id: Int, startId: Int, endId: Int, relationTypeId: Int, value: String) //(startId: Int, endId: Int);
 
 object Relation {
 
   implicit object RelFormat extends Format[Relation] {
     def reads(json: JsValue) = Relation(
-      (json \ "x1").as[Int],
-      (json \ "y1").as[Int],
-      (json \ "x2").as[Int],
-      (json \ "y2").as[Int])
+      (json \ "id").as[Int],
+      (json \ "startId").as[Int],
+      (json \ "endId").as[Int],
+      (json \ "relationTypeId").as[Int],
+      (json \ "value").as[String])
 
-    def writes(rel: Relation) = JsObject(Seq(
-      "x1" -> JsNumber(rel.x1),
-      "y1" -> JsNumber(rel.y1),
-      "x2" -> JsNumber(rel.x2),
-      "y2" -> JsNumber(rel.y2)))
+    def writes(relation: Relation) = JsObject(Seq(
+      "id" -> JsNumber(relation.id),
+      "startId" -> JsNumber(relation.startId),
+      "endId" -> JsNumber(relation.endId),
+      "relationTypeId" -> JsNumber(relation.relationTypeId),
+      "value" -> JsString(relation.value)))
   }
 
   val parse = {
-    get[Int]("x1") ~
-      get[Int]("y1") ~
-      get[Int]("x2") ~
-      get[Int]("y2") map {
-        case x1 ~ y1 ~ x2 ~ y2 =>
-          Relation(x1, y1, x2, y2)
+    get[Int]("id") ~
+      get[Int]("startId") ~
+      get[Int]("endId") ~
+      get[Int]("relationTypeId") ~
+      get[String]("value") map {
+        case id ~ startId ~ endId ~ relationTypeId ~ value =>
+          Relation(id, startId, endId, relationTypeId, value)
       }
   }
 
   def findByModel(id: Int): List[Relation] = {
     DB.withConnection { implicit connection =>
       SQL(""" 
-          select relations.x1, relations.y1, relations.x2, relations.y2 from relations
-          join processElements on processElements.relationId = relations.relationId
+          select relations.* from relations
+          join processElements on processElements.relationId = relations.startId
           join modelProcesses on modelProcesses.id = processElements.modelProcessId
           join models on models.id = modelProcesses.modelId
           join processes on processes.id = modelProcesses.processId
@@ -50,7 +53,7 @@ object Relation {
   }
 
   def findAll: List[Relation] = DB.withConnection { implicit connection =>
-    SQL("""select relations.x1, relations.y1, relations.x2, relations.y2 from relations""").as(parse *)
+    SQL("""select * from relations""").as(parse *)
   }
 }
 

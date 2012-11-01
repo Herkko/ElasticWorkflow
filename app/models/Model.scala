@@ -25,14 +25,14 @@ object Model {
   /**
    * Insert new model to database.
    */
-  def create(model: Model): Int = {
+  def create(id: Pk[Int], name: String, dateCreated: Date): Int = {
     DB.withConnection { implicit connection =>
       SQL(""" insert into models values ({id}, {name}, {dateCreated})""").on(
-        "id" -> model.id,
-        "name" -> model.name,
-        "dateCreated" -> model.dateCreated).executeInsert()
+        "id" -> id,
+        "name" -> name,
+        "dateCreated" -> dateCreated).executeInsert()
     } match {
-      case Some(long) => long.intValue()
+      case Some(pk) => pk.intValue()
       case None => throw new Exception("Model couldn't be added to database")
     }
   }
@@ -45,6 +45,18 @@ object Model {
         select * from models
 	    where models.id = {id}
 	   """).on('id -> id).as(parse *).head
+  }
+  
+  def update(name: String) {
+    
+  } 
+  
+  def update(id: Int, name: String): Boolean =  {
+    DB.withConnection { implicit connection =>
+      SQL("""update models 
+          set name = {name} where id = {id}""").
+        on('id -> id, 'name -> name).executeUpdate() == 0
+    }
   }
   
   /**
