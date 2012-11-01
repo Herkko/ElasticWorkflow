@@ -28,6 +28,11 @@ object Relations extends Controller {
 
   }
 
+  def update(modelId: Int, id: Int, value: String) = Action { implicit request =>
+    relationService.update(id, value)
+    Redirect(routes.Models.read(modelId))
+  }
+  
   /**
    * Delete new relation of the element specified by elementId. Parameter modelId is needed to show the page of the right model
    * afterwards so that user can see changes. //TODO add check that id actually exists.

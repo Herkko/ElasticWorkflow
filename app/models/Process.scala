@@ -50,14 +50,20 @@ object Process {
   }
 
   /**
-   * Find a process specified by parameter id. //TODO throws exception if process id not found
+   * Find a process specified by parameter id.
    */
-  def read(id: Int): Process = {
+  def read(modelId: Int, processId: Int): Option[Process] = {
     DB.withConnection { implicit connection =>
       SQL("""
           select * from processes
-          where processes.id = {id}
-		""").on('id -> id).as(parse *).head
+          join modelProcesses on modelProcesses.processId = processes.id
+          join models on models.id = modelProcesses.modelId
+          where processes.id = {processId}
+          and models.id = {modelId}
+		""").on('modelId -> modelId, 'processId -> processId).as(parse *) match {
+        case Nil 			=> None
+        case process :: xs  => Some(process)
+      }
     }
   }
 

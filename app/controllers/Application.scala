@@ -19,30 +19,16 @@ object Application extends Controller {
    * page, even if path ends with a slash.
    */
   def removeSlash(path: String) = Action {
-    val ending = path.charAt(path.length() - 1)
-    if (ending == '/')
-      Redirect('/' + path.substring(0, path.length() - 1));
-    else
-      NotFound
-  }
-
-  /**
-   * Show page that uses Raphael.
-   */
-  def showScala = Action { implicit request =>
-    Ok(views.html.jsTest())
+    path.charAt(path.length() - 1) match {
+      case '/' => Redirect('/' + path.substring(0, path.length() - 1));
+      case _   => NotFound("Path not found.")
+    }
   }
   
    def showEdit = Action { implicit request =>
     Ok(views.html.edit())
   }
-  /**
-   * just trying to do stuff with backbone
-   */
-  def showBackboneAttempt = Action { implicit request =>
-    Ok(views.html.jvsTest())
-  }
-  
+
   def showEditPage = Action { implicit request =>
     Ok(views.html.edit())
   }

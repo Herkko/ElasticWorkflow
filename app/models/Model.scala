@@ -40,11 +40,14 @@ object Model {
  /**
    * Find a model with a certain id. //TODO What happens if id doesn't exist?
    */
-  def read(id: Int): Model = DB.withConnection { implicit connection =>
+  def read(id: Int): Option[Model] = DB.withConnection { implicit connection =>
     SQL(""" 
         select * from models
 	    where models.id = {id}
-	   """).on('id -> id).as(parse *).head
+	   """).on('id -> id).as(parse *) match {
+      case Nil         => None
+      case model :: xs => Some(model)
+    }
   }
    
   def update(id: Int, name: String): Boolean =  {

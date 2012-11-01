@@ -7,6 +7,8 @@ class RelationService {
 
   def create(start: Int, end: Int, value: String) = Relation.create(NotAssigned, start, end, 1, value)
   
+  def update(id: Int, value: String) = Relation.update(id, value)
+  
   def delete(id: Int) = Relation.delete(id)
   
   def deleteByProcess(id: Int) = Relation.deleteByProcess(id)

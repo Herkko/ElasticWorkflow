@@ -17,8 +17,6 @@ GET     /models/:id/relations/:rId/delete  		controllers.Relations.delete(id: In
 GET     /element								controllers.JsonController.list
 GET     /json/:elemType						    controllers.JsonController.getElements(elemType: String)
 GET     /json/:elemType/:modelId				controllers.JsonController.getElementsByModel(elemType: String, modelId: Int)
-GET     /show									controllers.Application.showScala
-GET     /bb										controllers.Application.showBackboneAttempt
 GET		/edit									controllers.Application.showEditPage
 
 GET     /live									controllers.ActorUpdates.live
@@ -29,7 +27,9 @@ GET	    /room									controllers.ActorUpdates.room
 #ugly methods just to test if works <(>,..,<)>
 GET     /models/:id/update/processes/:pId/:name	controllers.Processes.update(id: Int, pId: Int, name: String)
 GET     /models/update/:id/:name			    controllers.Models.update(id: Int, name: String)
-
+GET     /update/models/:id/relations?id=:rId&value=:value  controllers.Relations.update(id: Int, rId: Int, value: String)
+GET     /create/models/:id/relations?start=:startId&end=:endId		controllers.Relations.create(id: Int, startId: Int, endId: Int)
+GET     /update/models/:id/processes/pId=:pId&name=:name	controllers.Processes.update(id: Int, pId: Int, name: String)
 #remove slash
 GET  	/*path  								controllers.Application.removeSlash(path: String)
 
@@ -37,58 +37,57 @@ GET  	/*path  								controllers.Application.removeSlash(path: String)
 #Everything below this line is REST methods! \o/
 
 # Home page
-GET     /                   					controllers.Application.index
+GET     /                   						controllers.Application.index
 
 #Operations on models
-#GET	/models									controllers.Models.list
-#GET	/models/:id								controllers.Models.read(id: Int)
-#POST   /models									controllers.Models.create
-#PUT    /models/:id/:name						controllers.Models.update(id: Int, name: String)
-#DELETE /models/:id 							//TODO not done yet?
+#GET	/models										controllers.Models.list
+#GET	/models/:id									controllers.Models.read(id: Int)
+#POST   /models										controllers.Models.create
+#PUT    /models/id=:id&name=:name					controllers.Models.update(id: Int, name: String)
+#DELETE /models/:id 								//TODO not done yet?
 
 #Operations on processes
-#POST   /models/:id/processes				    controllers.Processes.create(id: Int)
-#PUT	/models/:id/processes/:pId/:name		controllers.Processes.update(id: Int, pId: Int, name: String)
-#DELETE /models/:id/processes/:pId				controllers.Processes.delete(id: Int, pId: Int)
+#POST   /models/:id/processes				    	controllers.Processes.create(id: Int)
+#PUT	/models/:id/processes/pId=:pId&name=:name	controllers.Processes.update(id: Int, pId: Int, name: String)
+#DELETE /models/:id/processes/:pId					controllers.Processes.delete(id: Int, pId: Int)
 
 #Operations on relations
-#POST   /models/:id/relations/:startId/:endId	controllers.Relations.create(id: Int, startId: Int, endId: Int)
-#DELETE /models/:id/relations/:rId				controllers.Relations.delete(id: Int, rId: Int)
+#POST   /models/:id/relations/start=:startId&end=:endId		controllers.Relations.create(id: Int, startId: Int, endId: Int)
+#PUT	/models/:id/relations/id=:rId&value=:value 	controllers.Relations.update(id: Int, rId: Int, value: String)
+#DELETE /models/:id/relations/:rId					controllers.Relations.delete(id: Int, rId: Int)
 
 #Operation on elements --> create + update
 #POST	/models/:id/processes/:pId/elements/elemType=:elemType&value=:value&x=:x&y=:y	controllers.ProcessElements.create(id: Int, pId: Int, elemType: Int, value: String, x: Int, y: Int)
 #PUT    /models/:id/processes/:pId/elements/id=:eId&value=:value&size=:size&x=:x&y=:y   controllers.ProcessElements.update(id: Int, pId: Int, eId: Int, value: String, size: Int, x: Int, y: Int)
 
 #JSON methods
-#GET   /element									controllers.JsonController.list	
-#PUT   /element/:id/:name						controllers.ActorUpdates.update(id: Int, name: String)
+#GET   /element										controllers.JsonController.list	
+#PUT   /element/:id/:name							controllers.ActorUpdates.update(id: Int, name: String)
 
-#GET   /start								    controllers.JsonController.getElements("start")	
-#GET   /start/:id								controllers.JsonController.getElementsByModel("start", id: Int)	
-#GET   /end										controllers.JsonController.getElements("end")
-#GET   /end	/:id								controllers.JsonController.getElementsByModel("end", id: Int)	
-#GET   /swimlane								controllers.JsonController.getElements("swimlane")	
-#GET   /swimlane/:id							controllers.JsonController.getElementsByModel("swimlane", id: Int)	
-#GET   /activity								controllers.JsonController.getElements("activity")	
-#GET   /activity/:id							controllers.JsonController.getElementsByModel("activity", id: Int)	
-#GET   /gateway									controllers.JsonController.getElements("gateway")	
-#GET   /gateway/:id							    controllers.JsonController.getElementsByModel("gateway", id: Int)	
-#GET   /relation								controllers.JsonController.getElements("relation")	
-#GET   /relation/:id							controllers.JsonController.getElementsByModel("relation", id: Int)	
+#GET   /start									    controllers.JsonController.getElements("start")	
+#GET   /start/:id									controllers.JsonController.getElementsByModel("start", id: Int)	
+#GET   /end											controllers.JsonController.getElements("end")
+#GET   /end	/:id									controllers.JsonController.getElementsByModel("end", id: Int)	
+#GET   /swimlane									controllers.JsonController.getElements("swimlane")	
+#GET   /swimlane/:id								controllers.JsonController.getElementsByModel("swimlane", id: Int)	
+#GET   /activity									controllers.JsonController.getElements("activity")	
+#GET   /activity/:id								controllers.JsonController.getElementsByModel("activity", id: Int)	
+#GET   /gateway										controllers.JsonController.getElements("gateway")	
+#GET   /gateway/:id								    controllers.JsonController.getElementsByModel("gateway", id: Int)	
+#GET   /relation									controllers.JsonController.getElements("relation")	
+#GET   /relation/:id								controllers.JsonController.getElementsByModel("relation", id: Int)	
 
 #Pages which show javascript
-#GET	/edit									controllers.Application.showEditPage									
+#GET	/edit										controllers.Application.showEditPage									
 
-#Random to be cleaned up
-#GET     /show									controllers.Application.showScala
-#GET     /bb									controllers.Application.showBackboneAttempt
-#GET     /live									controllers.ActorUpdates.live
-#GET     /say/:said							    controllers.ActorUpdates.say(said: String)
-#GET     /update/:id/:value						controllers.ActorUpdates.update(id: Int, value: String)
-#GET	 /room									controllers.ActorUpdates.room
+#Random to be cleaned up (currently just akka tryouts)
+#GET     /live										controllers.ActorUpdates.live
+#GET     /say/:said								    controllers.ActorUpdates.say(said: String)
+#GET     /update/:id/:value							controllers.ActorUpdates.update(id: Int, value: String)
+#GET	 /room										controllers.ActorUpdates.room
 
 #Removing slash from the end of URL
-#GET  	/*path  								controllers.Application.removeSlash(path: String)
+#GET  	/*path  									controllers.Application.removeSlash(path: String)
 
 
 

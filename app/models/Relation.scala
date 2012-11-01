@@ -23,7 +23,7 @@ object Relation {
 
   /**
    * Form tuples of relations and relationTypes, so that each relation has a relationType
-   * associated with it. 
+   * associated with it.
    */
   val withTypes = {
     parse ~ RelationType.parse map {
@@ -42,7 +42,39 @@ object Relation {
         "startId" -> startId,
         "endId" -> endId,
         "relationTypeId" -> relationTypeId,
-        "value" -> value).executeUpdate() == 1
+        "value" -> value).executeUpdate() == 0
+    }
+  }
+
+  def update(id: Int, value: String) = {
+    DB.withConnection { implicit connection =>
+      SQL("""update relations
+          set value = {value}
+          where id = {id}""").
+        on('id ->id, 'value -> value).executeUpdate() == 0
+    }
+  }
+  
+  /**
+   * Delete relation specified by parameter id.
+   */
+  def delete(id: Int): Boolean = {
+    DB.withConnection { implicit connection =>
+      SQL("delete from relations where id = {id}").
+        on('id -> id).executeUpdate() == 0
+    }
+  }
+
+  /**
+   * Delete relation specified by parameter id.
+   */
+  def deleteByProcess(id: Int): Boolean = {
+    DB.withConnection { implicit connection =>
+      SQL("""delete from relations
+          where startId in (
+          select relationId from processElements
+          where modelProcessId in (select id from modelProcesses where processId in (select id from processes where id = {id})))
+        """).on('id -> id).executeUpdate() == 0
     }
   }
 
@@ -52,7 +84,7 @@ object Relation {
   def findAll: List[Relation] = DB.withConnection { implicit connection =>
     SQL("""select * from relations""").as(parse *)
   }
-  
+
   /**
    * Return a list of all relations that belong to a model specified by id.
    */
@@ -67,29 +99,6 @@ object Relation {
 		  join elementTypes on processElements.elementTypeId = elementTypes.id
 		  where models.id = {id}
 		""").on('id -> id).as(parse *)
-    }
-  }
-  
-  /**
-   * Delete relation specified by parameter id.
-   */
-  def delete(id: Int): Boolean = {
-    DB.withConnection { implicit connection =>
-      SQL("delete from relations where id = {id}").
-        on('id -> id).executeUpdate() == 0
-    }
-  }
-  
-  /**
-   * Delete relation specified by parameter id.
-   */
-  def deleteByProcess(id: Int): Boolean = {
-    DB.withConnection { implicit connection =>
-      SQL("""delete from relations
-          where startId in (
-          select relationId from processElements
-          where modelProcessId in (select id from modelProcesses where processId in (select id from processes where id = {id})))
-        """).on('id -> id).executeUpdate() == 0
     }
   }
 }

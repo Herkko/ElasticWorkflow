@@ -8,7 +8,7 @@ class ModelService {
 
   def create(): Int = Model.create(NotAssigned, "Model", new Date())
 
-  def read(id: Int) = Model.read(id)
+  def read(id: Int): Option[Model] = Model.read(id)
   
   def update(id: Int, name: String) = Model.update(id, name)
 

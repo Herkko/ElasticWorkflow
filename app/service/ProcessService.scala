@@ -12,6 +12,8 @@ class ProcessService {
     processId
   }
   
+  def read(modelId: Int, processId: Int): Option[Process] = Process.read(modelId, processId)
+  
   def update(id: Int, name: String) = Process.update(id, name) 
  
   def delete(id: Int) = {
