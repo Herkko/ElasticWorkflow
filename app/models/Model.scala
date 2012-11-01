@@ -47,6 +47,18 @@ object Model {
 	   """).on('id -> id).as(parse *).head
   }
   
+  def update(name: String) {
+    
+  } 
+  
+  def update(id: Int, name: String): Boolean =  {
+    DB.withConnection { implicit connection =>
+      SQL("""update models 
+          set name = {name} where id = {id}""").
+        on('id -> id, 'name -> name).executeUpdate() == 0
+    }
+  }
+  
   /**
    * Return list of all the models in database.
    */

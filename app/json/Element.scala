@@ -18,8 +18,8 @@ object Element {
       (json \ "relationId").as[Int],
       (json \ "value").as[String],
       (json \ "size").as[Int],
-      (json \ "x").as[Int],
-      (json \ "y").as[Int])
+      (json \ "cx").as[Int],
+      (json \ "cy").as[Int])
 
     def writes(element: Element) = JsObject(Seq(
       "modelProcessId" -> JsNumber(element.modelProcessId),
@@ -27,8 +27,8 @@ object Element {
       "relationId" -> JsNumber(element.relationId),
       "value" -> JsString(element.value),
       "size" -> JsNumber(element.size),
-      "x" -> JsNumber(element.x),
-      "y" -> JsNumber(element.y)))
+      "cx" -> JsNumber(element.x),
+      "cy" -> JsNumber(element.y)))
   }
   
     val parse = {

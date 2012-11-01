@@ -34,7 +34,7 @@ object Application extends Controller {
   }
   
    def showEdit = Action { implicit request =>
-    Ok("lalal")
+    Ok(views.html.edit())
   }
   /**
    * just trying to do stuff with backbone
@@ -46,5 +46,4 @@ object Application extends Controller {
   def showEditPage = Action { implicit request =>
     Ok(views.html.edit())
   }
-  
 }
