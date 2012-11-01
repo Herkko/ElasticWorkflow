@@ -52,8 +52,8 @@ object Processes extends Controller {
     val modelProcess = processService.create(modelId);
 
     val elem1 = processElementService.createSwimlane(modelProcess, 20, y);
-    val elem2 = processElementService.createStart(modelProcess, 70, y + 70);
-    val elem3 = processElementService.createEnd(modelProcess, 270, y + 70);
+    val elem2 = processElementService.createStart(modelProcess, 70, y + 110);
+    val elem3 = processElementService.createEnd(modelProcess, 480, y + 110);
     val elem4 = processElementService.createActivity(modelProcess, 170, y + 90);
     val elem5 = processElementService.createActivity(modelProcess, 250, y + 90);
     val elem6 = processElementService.createActivity(modelProcess, 320, y + 90);
