@@ -29,6 +29,8 @@ GET	    /room									controllers.ActorUpdates.room
 #ugly methods just to test if works <(>,..,<)>
 GET     /models/:id/update/processes/:pId/:name	controllers.Processes.update(id: Int, pId: Int, name: String)
 GET     /models/update/:id/:name			    controllers.Models.update(id: Int, name: String)
+
+#remove slash
 GET  	/*path  								controllers.Application.removeSlash(path: String)
 
 
@@ -52,6 +54,10 @@ GET     /                   					controllers.Application.index
 #Operations on relations
 #POST   /models/:id/relations/:startId/:endId	controllers.Relations.create(id: Int, startId: Int, endId: Int)
 #DELETE /models/:id/relations/:rId				controllers.Relations.delete(id: Int, rId: Int)
+
+#Operation on elements --> create + update
+#POST	/models/:id/processes/:pId/elements/elemType=:elemType&value=:value&x=:x&y=:y	controllers.ProcessElements.create(id: Int, pId: Int, elemType: Int, value: String, x: Int, y: Int)
+#PUT    /models/:id/processes/:pId/elements/id=:eId&value=:value&size=:size&x=:x&y=:y   controllers.ProcessElements.update(id: Int, pId: Int, eId: Int, value: String, size: Int, x: Int, y: Int)
 
 #JSON methods
 #GET   /element									controllers.JsonController.list	

@@ -9,6 +9,7 @@ class ProcessService {
   def create(modelId: Int): Int = {
     val processId: Int = Process.create(NotAssigned, "Process", new Date())
     ModelProcess.create(NotAssigned, modelId, processId)
+    processId
   }
   
   def update(id: Int, name: String) = Process.update(id, name) 

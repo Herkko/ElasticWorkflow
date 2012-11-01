@@ -94,4 +94,13 @@ object ProcessElement {
     SQL("""select * from processElements""").as(parse *)
   }
   
+  def getModelProcessId(modelId: Int, processId: Int): Int = DB.withConnection { implicit connection =>
+    SQL("""select id from modelProcesses
+        where modelId = {modelId}
+        and processId = {processId}""").on('modelId -> modelId, 'processId -> processId).as(
+          get[Int]("id") map {
+            case id => id
+          }
+         *).head
+  }
 }

@@ -18,7 +18,7 @@ object JsonController extends Controller {
     val relations = Relation.findAll
     Ok(toJson(Seq(toJson(elements), toJson(relations))))
   }
-  
+ 
   //TODO: how to refactor??
   def getElements(elementType: String) = Action { implicit request =>
     elementType match {

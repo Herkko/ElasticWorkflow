@@ -5,20 +5,36 @@ import anorm._
 
 class ProcessElementService {
 
-  def createSwimlane(modelProcessId: Int, x: Int, y: Int): Int =
+  //add size param here
+  def create(modelId: Int, processId: Int, elemType: Int, value: String, x: Int, y: Int): Int = {
+    val modelProcessId = ProcessElement.getModelProcessId(modelId, processId)
+    ProcessElement.create(modelProcessId, elemType, NotAssigned, value, 0, x, y)
+  }
+  
+  def createSwimlane(modelId: Int, processId: Int, x: Int, y: Int): Int = {
+    val modelProcessId = ProcessElement.getModelProcessId(modelId, processId)
     ProcessElement.create(modelProcessId, 1, NotAssigned, "Swimlane", 0, x, y)
-
-  def createStart(modelProcessId: Int, x: Int, y: Int): Int =
+  }
+  
+  def createStart(modelId: Int, processId: Int, x: Int, y: Int): Int = {
+    val modelProcessId = ProcessElement.getModelProcessId(modelId, processId)
     ProcessElement.create(modelProcessId, 2, NotAssigned, "Start", 0, x, y)
-
-  def createEnd(modelProcessId: Int, x: Int, y: Int): Int =
+  }
+  
+  def createEnd(modelId: Int, processId: Int, x: Int, y: Int): Int = {
+    val modelProcessId = ProcessElement.getModelProcessId(modelId, processId)
     ProcessElement.create(modelProcessId, 3, NotAssigned, "End", 0, x, y)
+  }
 
-  def createActivity(modelProcessId: Int, x: Int, y: Int): Int =
+  def createActivity(modelId: Int, processId: Int, x: Int, y: Int): Int = {
+    val modelProcessId = ProcessElement.getModelProcessId(modelId, processId)
     ProcessElement.create(modelProcessId, 4, NotAssigned, "Activity", 0, x, y)
-    
-  def createGateway(modelProcessId: Int, x: Int, y: Int): Int =
+  }
+
+  def createGateway(modelId: Int, processId: Int, x: Int, y: Int): Int = {
+    val modelProcessId = ProcessElement.getModelProcessId(modelId, processId)
     ProcessElement.create(modelProcessId, 5, NotAssigned, "Gateway", 0, x, y)
+  }
 
   def read(id: Int): ProcessElement = ProcessElement.read(id)
     
