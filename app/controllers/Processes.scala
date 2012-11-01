@@ -28,6 +28,10 @@ object Processes extends Controller {
     }
   }
 
+  def update(modelId: Int, id: Int, name: String) = Action {
+	  processService.update(id, name)
+	  Redirect(routes.Models.read(modelId))
+  }
   /*
    * these two methods can be replaced with a method that takes function as parameter
    */
