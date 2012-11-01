@@ -42,6 +42,11 @@ var AppView = Backbone.View.extend({
             connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
             connections.push(RaphaelElement.connection(ActivityElements.at(1).get("element"), ActivityElements.at(2).get("element"), "#000"));
         }
+        
+        var gatewaySuccess = function(){
+			var gatewayElementsView = new ElementsView({model:GatewayElements});
+			gatewayElementsView.render();
+		}
 
         ActivityElements.fetch({
             success: activitySuccess
@@ -58,6 +63,10 @@ var AppView = Backbone.View.extend({
         SwimlaneElements.fetch({
             success: swimlaneSuccess
         });
+        
+        GatewayElements.fetch({
+			success: gatewaySuccess
+		});
     },
     
     handleClick: function() {

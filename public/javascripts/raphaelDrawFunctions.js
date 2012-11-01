@@ -73,6 +73,12 @@ var dragger = function() {
         this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
         this.animate({"fill-opacity": .3}, 500);
     };
+    
+    var dragger2 = function() {
+        this.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
+        this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
+        this.animate({"fill-opacity": .3}, 500);
+    };
 
     var move = function(dx, dy) {
         var att = this.type == "rect" ? {x: this.ox + dx, y: this.oy + dy} : {cx: this.ox + dx, cy: this.oy + dy};

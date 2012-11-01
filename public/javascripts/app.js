@@ -7,6 +7,7 @@ var ActivityElements = new ActivityList;
 var StartElements = new StartList;
 var EndElements = new EndList;
 var SwimlaneElements = new SwimlaneList;
+var GatewayElements = new GatewayList;
 
 
 window.onload = function() {

@@ -3,7 +3,7 @@ var ActivityElement = Backbone.Model.extend({
 
 
     render: function(element) {
-        var activity = RaphaelElement.rect(element.cx, element.cy, 60, 40, 4);
+        var activity = RaphaelElement.rect(element.cx, element.cy, 100, 60, 4);
         this.set({element: activity});
 
         var color = Raphael.getColor();
@@ -46,6 +46,25 @@ var SwimlaneElement = Backbone.Model.extend({
     }
 });
 
+var GatewayElement = Backbone.Model.extend({
+	
+	
+	render: function(element) {
+		
+		var gateway = RaphaelElement.rect(element.cx, element.cy, 60, 60, 1);
+		//var gateway = RaphaelElement.path('M' + element.cx + ',' + element.cy + 'L' + (element.cx-50) + ',' + (element.cy+50) + 'L' + (element.cx) + ',' + (element.cy+100) + 'L' + (element.cx+50) + ',' + (element.cy+50) + 'Z');
+		this.set({element: gateway});
+		//var gbbox = Raphael.pathBBox('M' + element.cx + ',' + element.cy + 'L' + (element.cx-50) + ',' + (element.cy+50) + 'L' + (element.cx) + ',' + (element.cy+100) + 'L' + (element.cx+50) + ',' + (element.cy+50) + 'Z');
+		var color = Raphael.getColor();
+		gateway.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+		gateway.drag(move, dragger, up);
+		gateway.animate({transform:"r45"},10);
+		
+		
+	    
+	}
+});
+
     
 
 var ActivityList = Backbone.Collection.extend({
@@ -68,8 +87,10 @@ var SwimlaneList = Backbone.Collection.extend({
     url: '/json/swimlane'
 });
 
-
-
+var GatewayList = Backbone.Collection.extend({
+	model: GatewayElement,
+	url: '/json/gateway'
+});
 
 
 
