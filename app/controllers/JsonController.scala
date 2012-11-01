@@ -13,6 +13,12 @@ object JsonController extends Controller {
   
   //val map = new HashMap[String, Element]() //withDefaultValue("")
   
+  def list() = Action { implicit request =>
+    val elements = Element.findAll
+    val relations = Relation.findAll
+    Ok(toJson(Seq(toJson(elements), toJson(relations))))
+  }
+  
   //TODO: how to refactor??
   def getElements(elementType: String) = Action { implicit request =>
     elementType match {

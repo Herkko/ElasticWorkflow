@@ -14,6 +14,7 @@ GET		/models/:id/processes/new				controllers.Processes.create(id: Int)
 GET		/models/:id/processes/:pId/delete	    controllers.Processes.delete(id: Int, pId: Int)
 GET     /models/:id/relations/new  	            controllers.Relations.create(id: Int, id1: Int, id2: Int)
 GET     /models/:id/relations/:rId/delete  		controllers.Relations.delete(id: Int, rId: Int)
+GET     /element								controllers.JsonController.list
 GET     /json/:elemType						    controllers.JsonController.getElements(elemType: String)
 GET     /json/:elemType/:modelId				controllers.JsonController.getElementsByModel(elemType: String, modelId: Int)
 GET     /show									controllers.Application.showScala
@@ -29,11 +30,58 @@ GET     /models/update/:id?:name						controllers.Models.update(id: Int, name: S
 GET  	/*path  								controllers.Application.removeSlash(path: String)
 
 
+#Everything below this line is refactoring to REST! \o/
+
 # Home page
 GET     /                   					controllers.Application.index
+
 #Operations on models
-GET		/models									controllers.Models.list
-GET		/models/:id								controllers.Models.read(id: Int)
-POST    /models									controllers.Models.create
-PUT     /models/:id/:name						controllers.Models.update(id: Int, name: String)
-#DELETE  /models/:id 
+#GET	/models									controllers.Models.list
+#GET	/models/:id								controllers.Models.read(id: Int)
+#POST   /models									controllers.Models.create
+#PUT    /models/:id/:name						controllers.Models.update(id: Int, name: String)
+#DELETE /models/:id 							//TODO not done yet?
+
+#Operations on processes
+#POST   /models/:id/processes				    controllers.Processes.create(id: Int)
+#DELETE /models/:id/processes/:pId				controllers.Processes.delete(id: Int, pId: Int)
+
+#Operations on relations
+#POST   /models/:id/relations/:startId/:endId	controllers.Relations.create(id: Int, startId: Int, endId: Int)
+#DELETE /models/:id/relations/:rId				controllers.Relations.delete(id: Int, rId: Int)
+
+#JSON methods
+#GET   /element									controllers.JsonController.list	
+#PUT   /element/:id/:name						controllers.ActorUpdates.update(id: Int, name: String)
+
+#GET   /start								    controllers.JsonController.getElements("start")	
+#GET   /start/:id								controllers.JsonController.getElementsByModel("start", id: Int)	
+#GET   /end										controllers.JsonController.getElements("end")
+#GET   /end	/:id								controllers.JsonController.getElementsByModel("end", id: Int)	
+#GET   /swimlane								controllers.JsonController.getElements("swimlane")	
+#GET   /swimlane/:id							controllers.JsonController.getElementsByModel("swimlane", id: Int)	
+#GET   /activity								controllers.JsonController.getElements("activity")	
+#GET   /activity/:id							controllers.JsonController.getElementsByModel("activity", id: Int)	
+#GET   /gateway									controllers.JsonController.getElements("gateway")	
+#GET   /gateway/:id							    controllers.JsonController.getElementsByModel("gateway", id: Int)	
+#GET   /relation								controllers.JsonController.getElements("relation")	
+#GET   /relation/:id							controllers.JsonController.getElementsByModel("relation", id: Int)	
+
+#Pages which show javascript
+#GET	/edit									controllers.Application.showEditPage									
+
+#Random to be cleaned up
+#GET     /show									controllers.Application.showScala
+#GET     /bb									controllers.Application.showBackboneAttempt
+#GET     /live									controllers.ActorUpdates.live
+#GET     /say/:said							    controllers.ActorUpdates.say(said: String)
+#GET     /update/:id/:value						controllers.ActorUpdates.update(id: Int, value: String)
+#GET	 /room									controllers.ActorUpdates.room
+
+#Removing slash from the end of URL
+#GET  	/*path  								controllers.Application.removeSlash(path: String)
+
+
+
+
+

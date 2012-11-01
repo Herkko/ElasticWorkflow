@@ -44,6 +44,12 @@ object Element {
       }
   }
     
+  def findAll(): List[Element] = DB.withConnection { implicit connection =>
+    SQL("""select *
+          from processElements
+         """).as(parse *)
+  }
+  
   def findType(elementType: String): List[Element] = DB.withConnection { implicit connection =>
     SQL("""select *
           from processElements
