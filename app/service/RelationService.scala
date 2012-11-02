@@ -9,7 +9,7 @@ class RelationService {
   
   def read(id: Int) = Relation.read(id)
   
-  def update(id: Int, value: String) = Relation.update(id, value)
+  def update(id: Int, start: Int, end: Int, value: String) = Relation.update(id, start, end, value)
   
   def delete(id: Int) = Relation.delete(id)
   

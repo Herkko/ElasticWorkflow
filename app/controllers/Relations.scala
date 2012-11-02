@@ -15,25 +15,25 @@ object Relations extends Controller {
 
   /**
    * Add new relation to the element specified by elementId. Parameter modelId is needed to show the page of the right model
-   * afterwards so that user can see changes. //TODO add check that elementId actually exists.
+   * afterwards so that user can see changes. 
    */
-  def create(modelId: Int, start: Int, end: Int) = Action { implicit request =>
+  def create(modelId: Int, start: Int, end: Int, value: String) = Action { implicit request =>
     (modelService.read(modelId), processElementService.read(start), processElementService.read(end)) match {
       case (Some(model), Some(element1), Some(element2)) => {
-        relationService.create(start, end, "Test relation")
+        relationService.create(start, end, value)
         Redirect(routes.Models.read(modelId))
       }
       case _ => NotFound("This Model or Element doesn't exist. Thrown by: " + getClass.getName + " when creating new relation.")
     }
   }
 
-  def update(id: Int, value: String) = Action { implicit request =>
-    relationService.read(id) match {
-      case Some(relation) => {
-        relationService.update(id, value)
+  def update(id: Int, start: Int, end: Int, value: String) = Action { implicit request =>
+    (relationService.read(id), processElementService.read(start), processElementService.read(end)) match {
+      case (Some(model), Some(element1), Some(element2)) => {
+        relationService.update(id, start, end, value)
         Redirect(routes.Models.read(relationService.getModelId(id)))
       }
-      case None => NotFound("This Relation doesn't exist. Thrown by: " + getClass.getName + " when updating relation.")
+      case _ => NotFound("This Relation doesn't exist. Thrown by: " + getClass.getName + " when updating relation.")
     }
   }
 

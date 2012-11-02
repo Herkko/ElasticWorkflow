@@ -59,12 +59,12 @@ object Relation {
   }
 
 
-  def update(id: Int, value: String) = {
+  def update(id: Int, startId: Int, endId: Int, value: String) = {
     DB.withConnection { implicit connection =>
       SQL("""update relations
-          set value = {value}
+          set startId = {startId}, endId = {endId}, value = {value}
           where id = {id}""").
-        on('id ->id, 'value -> value).executeUpdate() == 0
+        on('id ->id, 'startId -> startId, 'endId -> endId, 'value -> value).executeUpdate() == 0
     }
   }
   

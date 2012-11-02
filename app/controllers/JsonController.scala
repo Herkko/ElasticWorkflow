@@ -18,9 +18,57 @@ object JsonController extends Controller {
     val relations = Relation.findAll
     Ok(toJson(Seq(toJson(elements), toJson(relations))))
   }
+  
+  def getSwimlane = Action { implicit request =>
+      Ok(toJson(Element.findType("Swimlane")))
+  }
+  
+  def getSwimlaneByModel(id: Int) = Action { implicit request =>
+      Ok(toJson(Element.findTypeByModel(id, "Swimlane")))
+  }
+  
+  def getStart = Action { implicit request =>
+      Ok(toJson(Element.findType("Start")))
+  }
+  
+  def getStartByModel(id: Int) = Action { implicit request =>
+      Ok(toJson(Element.findTypeByModel(id, "Start")))
+  }
+    
+  def getEnd = Action { implicit request =>
+      Ok(toJson(Element.findType("End")))
+  }
+  
+  def getEndByModel(id: Int) = Action { implicit request =>
+      Ok(toJson(Element.findTypeByModel(id, "End")))
+  }
+  
+  def getActivity= Action { implicit request =>
+      Ok(toJson(Element.findType("Activity")))
+  }
+  
+  def getActivityByModel(id: Int) = Action { implicit request =>
+      Ok(toJson(Element.findTypeByModel(id, "Activity")))
+  }
+  
+  def getGateway = Action { implicit request =>
+      Ok(toJson(Element.findType("Gateway")))
+  }
+  
+  def getGatewayByModel(id: Int) = Action { implicit request =>
+      Ok(toJson(Element.findTypeByModel(id, "Gateway")))
+  }
+  
+    
+  def getRelation = Action { implicit request =>
+      Ok(toJson(Relation.findAll))
+  }
+  
+  def getRelationByModel(id: Int) = Action { implicit request =>
+      Ok(toJson(Relation.findByModel(id)))
+  }
  
-  //TODO: how to refactor??
-  def getElements(elementType: String) = Action { implicit request =>
+ /* def getElements(elementType: String) = Action { implicit request =>
     elementType match {
       case "swimlane" => Ok(toJson(Swimlane.findAll))
       case "start" => Ok(toJson(Start.findAll))  
@@ -31,7 +79,7 @@ object JsonController extends Controller {
       case _ => Ok("NotFound")
     }
   }
-    
+  
   def getElementsByModel(elementType: String, id: Int) = Action { implicit request =>
     elementType match {
       case "swimlane" => Ok(toJson(Swimlane.findByModel(id)))
@@ -42,5 +90,5 @@ object JsonController extends Controller {
       case "gateway" => Ok(toJson(Gateway.findByModel(id)))
       case _ => Ok("NotFound")
     }
-  }
+  }*/
 }

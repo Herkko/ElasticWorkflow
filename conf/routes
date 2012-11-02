@@ -2,89 +2,68 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+#Javascript way to make post/put/delete requests to specified URL. Can be run in Firebug. Doesn't refresh page.
+#	
+#  $.ajax({
+#      url: "/models",
+#      type: "POST"
+#  });
+#
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
-
-# Home page
-GET     /                   					controllers.Application.index
-GET		/models									controllers.Models.list
-GET		/models/new								controllers.Models.create
-GET		/models/:id								controllers.Models.read(id: Int)
-GET		/models/:id/processes					controllers.Processes.create(id: Int)
-GET     /models/:id/relations/start=:start&end=:end controllers.Relations.create(id: Int, start: Int, end: Int)
-GET     /element								controllers.JsonController.list
-GET     /json/:elemType						    controllers.JsonController.getElements(elemType: String)
-GET     /json/:elemType/:modelId				controllers.JsonController.getElementsByModel(elemType: String, modelId: Int)
-GET		/edit									controllers.Application.showEditPage
-
-GET     /live									controllers.ActorUpdates.live
-GET     /say/:said							    controllers.ActorUpdates.say(said: String)
-GET     /update/:id/:value						controllers.ActorUpdates.update(id: Int, value: String)
-GET	    /room									controllers.ActorUpdates.room
-
-#ugly methods just to test if works <(>,..,<)>
-GET     /models/update/:id/:name			    controllers.Models.update(id: Int, name: String)
-GET     /update/processes/id=:id&name=:name		controllers.Processes.update(id: Int, name: String)
-GET     /delete/processes/:id					controllers.Processes.delete(id: Int)
-
-#remove slash
-GET  	/*path  								controllers.Application.removeSlash(path: String)
-
-
-#Everything below this line is REST methods! \o/
 
 # Home page
 GET     /                   						controllers.Application.index
 
 #Operations on models
-#GET	/models										controllers.Models.list
-#GET	/models/:id									controllers.Models.read(id: Int)
-#POST   /models										controllers.Models.create
-#PUT    /models/id=:id&name=:name					controllers.Models.update(id: Int, name: String)
-#DELETE /models/:id 								//TODO method not done yet
+GET		/models										controllers.Models.list
+GET		/models/:id									controllers.Models.read(id: Int)
+POST   	/models										controllers.Models.create
+PUT    	/models/id=:id&name=:name					controllers.Models.update(id: Int, name: String)
+#DELETE	/models/:id 								//TODO method not done yet
 
 #Operations on processes
-#POST   /models/:id/processes				    	controllers.Processes.create(id: Int)
-#PUT	processes/id=:id&name=:name					controllers.Processes.update(id: Int, name: String)
-#DELETE processes/:id								controllers.Processes.delete(id: Int)
+POST   	/models/:id/processes				    	controllers.Processes.create(id: Int)
+PUT		/processes/id=:id&name=:name				controllers.Processes.update(id: Int, name: String)
+DELETE 	/processes/:id								controllers.Processes.delete(id: Int)
 
-#Operations on relations //TODO allow to change start and end elements of relation
-#POST   /models/:id/relations/start=:start&end=:end	controllers.Relations.create(id: Int, start: Int, end: Int)
-#PUT	/relations/id=:id&value=:value 				controllers.Relations.update(id: Int, value: String)
-#DELETE /relations/:id								controllers.Relations.delete(id: Int)
+#Operations on relations 
+POST   	/models/:id/relations/start=:start&end=:end&value=:value						controllers.Relations.create(id: Int, start: Int, end: Int, value: String)
+PUT		/relations/id=:id&start=:start&end=:end&value=:value 							controllers.Relations.update(id: Int, start: Int, end: Int, value: String)
+DELETE 	/relations/:id																	controllers.Relations.delete(id: Int)
 
-#Operation on elements --> create + update
-#POST	/models/:id/processes/:pId/elements/elemType=:elemType&value=:value&x=:x&y=:y	controllers.ProcessElements.create(id: Int, pId: Int, elemType: Int, value: String, x: Int, y: Int)
-#PUT    /elements/id=:id&value=:value&size=:size&x=:x&y=:y  							controllers.ProcessElements.update(id: Int, value: String, size: Int, x: Int, y: Int)
+#Operation on elements //TODO setting/updating size param missing
+POST	/models/:id/processes/:pId/elements/elemType=:elemType&value=:value&x=:x&y=:y	controllers.ProcessElements.create(id: Int, pId: Int, elemType: Int, value: String, x: Int, y: Int)
+PUT    	/elements/id=:id&value=:value&size=:size&x=:x&y=:y								controllers.ProcessElements.update(id: Int, value: String, size: Int, x: Int, y: Int)
 
 #JSON methods
-#GET   /element										controllers.JsonController.list	
-
-#GET   /start									    controllers.JsonController.getElements("start")	
-#GET   /start/:id									controllers.JsonController.getElementsByModel("start", id: Int)	
-#GET   /end											controllers.JsonController.getElements("end")
-#GET   /end	/:id									controllers.JsonController.getElementsByModel("end", id: Int)	
-#GET   /swimlane									controllers.JsonController.getElements("swimlane")	
-#GET   /swimlane/:id								controllers.JsonController.getElementsByModel("swimlane", id: Int)	
-#GET   /activity									controllers.JsonController.getElements("activity")	
-#GET   /activity/:id								controllers.JsonController.getElementsByModel("activity", id: Int)	
-#GET   /gateway										controllers.JsonController.getElements("gateway")	
-#GET   /gateway/:id								    controllers.JsonController.getElementsByModel("gateway", id: Int)	
-#GET   /relation									controllers.JsonController.getElements("relation")	
-#GET   /relation/:id								controllers.JsonController.getElementsByModel("relation", id: Int)	
+GET   	/element									controllers.JsonController.list	
+GET   	/start									    controllers.JsonController.getStart	
+GET   	/start/:id									controllers.JsonController.getStartByModel(id: Int)	
+GET   	/end										controllers.JsonController.getEnd
+GET   	/end/:id									controllers.JsonController.getEndByModel(id: Int)	
+GET   	/swimlane									controllers.JsonController.getSwimlane	
+GET   	/swimlane/:id								controllers.JsonController.getSwimlaneByModel(id: Int)	
+GET   	/activity									controllers.JsonController.getActivity	
+GET   	/activity/:id								controllers.JsonController.getActivityByModel(id: Int)	
+GET   	/gateway									controllers.JsonController.getGateway	
+GET   	/gateway/:id							    controllers.JsonController.getGatewayByModel(id: Int)	
+GET   	/relation									controllers.JsonController.getRelation	
+GET   	/relation/:id								controllers.JsonController.getRelationByModel(id: Int)	
 
 #Pages which show javascript
-#GET	/edit										controllers.Application.showEditPage									
+GET		/edit										controllers.Application.showEditPage									
 
 #Random to be cleaned up (currently just akka tryouts)
-#GET     /live										controllers.ActorUpdates.live
-#GET     /say/:said								    controllers.ActorUpdates.say(said: String)
-#GET     /update/:id/:value							controllers.ActorUpdates.update(id: Int, value: String)
-#GET	 /room										controllers.ActorUpdates.room
-#PUT   /element/:id/:name							controllers.ActorUpdates.update(id: Int, name: String)
+GET     /live										controllers.ActorUpdates.live
+GET     /say/:said								    controllers.ActorUpdates.say(said: String)
+GET     /update/:id/:value							controllers.ActorUpdates.update(id: Int, value: String)
+GET	 	/room										controllers.ActorUpdates.room
+#PUT   	/element/:id/:name							controllers.ActorUpdates.update(id: Int, name: String)
 
 #Removing slash from the end of URL
-#GET  	/*path  									controllers.Application.removeSlash(path: String)
+GET  	/*path  									controllers.Application.removeSlash(path: String)
 
 
 
