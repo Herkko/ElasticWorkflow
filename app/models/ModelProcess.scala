@@ -27,11 +27,11 @@ object ModelProcess {
   def create(id: Pk[Int], modelId: Int, processId: Int): Int = {
     DB.withConnection { implicit connection =>
       SQL("""insert into modelProcesses values ({id}, {modelId}, {processId})""").on(
-        "id" -> id,
-        "modelId" -> modelId,
-        "processId" -> processId).executeInsert()
+        'id -> id,
+        'modelId -> modelId,
+        'processId -> processId).executeInsert()
     } match {
-      case Some(pk) => pk.intValue()
+      case Some(pk) => {pk.intValue()}
       case None => throw new Exception("Model couldn't be added to database")
     }
   }

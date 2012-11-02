@@ -45,6 +45,19 @@ object Relation {
         "value" -> value).executeUpdate() == 0
     }
   }
+  
+  def read(id: Int): Option[Relation] = {
+    DB.withConnection { implicit connection =>
+      SQL("""
+          select * from relations
+          where relations.id = {id}
+		""").on('id -> id).as(parse *) match {
+        case Nil => None
+        case relation :: xs => Some(relation)
+      }
+    }
+  }
+
 
   def update(id: Int, value: String) = {
     DB.withConnection { implicit connection =>
@@ -101,4 +114,24 @@ object Relation {
 		""").on('id -> id).as(parse *)
     }
   }
+  
+   def getModelId(id: Int): Int = DB.withConnection { implicit connection =>
+    SQL("""select models.* from models, processElements, relations
+        join modelProcesses on modelProcesses.id = processElements.modelProcessId
+        where relations.id = {id}
+        and (processElements.relationId = relations.startId or processElements.relationId = relations.endId)
+        and modelProcesses.modelId = models.id
+        """).on('id -> id).apply().toList match {
+      case Nil => throw new Exception("This relation doesn't belong to any model.")
+      case x :: xs => x[Int]("id")
+    }
+  }
 }
+
+
+
+
+
+
+
+

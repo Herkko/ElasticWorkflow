@@ -10,10 +10,8 @@ GET     /                   					controllers.Application.index
 GET		/models									controllers.Models.list
 GET		/models/new								controllers.Models.create
 GET		/models/:id								controllers.Models.read(id: Int)
-GET		/models/:id/processes/new				controllers.Processes.create(id: Int)
-GET		/models/:id/processes/:pId/delete	    controllers.Processes.delete(id: Int, pId: Int)
-GET     /models/:id/relations/new  	            controllers.Relations.create(id: Int, id1: Int, id2: Int)
-GET     /models/:id/relations/:rId/delete  		controllers.Relations.delete(id: Int, rId: Int)
+GET		/models/:id/processes					controllers.Processes.create(id: Int)
+GET     /models/:id/relations/start=:start&end=:end controllers.Relations.create(id: Int, start: Int, end: Int)
 GET     /element								controllers.JsonController.list
 GET     /json/:elemType						    controllers.JsonController.getElements(elemType: String)
 GET     /json/:elemType/:modelId				controllers.JsonController.getElementsByModel(elemType: String, modelId: Int)
@@ -25,11 +23,10 @@ GET     /update/:id/:value						controllers.ActorUpdates.update(id: Int, value: 
 GET	    /room									controllers.ActorUpdates.room
 
 #ugly methods just to test if works <(>,..,<)>
-GET     /models/:id/update/processes/:pId/:name	controllers.Processes.update(id: Int, pId: Int, name: String)
 GET     /models/update/:id/:name			    controllers.Models.update(id: Int, name: String)
-GET     /update/models/:id/relations?id=:rId&value=:value  controllers.Relations.update(id: Int, rId: Int, value: String)
-GET     /create/models/:id/relations?start=:startId&end=:endId		controllers.Relations.create(id: Int, startId: Int, endId: Int)
-GET     /update/models/:id/processes/pId=:pId&name=:name	controllers.Processes.update(id: Int, pId: Int, name: String)
+GET     /update/processes/id=:id&name=:name		controllers.Processes.update(id: Int, name: String)
+GET     /delete/processes/:id					controllers.Processes.delete(id: Int)
+
 #remove slash
 GET  	/*path  								controllers.Application.removeSlash(path: String)
 
@@ -44,25 +41,24 @@ GET     /                   						controllers.Application.index
 #GET	/models/:id									controllers.Models.read(id: Int)
 #POST   /models										controllers.Models.create
 #PUT    /models/id=:id&name=:name					controllers.Models.update(id: Int, name: String)
-#DELETE /models/:id 								//TODO not done yet?
+#DELETE /models/:id 								//TODO method not done yet
 
 #Operations on processes
 #POST   /models/:id/processes				    	controllers.Processes.create(id: Int)
-#PUT	/models/:id/processes/pId=:pId&name=:name	controllers.Processes.update(id: Int, pId: Int, name: String)
-#DELETE /models/:id/processes/:pId					controllers.Processes.delete(id: Int, pId: Int)
+#PUT	processes/id=:id&name=:name					controllers.Processes.update(id: Int, name: String)
+#DELETE processes/:id								controllers.Processes.delete(id: Int)
 
-#Operations on relations
-#POST   /models/:id/relations/start=:startId&end=:endId		controllers.Relations.create(id: Int, startId: Int, endId: Int)
-#PUT	/models/:id/relations/id=:rId&value=:value 	controllers.Relations.update(id: Int, rId: Int, value: String)
-#DELETE /models/:id/relations/:rId					controllers.Relations.delete(id: Int, rId: Int)
+#Operations on relations //TODO allow to change start and end elements of relation
+#POST   /models/:id/relations/start=:start&end=:end	controllers.Relations.create(id: Int, start: Int, end: Int)
+#PUT	/relations/id=:id&value=:value 				controllers.Relations.update(id: Int, value: String)
+#DELETE /relations/:id								controllers.Relations.delete(id: Int)
 
 #Operation on elements --> create + update
 #POST	/models/:id/processes/:pId/elements/elemType=:elemType&value=:value&x=:x&y=:y	controllers.ProcessElements.create(id: Int, pId: Int, elemType: Int, value: String, x: Int, y: Int)
-#PUT    /models/:id/processes/:pId/elements/id=:eId&value=:value&size=:size&x=:x&y=:y   controllers.ProcessElements.update(id: Int, pId: Int, eId: Int, value: String, size: Int, x: Int, y: Int)
+#PUT    /elements/id=:id&value=:value&size=:size&x=:x&y=:y  							controllers.ProcessElements.update(id: Int, value: String, size: Int, x: Int, y: Int)
 
 #JSON methods
 #GET   /element										controllers.JsonController.list	
-#PUT   /element/:id/:name							controllers.ActorUpdates.update(id: Int, name: String)
 
 #GET   /start									    controllers.JsonController.getElements("start")	
 #GET   /start/:id									controllers.JsonController.getElementsByModel("start", id: Int)	
@@ -85,6 +81,7 @@ GET     /                   						controllers.Application.index
 #GET     /say/:said								    controllers.ActorUpdates.say(said: String)
 #GET     /update/:id/:value							controllers.ActorUpdates.update(id: Int, value: String)
 #GET	 /room										controllers.ActorUpdates.room
+#PUT   /element/:id/:name							controllers.ActorUpdates.update(id: Int, name: String)
 
 #Removing slash from the end of URL
 #GET  	/*path  									controllers.Application.removeSlash(path: String)

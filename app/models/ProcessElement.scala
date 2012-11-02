@@ -45,26 +45,29 @@ object ProcessElement {
         }
     }
   }
-  
-  def read(id: Int): ProcessElement = {
+
+  def read(id: Int): Option[ProcessElement] = {
     DB.withConnection { implicit connection =>
       SQL("""
           select * from processElements
           where processElements.relationId = {id}
-		""").on('id -> id).as(parse *).head
+		""").on('id -> id).as(parse *) match {
+        case Nil => None
+        case element :: xs => Some(element)
+      }
     }
   }
 
-  def update(relationId: Int, value: String, size: Int, x: Int, y: Int): Boolean =  {
+  def update(relationId: Int, value: String, size: Int, x: Int, y: Int): Boolean = {
     DB.withConnection { implicit connection =>
       SQL("""update processElements 
           set value = {value}, size = {size}, x = {x}, y = {y}
           where relationId = {relationId}""").
         on('relationId -> relationId,
-            'value -> value, 'size -> size, 'x -> x, 'y -> y ).executeUpdate() == 0
+          'value -> value, 'size -> size, 'x -> x, 'y -> y).executeUpdate() == 0
     }
   }
- 
+
   /**
    * Delete processElement specified by parameter id.
    */
@@ -74,7 +77,7 @@ object ProcessElement {
         on('id -> id).executeUpdate() == 0
     }
   }
-  
+
   /**
    * Delete all processElements that belong to a process.
    */
@@ -86,21 +89,31 @@ object ProcessElement {
         on('id -> id).executeUpdate() == 0
     }
   }
-  
+
   /**
    * Return a list of all processElements in database.
    */
   def findAll: List[ProcessElement] = DB.withConnection { implicit connection =>
     SQL("""select * from processElements""").as(parse *)
   }
-  
+
   def getModelProcessId(modelId: Int, processId: Int): Int = DB.withConnection { implicit connection =>
     SQL("""select id from modelProcesses
         where modelId = {modelId}
         and processId = {processId}""").on('modelId -> modelId, 'processId -> processId).as(
-          get[Int]("id") map {
-            case id => id
-          }
-         *).head
+      get[Int]("id") map {
+        case id => id
+      } *).head
+  }
+
+  def getModelId(id: Int): Int = DB.withConnection { implicit connection =>
+    SQL("""select models.* from models, processElements
+        join modelProcesses on models.id = modelProcesses.modelId
+        where processElements.relationId = {id}
+        and processElements.modelProcessId = modelProcesses.id
+        """).on('id -> id).apply().toList match { 
+      case Nil => throw new Exception("This element doesn't belong to any model.")
+      case x :: xs => x[Int]("id")
+    }
   }
 }

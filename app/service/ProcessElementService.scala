@@ -36,9 +36,11 @@ class ProcessElementService {
     ProcessElement.create(modelProcessId, 5, NotAssigned, "Gateway", 0, x, y)
   }
 
-  def read(id: Int): ProcessElement = ProcessElement.read(id)
+  def read(id: Int): Option[ProcessElement] = ProcessElement.read(id)
     
   def update(id: Int, value: String, size: Int, x: Int, y: Int) = ProcessElement.update(id, value, size, x, y)
   
   def deleteByProcess(id: Int) = ProcessElement.deleteByProcess(id)
+  
+  def getModelId(id: Int) = ProcessElement.getModelId(id)
 }

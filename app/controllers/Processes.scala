@@ -28,33 +28,34 @@ object Processes extends Controller {
     }
   }
 
-  def update(modelId: Int, processId: Int, name: String) = Action {
-    (modelService.read(modelId), processService.read(modelId, processId)) match {
-      case (Some(model), Some(process)) => {
-        processService.update(processId, name)
-        Redirect(routes.Models.read(modelId))
+  def update(id: Int, name: String) = Action {
+    processService.read(id) match {
+      case Some(process) => {
+        processService.update(id, name)
+        Redirect(routes.Models.read(processService.getModelId(id)))
       }
-      case _ => NotFound("Incorrect parameters. Thrown by: " + getClass.getName + " when updating process.")
+      case None => NotFound("This Process doesn't exist. Thrown by: " + getClass.getName + " when updating process.")
     }
   }
 
-  def delete(modelId: Int, processId: Int) = Action { implicit request =>
-    (modelService.read(modelId), processService.read(modelId, processId)) match {
-      case (Some(model), Some(process)) => {
-        deleteProcess(processId)
+  def delete(id: Int) = Action { implicit request =>
+    processService.read(id) match {
+      case Some(process) => {
+        val modelId = processService.getModelId(id)
+        deleteProcess(id)
         Redirect(routes.Models.read(modelId))
       }
-      case _ => NotFound("Incorrect parameters. Thrown by: " + getClass.getName + " when deleting process.")
+      case None => NotFound("This Process doesn't exist. Thrown by: " + getClass.getName + " when deleting process.")
     }
   }
 
   /**
    * Delete process along with all the data it contains.
    */
-  def deleteProcess(processId: Int) = {
-    relationService.deleteByProcess(processId)
-    processElementService.deleteByProcess(processId)
-    processService.delete(processId)
+  def deleteProcess(id: Int) = {
+    relationService.deleteByProcess(id)
+    processElementService.deleteByProcess(id)
+    processService.delete(id)
   }
   
   /**
@@ -76,5 +77,6 @@ object Processes extends Controller {
 
     processElementService.update(elem5, "HI, I have been modified, YAY!", 10, 0, 0)
     val rel = relationService.create(elem2, elem3, "Relation between Start and End")
+    
   }
 }

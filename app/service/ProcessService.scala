@@ -12,7 +12,7 @@ class ProcessService {
     processId
   }
   
-  def read(modelId: Int, processId: Int): Option[Process] = Process.read(modelId, processId)
+  def read(processId: Int): Option[Process] = Process.read(processId)
   
   def update(id: Int, name: String) = Process.update(id, name) 
  
@@ -24,4 +24,6 @@ class ProcessService {
   def countByModel(id: Int) = Process.countByModel(id)
   
   def findByModelWithElements(id: Int) = Process.findByModelWithElements(id)
+  
+  def getModelId(processId: Int) : Int = Process.getModelId(processId)
 }
