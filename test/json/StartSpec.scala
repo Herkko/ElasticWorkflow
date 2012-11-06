@@ -7,7 +7,7 @@ import play.api.test.Helpers._
 import org.h2.jdbc.JdbcSQLException
 
 class StartSpec extends Specification {
-
+/*
   val modelService = new ModelService
   val processService = new ProcessService
   val processElementService = new ProcessElementService
@@ -59,5 +59,5 @@ class StartSpec extends Specification {
         }
       }
     }
-  }
+  }*/
 }

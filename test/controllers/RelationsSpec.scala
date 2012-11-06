@@ -1,11 +1,14 @@
 package controllers
 
+package controllers
+
 import org.specs2.mutable._
 
 import play.api.test._
 import play.api.test.Helpers._
 
-class RelationsTest extends Specification {
+class RelationsSpec extends Specification {
+  
 /*
   "User when interacting with relations in browser" should {
     "is able to create new relation " in {
@@ -40,4 +43,23 @@ class RelationsTest extends Specification {
     }
   }
   */
+  
+    "User should be able to update relations" >> {
+      "when relation with given id exists" in {
+        running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+          routeAndCall(FakeRequest(POST, "/models"))
+          routeAndCall(FakeRequest(PUT, "/relations/id=1&start=2&end=3&value=Changed+name"))
+          val Some(result) = routeAndCall(FakeRequest(GET, "/models/1"))
+
+          contentAsString(result) must contain("Description: Changed name")
+        }
+      }
+
+      "fail when relation with given id doesn't exist" in {
+        running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+          val Some(result) = routeAndCall(FakeRequest(PUT, "/relations/id=1&start=2&end=3&value=Changed+name"))
+          status(result) must equalTo(404)
+        }
+      }
+    }
 }

@@ -45,8 +45,8 @@ class ProcessSpec extends Specification {
     "be created and retrieved by id" in {
       running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
         val id = Process.create(NotAssigned, "ProcessName", new Date())
-        val result = Process.read(id)
-
+        val Some(result) = Process.read(id)
+        
         result.id.toString().toInt must equalTo(id)
         result.name must equalTo("ProcessName")
       }

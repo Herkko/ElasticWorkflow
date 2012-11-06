@@ -45,7 +45,7 @@ class ModelSpec extends Specification {
     "be created and retrieved by id" in {
       running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
         val modelId = Model.create(NotAssigned, "Name1", new Date())
-        val result = Model.read(modelId)
+        val Some(result) = Model.read(modelId)
 
         result.id.toString().toInt must equalTo(modelId)
         result.name must equalTo("Name1")

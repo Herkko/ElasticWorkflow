@@ -53,7 +53,7 @@ class ProcessElementSpec extends Specification {
         ModelProcess.create(Id(3), 1, 2)
         ProcessElement.create(3, 1, Id(4), "I am Process Element", 10, 99, 99)
 
-        val result = ProcessElement.read(4)
+        val Some(result) = ProcessElement.read(4)
         result.relationId.toString().toInt must equalTo(4)
         result.value must equalTo("I am Process Element")
       }
@@ -78,7 +78,7 @@ class ProcessElementSpec extends Specification {
         ModelProcess.create(Id(3), 1, 2)
         ProcessElement.create(3, 2, Id(4), "I am Start Element", 10, 99, 99)
 
-        val result = ProcessElement.read(4)
+        val Some(result) = ProcessElement.read(4)
         result.relationId.toString().toInt must equalTo(4)
         result.value must equalTo("I am Start Element")
       }
