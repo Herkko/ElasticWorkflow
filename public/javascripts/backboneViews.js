@@ -12,8 +12,9 @@ var AppView = Backbone.View.extend({
             activityElementsView.render();
             connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
             connections.push(RaphaelElement.connection(ActivityElements.at(2).get("element"), EndElements.at(0).get("element"), "#000"));
-            connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
-            connections.push(RaphaelElement.connection(ActivityElements.at(1).get("element"), ActivityElements.at(2).get("element"), "#000"));
+            connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), GatewayElements.at(0).get("element"), "#000"));
+            connections.push(RaphaelElement.connection(GatewayElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
+            connections.push(RaphaelElement.connection(GatewayElements.at(0).get("element"), ActivityElements.at(2).get("element"), "#000"));
         }
 
         var startSuccess = function() {
@@ -21,8 +22,9 @@ var AppView = Backbone.View.extend({
             startElementsView.render();
             connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
             connections.push(RaphaelElement.connection(ActivityElements.at(2).get("element"), EndElements.at(0).get("element"), "#000"));
-            connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
-            connections.push(RaphaelElement.connection(ActivityElements.at(1).get("element"), ActivityElements.at(2).get("element"), "#000"));
+            connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), GatewayElements.at(0).get("element"), "#000"));
+            connections.push(RaphaelElement.connection(GatewayElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
+            connections.push(RaphaelElement.connection(GatewayElements.at(0).get("element"), ActivityElements.at(2).get("element"), "#000"));
         }
 
         var endSuccess = function() {
@@ -30,8 +32,9 @@ var AppView = Backbone.View.extend({
             endElementsView.render();
             connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
             connections.push(RaphaelElement.connection(ActivityElements.at(2).get("element"), EndElements.at(0).get("element"), "#000"));
-            connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
-            connections.push(RaphaelElement.connection(ActivityElements.at(1).get("element"), ActivityElements.at(2).get("element"), "#000"));
+            connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), GatewayElements.at(0).get("element"), "#000"));
+            connections.push(RaphaelElement.connection(GatewayElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
+            connections.push(RaphaelElement.connection(GatewayElements.at(0).get("element"), ActivityElements.at(2).get("element"), "#000"));
         }
 
         var swimlaneSuccess = function() {
@@ -39,8 +42,9 @@ var AppView = Backbone.View.extend({
             swimlaneElementsView.render();
             connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
             connections.push(RaphaelElement.connection(ActivityElements.at(2).get("element"), EndElements.at(0).get("element"), "#000"));
-            connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
-            connections.push(RaphaelElement.connection(ActivityElements.at(1).get("element"), ActivityElements.at(2).get("element"), "#000"));
+            connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), GatewayElements.at(0).get("element"), "#000"));
+            connections.push(RaphaelElement.connection(GatewayElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
+            connections.push(RaphaelElement.connection(GatewayElements.at(0).get("element"), ActivityElements.at(2).get("element"), "#000"));
         }
         
         var gatewaySuccess = function(){
@@ -70,10 +74,10 @@ var AppView = Backbone.View.extend({
     },
     
     handleClick: function() {
-        console.log("Something was clicked");
+        alert("Klikkaus");
     },
     handleChange: function() {
-        console.log("Something was changed");
+        alert("Muutos");
     }
 
 

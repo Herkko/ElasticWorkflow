@@ -105,6 +105,10 @@ var dragger = function() {
     	  this.translate(trans_x,trans_y);
     	  this.ox = dx;
     	  this.oy = dy;
+    	  
+    	  for (var i = connections.length; i--; ) {
+              RaphaelElement.connection(connections[i]);
+          }
     },
     
     upPath = function () {
