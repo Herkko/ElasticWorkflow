@@ -11,7 +11,7 @@ var AppView = Backbone.View.extend({
             var activityElementsView = new ElementsView({model: ActivityElements});
             activityElementsView.render();
             connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
-            connections.push(RaphaelElement.connection(EndElements.at(0).get("element"), ActivityElements.at(2).get("element"), "#000"));
+            connections.push(RaphaelElement.connection(ActivityElements.at(2).get("element"), EndElements.at(0).get("element"), "#000"));
             connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
             connections.push(RaphaelElement.connection(ActivityElements.at(1).get("element"), ActivityElements.at(2).get("element"), "#000"));
         }
@@ -20,7 +20,7 @@ var AppView = Backbone.View.extend({
             var startElementsView = new ElementsView({model: StartElements});
             startElementsView.render();
             connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
-            connections.push(RaphaelElement.connection(EndElements.at(0).get("element"), ActivityElements.at(2).get("element"), "#000"));
+            connections.push(RaphaelElement.connection(ActivityElements.at(2).get("element"), EndElements.at(0).get("element"), "#000"));
             connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
             connections.push(RaphaelElement.connection(ActivityElements.at(1).get("element"), ActivityElements.at(2).get("element"), "#000"));
         }
@@ -29,7 +29,7 @@ var AppView = Backbone.View.extend({
             var endElementsView = new ElementsView({model: EndElements});
             endElementsView.render();
             connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
-            connections.push(RaphaelElement.connection(EndElements.at(0).get("element"), ActivityElements.at(2).get("element"), "#000"));
+            connections.push(RaphaelElement.connection(ActivityElements.at(2).get("element"), EndElements.at(0).get("element"), "#000"));
             connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
             connections.push(RaphaelElement.connection(ActivityElements.at(1).get("element"), ActivityElements.at(2).get("element"), "#000"));
         }
@@ -38,7 +38,7 @@ var AppView = Backbone.View.extend({
             var swimlaneElementsView = new ElementsView({model: SwimlaneElements});
             swimlaneElementsView.render();
             connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
-            connections.push(RaphaelElement.connection(EndElements.at(0).get("element"), ActivityElements.at(2).get("element"), "#000"));
+            connections.push(RaphaelElement.connection(ActivityElements.at(2).get("element"), EndElements.at(0).get("element"), "#000"));
             connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
             connections.push(RaphaelElement.connection(ActivityElements.at(1).get("element"), ActivityElements.at(2).get("element"), "#000"));
         }
