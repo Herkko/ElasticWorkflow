@@ -6,7 +6,7 @@ import java.util.Date
 import anorm._
 import anorm.SqlParser._
 
-case class Process(id: Pk[Int], name: String, dateCreated: Date)
+case class Process(val id: Pk[Int], name: String, dateCreated: Date)
 
 /**
  * Handle process inserting to database, updating and deleting. Each process must belong to exactly one model

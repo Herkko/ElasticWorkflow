@@ -11,14 +11,16 @@ object ProcessElements extends Controller {
   val modelService = new ModelService()
   val processService = new ProcessService()
 
-  //add size param here
+  //ugly way to handle errors
   def create(modelId: Int, processId: Int, elemType: Int, value: String, x: Int, y: Int) = Action { implicit request =>
     (modelService.read(modelId), processService.read(processId)) match {
       case (Some(model), Some(process)) => {
         processElementService.create(modelId, processId, elemType, value, x, y)
         Redirect(routes.Models.read(modelId))
       }
-      case _ => NotFound("This Model or Process doesn't exist. Thrown by: " + getClass.getName + " when creating new process element.")
+      case (None, Some(process)) => handleError("model id '" + modelId + "' when creating new element")
+      case (Some(model), None) => handleError("process id '" + processId + "' when creating new element")
+      case (None, None) => handleError("model id '" + modelId + "' and  process id '" + processId + "' when creating new element")
     }
   }
 
@@ -28,7 +30,7 @@ object ProcessElements extends Controller {
         processElementService.update(id, value, size, x, y)
         Redirect(routes.Models.read(processElementService.getModelId(id)))
       }
-      case None => NotFound("This Element doesn't exist. Thrown by: " + getClass.getName + " when updating process element.")
+      case None => handleError("element id '" + id + "' when updating element")
     }
   }
 
@@ -36,5 +38,10 @@ object ProcessElements extends Controller {
     //TODO
   }
 
+  def handleError(logInfo: String) = {
+    val info = "Not found: " + logInfo + ". Thrown by: " + getClass.getName
+    Logger.error(info)
+    Redirect(routes.Models.list)
+  }
 }
 

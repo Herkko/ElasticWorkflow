@@ -6,7 +6,13 @@ import java.util.Date
 import anorm.SqlParser._
 import anorm._
 
-case class Model(id: Pk[Int], name: String, dateCreated: Date)
+case class Model(val id: Pk[Int], val name: String, val dateCreated: Date) 
+//{
+  //def toXML =
+    //{id}
+    //{name}
+    //{dateCreated}
+//}
 
 /**
  * Model is a collection of processes, elements and relations.
@@ -76,5 +82,5 @@ object Model {
 		 """).on('id -> id).as(parse *).toList.size == 1
     }
   }
- 
+   
 }
