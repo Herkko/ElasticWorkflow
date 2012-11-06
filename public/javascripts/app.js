@@ -23,3 +23,13 @@ window.onload = function() {
 
 };
 
+
+function updateall(){
+    
+    for (var i=0; i<ActivityElements.length; i++){
+        ActivityElements.at(i).save();
+        
+    }
+    
+    
+} 

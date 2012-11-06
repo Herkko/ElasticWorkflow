@@ -28,7 +28,7 @@ var relation = Backbone.Model.extend({
 
     render: function(element) {
         var relation = connections.push(RaphaelElement.connection(
-        		this.get("startId"), 	// TARVITAAN JOKU JOSTA L…YTYY KYSEISELL€ ID:LL€ VARUSTETTU ELEMENTTI
+        		this.get("startId"), 	// TARVITAAN JOKU JOSTA Lï¿½YTYY KYSEISELLï¿½ ID:LLï¿½ VARUSTETTU ELEMENTTI
         		this.get("endId"),
         		"#000")
         );
@@ -74,12 +74,14 @@ var gateway = Backbone.Model.extend({
 	}
 });
 
+
+    
 var AllElementsList = Backbone.Collection.extend({
 	model: start,
+                
 	url: '/element'
 });
     
-
 var ActivityList = Backbone.Collection.extend({
     model: activity,
     url: '/activity'
@@ -104,7 +106,6 @@ var GatewayList = Backbone.Collection.extend({
 	model: gateway,
 	url: '/gateway'
 });
-
 
 var RelationList = Backbone.Collection.extend({
 	model: relation,
