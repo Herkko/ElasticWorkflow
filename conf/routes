@@ -46,6 +46,7 @@ GET   	/end/:id									controllers.JsonController.getEndByModel(id: Int)
 GET   	/swimlane									controllers.JsonController.getSwimlane	
 GET   	/swimlane/:id								controllers.JsonController.getSwimlaneByModel(id: Int)	
 GET   	/activity									controllers.JsonController.getActivity	
+PUT     /activity									controllers.JsonController.toElement
 GET   	/activity/:id								controllers.JsonController.getActivityByModel(id: Int)	
 GET   	/gateway									controllers.JsonController.getGateway	
 GET   	/gateway/:id							    controllers.JsonController.getGatewayByModel(id: Int)	

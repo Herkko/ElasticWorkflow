@@ -32,6 +32,8 @@ function updateall(){
 		var xArvo = testinSisaltamaRaphaelElementti.attr("x");
 		var yArvo = testinSisaltamaRaphaelElementti.attr("y");
 		testi.set({cx: xArvo, cy: yArvo});
+		alert("x " +xArvo+ " y " +yArvo+ " cx " + testi.get("cx") + " cy " + testi.get("cy"))
+		testi.collection = ActivityElements;
 		testi.save();
 	}
    
