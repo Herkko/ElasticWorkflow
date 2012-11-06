@@ -1,10 +1,11 @@
 var AppView = Backbone.View.extend({
-    el: "body",
-    
+    el: "elements",
+    /*
     events: {
         'click .clickable': 'handleClick',
         'change': 'handleChange'
     },
+    */
     // fetch the list of elements and do a render method
     initialize: function() {
 
@@ -72,7 +73,9 @@ var AppView = Backbone.View.extend({
         GatewayElements.fetch({
 			success: gatewaySuccess
 		});
-    },
+    }
+    /*
+    , <- MUISTA
     
     handleClick: function() {
         alert("Klikkaus");
@@ -80,7 +83,7 @@ var AppView = Backbone.View.extend({
     handleChange: function() {
         alert("Muutos");
     }
-
+	*/
 
 });
 
