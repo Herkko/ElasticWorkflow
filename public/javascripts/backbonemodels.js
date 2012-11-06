@@ -1,5 +1,5 @@
 
-var ActivityElement = Backbone.Model.extend({
+var activity = Backbone.Model.extend({
 
 
     render: function(element) {
@@ -12,7 +12,7 @@ var ActivityElement = Backbone.Model.extend({
     }
 });
 
-var StartElement = Backbone.Model.extend({
+var start = Backbone.Model.extend({
 
     render: function(element) {
         var start = RaphaelElement.circle(element.cx, element.cy, 20);
@@ -24,7 +24,21 @@ var StartElement = Backbone.Model.extend({
     }
 });
 
-var EndElement = Backbone.Model.extend({
+var relation = Backbone.Model.extend({
+
+    render: function(element) {
+        var relation = connections.push(RaphaelElement.connection(
+        		this.get("startId"), 	// TARVITAAN JOKU JOSTA L…YTYY KYSEISELL€ ID:LL€ VARUSTETTU ELEMENTTI
+        		this.get("endId"),
+        		"#000")
+        );
+        this.set({element: relation});
+
+        var color = Raphael.getColor();
+    }
+});
+
+var end = Backbone.Model.extend({
 
     render: function(element) {
         var end = RaphaelElement.circle(element.cx, element.cy, 20);
@@ -36,7 +50,7 @@ var EndElement = Backbone.Model.extend({
     }
 });
 
-var SwimlaneElement = Backbone.Model.extend({
+var swimlane = Backbone.Model.extend({
 
     render: function(element) {
         var swimlane = RaphaelElement.rect(element.cx, element.cy, 500, 300, 1);
@@ -46,7 +60,7 @@ var SwimlaneElement = Backbone.Model.extend({
     }
 });
 
-var GatewayElement = Backbone.Model.extend({
+var gateway = Backbone.Model.extend({
 	
 	
 	render: function(element) {
@@ -56,38 +70,44 @@ var GatewayElement = Backbone.Model.extend({
 		var color = Raphael.getColor();
 		gateway.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
 		gateway.drag(movePath, dragger, up);
-		
-		
-	    
+		   
 	}
 });
 
+var AllElementsList = Backbone.Collection.extend({
+	model: start,
+	url: '/element'
+});
     
 
 var ActivityList = Backbone.Collection.extend({
-    model: ActivityElement,
-    url: '/json/activity'
+    model: activity,
+    url: '/activity'
 });
 
 var StartList = Backbone.Collection.extend({
-    model: StartElement,
-    url: '/json/start'
+    model: start,
+    url: '/start'
 });
 
 var EndList = Backbone.Collection.extend({
-    model: EndElement,
-    url: '/json/end'
+    model: end,
+    url: '/end'
 });
 
 var SwimlaneList = Backbone.Collection.extend({
-    model: SwimlaneElement,
-    url: '/json/swimlane'
+    model: swimlane,
+    url: '/swimlane'
 });
 
 var GatewayList = Backbone.Collection.extend({
-	model: GatewayElement,
-	url: '/json/gateway'
+	model: gateway,
+	url: '/gateway'
 });
 
 
+var RelationList = Backbone.Collection.extend({
+	model: relation,
+	url: '/relation'
+});
 
