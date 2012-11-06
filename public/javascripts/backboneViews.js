@@ -1,5 +1,6 @@
 var AppView = Backbone.View.extend({
     el: "body",
+    
     events: {
         'click .clickable': 'handleClick',
         'change': 'handleChange'
@@ -70,9 +71,11 @@ var AppView = Backbone.View.extend({
     },
     
     handleClick: function() {
+
         console.log("Something was clicked");
     },
     handleChange: function() {
+        
         console.log("Something was changed");
     }
 
