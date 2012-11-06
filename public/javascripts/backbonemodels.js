@@ -55,7 +55,7 @@ var swimlane = Backbone.Model.extend({
     render: function(element) {
         var swimlane = RaphaelElement.rect(element.cx, element.cy, 500, 300, 1);
         this.set({element: swimlane});
-        swimlane.attr({stroke: black, "stroke-width": 2});
+        swimlane.attr({stroke: "#000", "stroke-width": 2});
         swimlane.toBack();
     }
 });
