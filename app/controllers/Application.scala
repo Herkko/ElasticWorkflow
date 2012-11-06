@@ -25,10 +25,6 @@ object Application extends Controller {
     }
   }
   
-   def showEdit = Action { implicit request =>
-    Ok(views.html.edit())
-  }
-
   def showEditPage = Action { implicit request =>
     Ok(views.html.edit())
   }
