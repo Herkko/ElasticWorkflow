@@ -1,14 +1,19 @@
 
 var activity = Backbone.Model.extend({
+	idAttribute: "relationId",
+	
+	defaults: {
+		value: "Activity",
+	},
 	
 	url: function() {
-		return "activity/" + this.get("id");
+		return "activity/" + this.get("relationId");
 	},
 	
     render: function(element) {
         var activity = RaphaelElement.rect(element.cx, element.cy, 100, 60, 4);
-        this.set({element: activity});
-
+        //this.set({element: activity});
+        
         var color = Raphael.getColor();
         activity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
         activity.drag(move, dragger, up);

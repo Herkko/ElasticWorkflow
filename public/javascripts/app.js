@@ -25,8 +25,15 @@ window.onload = function() {
 
 
 function updateall(){
-    var uusi = new activity({cx: 500, cy: 250, id: 4});
-    uusi.save();
+    //var uusi = new activity({"modelProcessId":1,"elementTypeId":4,"relationId":4,"value":"Activity","size":0,"cx":170,"cy":110});
+	//var uusi = new activity({cx: 500, cy: 250, id: 4});
+    //var uusi = ActivityElements.at(1);
+    
+    //var testjson = uusi.toJSON();
+    
+    //alert(testjson);
+	//uusi.save();
+    ActivityElements.at(1).save();
     alert("testi");
 	/*
 	for (var i=0; i<ActivityElements.length; i++){
