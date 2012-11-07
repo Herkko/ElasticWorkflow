@@ -86,6 +86,7 @@ var dragger = function() {
 
     var up = function() {
         this.animate({"fill-opacity": 0}, 500);
+        
     };
 
     var upStart = function() {
@@ -105,6 +106,10 @@ var dragger = function() {
     	  this.translate(trans_x,trans_y);
     	  this.ox = dx;
     	  this.oy = dy;
+    	  
+    	  for (var i = connections.length; i--; ) {
+              RaphaelElement.connection(connections[i]);
+          }
     },
     
     upPath = function () {

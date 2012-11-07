@@ -18,9 +18,7 @@ object ProcessElements extends Controller {
         processElementService.create(modelId, processId, elemType, value, x, y)
         Redirect(routes.Models.read(modelId))
       }
-      case (None, Some(process)) => handleError("model id '" + modelId + "' when creating new element")
-      case (Some(model), None) => handleError("process id '" + processId + "' when creating new element")
-      case (None, None) => handleError("model id '" + modelId + "' and  process id '" + processId + "' when creating new element")
+      case _ => NotFound("Not found model id '" + modelId + "' or  process id '" + processId + "' when creating new element")
     }
   }
 
@@ -30,18 +28,12 @@ object ProcessElements extends Controller {
         processElementService.update(id, value, size, x, y)
         Redirect(routes.Models.read(processElementService.getModelId(id)))
       }
-      case None => handleError("element id '" + id + "' when updating element")
+      case None => NotFound("Not found element id '" + id + "' when updating element")
     }
   }
 
   def delete() {
     //TODO
-  }
-
-  def handleError(logInfo: String) = {
-    val info = "Not found: " + logInfo + ". Thrown by: " + getClass.getName
-    Logger.error(info)
-    Redirect(routes.Models.list)
   }
 }
 

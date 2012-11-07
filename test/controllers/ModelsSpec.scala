@@ -113,6 +113,17 @@ class ModelsSpec extends Specification {
           status(result) must equalTo(404)
         }
       }
+
+      "failing to change model doesn't affect other models" in {
+        running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+          routeAndCall(FakeRequest(POST, "/models"))
+          val Some(result) = routeAndCall(FakeRequest(PUT, "/models/id=2&name=I+has+new+name!"))
+          status(result) must equalTo(404)
+          
+          val Some(result0) = routeAndCall(FakeRequest(GET, "/models/1"))
+          contentAsString(result0) must not contain("I has new name")
+        }
+      }
     }
   }
 }
