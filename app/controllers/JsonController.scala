@@ -6,10 +6,13 @@ import play.api.mvc._
 import play.api.libs.json.Json.toJson
 import play.api.libs.json._
 import collection.mutable.HashMap
+import service.ProcessElementService
 /**
  * Control all actions related to showing, creating and deleting json objects.
  */
 object JsonController extends Controller {
+
+  val processElementService = new ProcessElementService
 
   //val map = new HashMap[String, Element]() //withDefaultValue("")
 
@@ -67,21 +70,19 @@ object JsonController extends Controller {
     Ok(toJson(Relation.findByModel(id)))
   }
 
-  //refactor :/
   def toElement = Action { request =>
-   println( request.body.asFormUrlEncoded)
+    val Some(jsonMap) = request.body.asFormUrlEncoded
 
-    request.body.asJson match {
-      case Some(data) => {
-        println(data)
-        Ok(data)
+    val json = for ((value, key) <- jsonMap) yield (value, key.head)
 
-      }
-      case None => NotFound("Not found")
-    }
-    //  val Some(s) = request.body.asJson
-    //  println(s)
-    // 	Ok(s)
+    val Some(modelProcessId) = json.get("modelProcessId")
+    val Some(value) = json.get("value")
+    val Some(size) = json.get("size")
+    val Some(x) = json.get("cx")
+    val Some(y) = json.get("cy")
+
+    processElementService.update(modelProcessId.toInt, value, size.toInt, x.toInt, y.toInt)
+    Redirect(routes.Models.list)
   }
 
   /* def getElements(elementType: String) = Action { implicit request =>
