@@ -3,21 +3,36 @@ var activity = Backbone.Model.extend({
 	idAttribute: "relationId",
 	
 	defaults: {
-		value: "Activity",
+		value: "Activity"
 	},
 	
 	url: function() {
 		return "activity/" + this.get("relationId");
 	},
 	
+	updateLocation: function(element){
+		var activityRaphaelElement = this.render(element);
+		element.set({cx: activityRaphaelElement.attr("x")});
+		element.set({cy: activityRaphaelElement.attr("y")});
+	},
+	
     render: function(element) {
-        var activity = RaphaelElement.rect(element.cx, element.cy, 100, 60, 4);
-        //this.set({element: activity});
-        
+    	if (!element) return raphaelActivity;
+    	var i = 10;
+    	var raphaelActivity = RaphaelElement.rect(element.cx, element.cy, 100, 60, 4);
+        //this.set({element: raphaelActivity});
         var color = Raphael.getColor();
-        activity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-        activity.drag(move, dragger, up);
-    }
+        raphaelActivity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+        raphaelActivity.drag(move, dragger, up);
+        
+        function get(){
+        	return raphaelActivity;
+        }
+        
+        return raphaelActivity;
+    },
+    
+    
 });
 
 var start = Backbone.Model.extend({
@@ -36,8 +51,8 @@ var relation = Backbone.Model.extend({
 
     render: function(element) {
         var relation = connections.push(RaphaelElement.connection(
-        		this.get("startId"), 	// TARVITAAN JOKU JOSTA L�YTYY KYSEISELL� ID:LL� VARUSTETTU ELEMENTTI
-        		this.get("endId"),
+        		findBackboneModelById(this.get("startId")), 	// TARVITAAN JOKU JOSTA L�YTYY KYSEISELL� ID:LL� VARUSTETTU ELEMENTTI
+        		findBackboneModelById(this.get("endId")),
         		"#000")
         );
         this.set({element: relation});
