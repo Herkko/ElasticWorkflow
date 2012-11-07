@@ -74,7 +74,7 @@ object JsonController extends Controller {
     Ok(toJson(Relation.findByModel(id)))
   }
 
-  def toElement(id: Int) = Action { request =>
+  /*def toElementTest(id: Int) = Action { request =>
     println(request.queryString)
     println(request.path)
     println(request.body.asJson) //Some({"cx":500,"cy":250,"id":4})
@@ -91,15 +91,16 @@ object JsonController extends Controller {
 
     processElementService.update(relationId.toInt, value, size.toInt, x.toInt, y.toInt)
     Redirect(routes.Models.list)
-  }
+  }*/
 
-  def toElementTest(id: Int) = Action { request =>
+  def toElement(id: Int) = Action { request =>
     request.body.asJson.map { json => {
-        val relationId: Int = (json \ "relationId").asOpt[Int]
-        val value = (json \ "value").asOpt[String]
-        val size = (json \ "size").asOpt[Int]
-        val x = (json \ "x").asOpt[Int]
-        val y = (json \ "y").asOpt[Int]
+        val Some(relationId) = (json \ "relationId").asOpt[Int]
+        val Some(value) = (json \ "value").asOpt[String]
+        val Some(size) = (json \ "size").asOpt[Int]
+        val Some(x) = (json \ "cx").asOpt[Int]
+        val Some(y) = (json \ "cy").asOpt[Int]
+        println(relationId + " " + value + " " + size + " " + x + " " + y)
         processElementService.update(relationId, value, size, x, y)
         Redirect(routes.Models.list)
       }
