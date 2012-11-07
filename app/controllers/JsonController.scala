@@ -74,7 +74,7 @@ object JsonController extends Controller {
     Ok(toJson(Relation.findByModel(id)))
   }
 
-  def toElement = Action { request =>
+  def toElement(id: Int) = Action { request =>
     val Some(jsonMap) = request.body.asFormUrlEncoded
 
     val json = for ((value, key) <- jsonMap) yield (value, key.head)
