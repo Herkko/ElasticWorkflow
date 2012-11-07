@@ -9,7 +9,7 @@ var activity = Backbone.Model.extend({
 	url: function() {
 		return "activity/" + this.get("relationId");
 	},
-	
+	 
     render: function(element) {
         var activity = RaphaelElement.rect(element.cx, element.cy, 100, 60, 4);
         //this.set({element: activity});
