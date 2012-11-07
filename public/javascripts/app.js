@@ -26,10 +26,8 @@ window.onload = function() {
 
 function updateall(){
 	for (var i=0; i<ActivityElements.length; i++) {
-		//TEE JOTAIN!
-	}
-    ActivityElements.at(1).save();
-    alert("testi");
-    
-    
+		var element = ActivityElements.at(i);
+		element.updateLocation(element);
+		ActivityElements.at(i).save();
+	} 
 } 
