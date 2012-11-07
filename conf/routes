@@ -49,7 +49,7 @@ GET   	/activity									controllers.JsonController.getActivity
 PUT     /activity									controllers.JsonController.toElement
 #GET   	/activity/:id								controllers.JsonController.getActivityByModel(id: Int)	
 GET		/activity/:id								controllers.JsonController.getActivityByReleationId(id: Int)
-PUT		/activity/:id								controllers.JsonController.editElement
+#PUT	/activity/:id								controllers.JsonController.editElement
 GET   	/gateway									controllers.JsonController.getGateway	
 GET   	/gateway/:id							    controllers.JsonController.getGatewayByModel(id: Int)	
 GET   	/relation									controllers.JsonController.getRelation	
