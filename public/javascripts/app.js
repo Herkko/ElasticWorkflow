@@ -25,7 +25,7 @@ window.onload = function() {
 
 
 function updateall(){
-    var uusi = new activity({cx: 500, cy: 250, id: 4});
+    var uusi =  ActivityElements.pop(1);//new activity({cx: 500, cy: 250, id: 4});
     uusi.save();
     alert("testi");
 	/*

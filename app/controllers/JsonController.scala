@@ -49,8 +49,8 @@ object JsonController extends Controller {
   def getActivity = Action { implicit request =>
     Ok(toJson(Element.findType("Activity")))
   }
-  
-  def getActivityByReleationId(id: Int) = Action { implicit request => 
+
+  def getActivityByReleationId(id: Int) = Action { implicit request =>
     Ok(toJson(Element.findTypeById(id, "Activity")))
   }
 
@@ -75,6 +75,10 @@ object JsonController extends Controller {
   }
 
   def toElement(id: Int) = Action { request =>
+    println(request.queryString)
+    println(request.path)
+    println(request.body.asJson) //Some({"cx":500,"cy":250,"id":4})
+    println(request.body.asFormUrlEncoded)
     val Some(jsonMap) = request.body.asFormUrlEncoded
 
     val json = for ((value, key) <- jsonMap) yield (value, key.head)
@@ -87,6 +91,21 @@ object JsonController extends Controller {
 
     processElementService.update(relationId.toInt, value, size.toInt, x.toInt, y.toInt)
     Redirect(routes.Models.list)
+  }
+
+  def toElementTest(id: Int) = Action { request =>
+    request.body.asJson.map { json => {
+        val relationId: Int = (json \ "relationId").asOpt[Int]
+        val value = (json \ "value").asOpt[String]
+        val size = (json \ "size").asOpt[Int]
+        val x = (json \ "x").asOpt[Int]
+        val y = (json \ "y").asOpt[Int]
+        processElementService.update(relationId, value, size, x, y)
+        Redirect(routes.Models.list)
+      }
+    }.getOrElse {
+      BadRequest("Expecting Json data")
+    }
   }
 
   /* def getElements(elementType: String) = Action { implicit request =>
