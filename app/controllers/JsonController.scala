@@ -46,6 +46,10 @@ object JsonController extends Controller {
   def getActivity = Action { implicit request =>
     Ok(toJson(Element.findType("Activity")))
   }
+  
+  def getActivityByReleationId(id: Int) = Action { implicit request => 
+    Ok(toJson(Element.findTypeById(id)))
+  }
 
   def getActivityByModel(id: Int) = Action { implicit request =>
     Ok(toJson(Element.findTypeByModel(id, "Activity")))

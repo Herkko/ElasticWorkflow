@@ -68,4 +68,11 @@ object Element {
           and elementTypes.name = {elementType}
          """).on('id -> id, 'elementType -> elementType).as(parse *)
   }
+   
+  def findTypeById(id: Int): List[Element] = DB.withConnection { implicit connection => 
+  	SQL("""select * 
+  	    from processElements
+        where relationId = {id}
+  	    """).on('id -> id).as(parse *)
+  }
 }

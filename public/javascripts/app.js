@@ -25,18 +25,22 @@ window.onload = function() {
 
 
 function updateall(){
-    
+    var uusi = new activity({cx: 500, cy: 250, id: 4});
+    uusi.save();
+    alert("testi");
+	/*
 	for (var i=0; i<ActivityElements.length; i++){
 		var testi = ActivityElements.pop(i);
 		var testinSisaltamaRaphaelElementti = testi.get("element");
 		var xArvo = testinSisaltamaRaphaelElementti.attr("x");
 		var yArvo = testinSisaltamaRaphaelElementti.attr("y");
-		testi.set({cx: xArvo, cy: yArvo});
-		alert("x " +xArvo+ " y " +yArvo+ " cx " + testi.get("cx") + " cy " + testi.get("cy"))
-		testi.collection = ActivityElements;
-		testi.save();
+		//testi.set({cx: xArvo, cy: yArvo});
+		//alert("x " +xArvo+ " y " +yArvo+ " cx " + testi.get("cx") + " cy " + testi.get("cy"))
+		//testi.collection = ActivityElements;
+		testi.save({cx: xArvo, cy: yArvo});
+		alert("ei vittu toimi!");
 	}
-   
+   	*/
     
     
 } 

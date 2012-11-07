@@ -21,6 +21,10 @@ object ProcessElements extends Controller {
       case _ => NotFound("Not found model id '" + modelId + "' or  process id '" + processId + "' when creating new element")
     }
   }
+  
+  def jsonupdate(json: String) = Action {
+    
+  }
 
   def update(id: Int, value: String, size: Int, x: Int, y: Int) = Action {
     processElementService.read(id) match {
