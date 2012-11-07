@@ -79,13 +79,13 @@ object JsonController extends Controller {
 
     val json = for ((value, key) <- jsonMap) yield (value, key.head)
 
-    val Some(modelProcessId) = json.get("modelProcessId")
+    val Some(relationId) = json.get("relationId")
     val Some(value) = json.get("value")
     val Some(size) = json.get("size")
     val Some(x) = json.get("cx")
     val Some(y) = json.get("cy")
 
-    processElementService.update(modelProcessId.toInt, value, size.toInt, x.toInt, y.toInt)
+    processElementService.update(relationId.toInt, value, size.toInt, x.toInt, y.toInt)
     Redirect(routes.Models.list)
   }
 

@@ -11,7 +11,6 @@ object ProcessElements extends Controller {
   val modelService = new ModelService()
   val processService = new ProcessService()
 
-  //ugly way to handle errors
   def create(modelId: Int, processId: Int, elemType: Int, value: String, x: Int, y: Int) = Action { implicit request =>
     (modelService.read(modelId), processService.read(processId)) match {
       case (Some(model), Some(process)) => {
