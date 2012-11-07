@@ -34,16 +34,22 @@ var AppView = Backbone.View.extend({
 			gatewayElementsView.render();
 		}
 		
+		var relationSuccess = function() {
+			var relationElementsView = new ElementsView({model:RelationElements});
+			relationElementsView.render();
+		}
+		
 		$.when(ActivityElements.fetch({success: activitySuccess}),
 		StartElements.fetch({success: startSuccess}),
 		EndElements.fetch({success: endSuccess}),
 	    SwimlaneElements.fetch({success: swimlaneSuccess}),
 		GatewayElements.fetch({success: gatewaySuccess})).then(function() {
-		 	connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
-            connections.push(RaphaelElement.connection(ActivityElements.at(2).get("element"), EndElements.at(0).get("element"), "#000"));
-            connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), GatewayElements.at(0).get("element"), "#000"));
-            connections.push(RaphaelElement.connection(GatewayElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
-            connections.push(RaphaelElement.connection(GatewayElements.at(0).get("element"), ActivityElements.at(2).get("element"), "#000"));
+		    RelationElements.fetch({success: relationSuccess});
+		 //	connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), EndElements.at(0).get("element"), "#000"));
+            //connections.push(RaphaelElement.connection(ActivityElements.at(2).get("element"), EndElements.at(0).get("element"), "#000"));
+            //connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), GatewayElements.at(0).get("element"), "#000"));
+            //connections.push(RaphaelElement.connection(GatewayElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
+            //connections.push(RaphaelElement.connection(GatewayElements.at(0).get("element"), ActivityElements.at(2).get("element"), "#000"));
 	
 		});
 	}

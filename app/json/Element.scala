@@ -15,7 +15,7 @@ object Element {
     def reads(json: JsValue) = Element(
       (json \ "modelProcessId").as[Int],
       (json \ "elementTypeId").as[Int],
-      (json \ "relationId").as[Int],
+      (json \ "id").as[Int],
       (json \ "value").as[String],
       (json \ "size").as[Int],
       (json \ "cx").as[Int],
@@ -24,7 +24,7 @@ object Element {
     def writes(element: Element) = JsObject(Seq(
       "modelProcessId" -> JsNumber(element.modelProcessId),
       "elementTypeId" -> JsNumber(element.elementTypeId),
-      "relationId" -> JsNumber(element.relationId),
+      "id" -> JsNumber(element.relationId),
       "value" -> JsString(element.value),
       "size" -> JsNumber(element.size),
       "cx" -> JsNumber(element.x),

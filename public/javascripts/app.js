@@ -26,8 +26,17 @@ window.onload = function() {
 
 function updateall(){
 	for (var i=0; i<ActivityElements.length; i++) {
-		var element = ActivityElements.at(i);
-		element.updateLocation(element);
 		ActivityElements.at(i).save();
-	} 
+	}
+	for (var i=0; i<StartElements.length; i++) {
+		StartElements.at(i).save();
+	}
+	for (var i=0; i<EndElements.length; i++) {
+		EndElements.at(i).save();
+	}
+	for (var i=0; i<GatewayElements.length; i++) {
+		GatewayElements.at(i).save();
+	}
+	
+    alert("Elements hopefully saved, now refresh page.");
 } 

@@ -1,26 +1,26 @@
 
 var activity = Backbone.Model.extend({
-	idAttribute: "relationId",
+	/*idAttribute: "relationId",
 	
 	defaults: {
 		value: "Activity"
 	},
 	
 	url: function() {
-		return "activity/" + this.get("relationId");
+		return "activity/" + this.get("id");
 	},
 
 	updateLocation: function(element){
 		var activityRaphaelElement = this.render(element);
 		element.set({cx: activityRaphaelElement.attr("x")});
 		element.set({cy: activityRaphaelElement.attr("y")});
-	},
+	},*/
 	
     render: function(element) {
     	if (!element) return raphaelActivity;
     	var i = 10;
     	var raphaelActivity = RaphaelElement.rect(element.cx, element.cy, 100, 60, 4);
-        //this.set({element: raphaelActivity});
+        this.set({element: raphaelActivity});
         var color = Raphael.getColor();
         raphaelActivity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
         raphaelActivity.drag(move, dragger, up);
@@ -32,6 +32,18 @@ var activity = Backbone.Model.extend({
         return raphaelActivity;
     },
     
+    save: function(attributes, options) {
+      var elem = this.get("element");
+      this.set({cx: elem.attr("x")});
+	  this.set({cy: elem.attr("y")});
+      var that = this;
+      var attrs = ["element"];
+      _.each(attrs, function(attr){ 
+        that.unset(attr);
+      });
+      Backbone.Model.prototype.save.call(this, attributes, options);
+      this.set({element: elem});
+    }
     
 });
 
@@ -44,17 +56,39 @@ var start = Backbone.Model.extend({
         var color = Raphael.getColor();
         start.attr({fill: color, stroke: color, "fill-opacity": 1, "stroke-width": 2, cursor: "move"});
         start.drag(move, dragger, upStart);
+    },
+    
+    save: function(attributes, options) {
+      var elem = this.get("element");
+      this.set({cx: elem.attr("cx")});
+	  this.set({cy: elem.attr("cy")});
+      var that = this;
+      var attrs = ["element"];
+      _.each(attrs, function(attr){ 
+        that.unset(attr);
+      });
+      Backbone.Model.prototype.save.call(this, attributes, options);
+      this.set({element: elem});
     }
 });
 
 var relation = Backbone.Model.extend({
 
     render: function(element) {
-        var relation = connections.push(RaphaelElement.connection(
-        		findBackboneModelById(this.get("startId")), 	// TARVITAAN JOKU JOSTA L�YTYY KYSEISELL� ID:LL� VARUSTETTU ELEMENTTI
-        		findBackboneModelById(this.get("endId")),
-        		"#000")
+	  function getBackboneModelById(id) {
+	    if(ActivityElements.get(id) != null) return ActivityElements.get(id);
+	    else if(StartElements.get(id) != null) return StartElements.get(id);
+	    else if(EndElements.get(id) != null) return EndElements.get(id);
+	    else if(SwimlaneElements.get(id) != null) return SwimlaneElements.get(id);
+	    else if(GatewayElements.get(id) != null) return GatewayElements.get(id);
+	  };
+	
+       var relation = connections.push(RaphaelElement.connection(
+       		getBackboneModelById(this.get("startId")).get("element"), 	// TARVITAAN JOKU JOSTA L�YTYY KYSEISELL� ID:LL� VARUSTETTU ELEMENTTI
+        	getBackboneModelById(this.get("endId")).get("element"),
+        	"#000")
         );
+        
         this.set({element: relation});
 
         var color = Raphael.getColor();
@@ -70,6 +104,19 @@ var end = Backbone.Model.extend({
         var color = Raphael.getColor();
         end.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
         end.drag(move, dragger, up);
+    },
+    
+    save: function(attributes, options) {
+      var elem = this.get("element");
+      this.set({cx: elem.attr("cx")});
+	  this.set({cy: elem.attr("cy")});
+      var that = this;
+      var attrs = ["element"];
+      _.each(attrs, function(attr){ 
+        that.unset(attr);
+      });
+      Backbone.Model.prototype.save.call(this, attributes, options);
+      this.set({element: elem});
     }
 });
 
@@ -94,13 +141,29 @@ var gateway = Backbone.Model.extend({
 		gateway.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
 		gateway.drag(movePath, dragger, up);
 		   
-	}
+	},
+	
+	save: function(attributes, options) {
+      var elem = this.get("element");
+      this.set({cx: elem.attr("x")});
+	  this.set({cy: elem.attr("y")});
+      var that = this;
+      var attrs = ["element"];
+      _.each(attrs, function(attr){ 
+        that.unset(attr);
+      });
+      Backbone.Model.prototype.save.call(this, attributes, options);
+      this.set({element: elem});
+    }
 });
 
+var element = Backbone.Model.extend({
+
+});
 
     
 var AllElementsList = Backbone.Collection.extend({
-	model: start,
+	model: element,
                 
 	url: '/element'
 });

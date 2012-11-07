@@ -18,8 +18,7 @@ object JsonController extends Controller {
 
   def list() = Action { implicit request =>
     val elements = Element.findAll
-    val relations = Relation.findAll
-    Ok(toJson(Seq(toJson(elements), toJson(relations))))
+    Ok(toJson(elements))
   }
 
   def getSwimlane = Action { implicit request =>
@@ -76,7 +75,7 @@ object JsonController extends Controller {
 
   def toElement(id: Int) = Action { request =>
     request.body.asJson.map { json => {
-        val Some(relationId) = (json \ "relationId").asOpt[Int]
+        val Some(relationId) = (json \ "id").asOpt[Int]
         val Some(value) = (json \ "value").asOpt[String]
         val Some(size) = (json \ "size").asOpt[Int]
         val Some(x) = (json \ "cx").asOpt[Int]
