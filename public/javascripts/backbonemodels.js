@@ -1,13 +1,34 @@
 
 var activity = Backbone.Model.extend({
+    apu: render(),
+    
+   
+    
     render: function(element) {
         var activity = RaphaelElement.rect(element.cx, element.cy, 100, 60, 4);
-        this.set({element: activity});
-
-        var color = Raphael.getColor();
-        activity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-        activity.drag(move, dragger, up);
+        //this.set({element: activity}); 
+        
+        //tee funktiokutsu missä setataan activity omaan olioonsa
+        function setRaphael(){
+            var activity = RaphaelElement.rect(element.cx, element.cy, 100, 60, 4);
+            var color = Raphael.getColor();
+            activity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+            activity.drag(move, dragger, up);
+        
+        }
+        
+        function getRaphael(){
+            return activity;
+        }
+            
+        return{
+            get:getRaphael,
+            set:setRaphael        
+            };
+        
+        
     }
+  
 });
 
 var start = Backbone.Model.extend({
@@ -75,8 +96,7 @@ var gateway = Backbone.Model.extend({
 
     
 var AllElementsList = Backbone.Collection.extend({
-	model: start,
-                
+	model: all,        
 	url: '/element'
 });
     
@@ -107,6 +127,23 @@ var GatewayList = Backbone.Collection.extend({
 
 var RelationList = Backbone.Collection.extend({
 	model: relation,
-	url: '/relation'
+	url: '/relation',
+        
+       render: function(){
+         for (var i=0; i<this.length; i++){
+            var relation = this.get(i) 
+               
+               
+            connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
+         }
+       },         
+                
+                
+       makeRelations: function(){
+            
+         
+           
+       } 
+
 });
 

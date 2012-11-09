@@ -9,7 +9,11 @@ var EndElements = new EndList;
 var SwimlaneElements = new SwimlaneList;
 var GatewayElements = new GatewayList;
 var RelationElements = new RelationList;
+
+//all elementsiä ei varmaan tarvitse kollektionina
 var AllElements = new AllElementsList;
+
+
 
 
 window.onload = function() {
