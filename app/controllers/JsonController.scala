@@ -6,17 +6,19 @@ import play.api.mvc._
 import play.api.libs.json.Json.toJson
 import play.api.libs.json._
 import collection.mutable.HashMap
+import service.ProcessElementService
 /**
  * Control all actions related to showing, creating and deleting json objects.
  */
 object JsonController extends Controller {
 
+  val processElementService = new ProcessElementService
+
   //val map = new HashMap[String, Element]() //withDefaultValue("")
 
   def list() = Action { implicit request =>
     val elements = Element.findAll
-    val relations = Relation.findAll
-    Ok(toJson(Seq(toJson(elements), toJson(relations))))
+    Ok(toJson(elements))
   }
 
   def getSwimlane = Action { implicit request =>
@@ -47,6 +49,10 @@ object JsonController extends Controller {
     Ok(toJson(Element.findType("Activity")))
   }
 
+  def getActivityByRelationId(id: Int) = Action { implicit request =>
+    Ok(toJson(Element.findTypeById(id, "Activity")))
+  }
+
   def getActivityByModel(id: Int) = Action { implicit request =>
     Ok(toJson(Element.findTypeByModel(id, "Activity")))
   }
@@ -67,21 +73,20 @@ object JsonController extends Controller {
     Ok(toJson(Relation.findByModel(id)))
   }
 
-  //refactor :/
-  def toElement = Action { request =>
-   println( request.body.asFormUrlEncoded)
-
-    request.body.asJson match {
-      case Some(data) => {
-        println(data)
-        Ok(data)
-
+  def toElement(id: Int) = Action { request =>
+    request.body.asJson.map { json => {
+        val Some(relationId) = (json \ "id").asOpt[Int]
+        val Some(value) = (json \ "value").asOpt[String]
+        val Some(size) = (json \ "size").asOpt[Int]
+        val Some(x) = (json \ "cx").asOpt[Int]
+        val Some(y) = (json \ "cy").asOpt[Int]
+        println(relationId + " " + value + " " + size + " " + x + " " + y)
+        processElementService.update(relationId, value, size, x, y)
+        Redirect(routes.Models.list)
       }
-      case None => NotFound("Not found")
+    }.getOrElse {
+      BadRequest("Expecting Json data")
     }
-    //  val Some(s) = request.body.asJson
-    //  println(s)
-    // 	Ok(s)
   }
 
   /* def getElements(elementType: String) = Action { implicit request =>

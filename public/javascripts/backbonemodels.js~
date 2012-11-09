@@ -1,9 +1,6 @@
 
 var activity = Backbone.Model.extend({
-
-  
-  
-  /* <<<<<<< HEAD
+<<<<<<< HEAD
     apu: render(),
     
    
@@ -33,8 +30,7 @@ var activity = Backbone.Model.extend({
         
     }
   
-======= 
-  
+=======
 	/*idAttribute: "relationId",
 	
 	defaults: {
@@ -80,7 +76,7 @@ var activity = Backbone.Model.extend({
       this.set({element: elem});
     }
     
-
+>>>>>>> b6f1e5fc2761bd31eeac682d3bcc6ae8b9844942
 });
 
 var start = Backbone.Model.extend({

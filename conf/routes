@@ -41,15 +41,20 @@ PUT    	/elements/id=:id&value=:value&size=:size&x=:x&y=:y								controllers.Pr
 GET   	/element									controllers.JsonController.list	
 GET   	/start									    controllers.JsonController.getStart	
 GET   	/start/:id									controllers.JsonController.getStartByModel(id: Int)	
+PUT     /start/:id									controllers.JsonController.toElement(id: Int)
 GET   	/end										controllers.JsonController.getEnd
 GET   	/end/:id									controllers.JsonController.getEndByModel(id: Int)	
+PUT     /end/:id									controllers.JsonController.toElement(id: Int)
 GET   	/swimlane									controllers.JsonController.getSwimlane	
 GET   	/swimlane/:id								controllers.JsonController.getSwimlaneByModel(id: Int)	
 GET   	/activity									controllers.JsonController.getActivity	
-PUT     /activity									controllers.JsonController.toElement
-GET   	/activity/:id								controllers.JsonController.getActivityByModel(id: Int)	
+PUT    /activity/:id								controllers.JsonController.toElement(id: Int)
+#GET   	/activity/:id								controllers.JsonController.getActivityByModel(id: Int)	
+GET		/activity/:id								controllers.JsonController.getActivityByRelationId(id: Int)
+#PUT	/activity/:id								controllers.JsonController.editElement
 GET   	/gateway									controllers.JsonController.getGateway	
-GET   	/gateway/:id							    controllers.JsonController.getGatewayByModel(id: Int)	
+GET   	/gateway/:id							    controllers.JsonController.getGatewayByModel(id: Int)
+PUT     /gateway/:id								controllers.JsonController.toElement(id: Int)	
 GET   	/relation									controllers.JsonController.getRelation	
 GET   	/relation/:id								controllers.JsonController.getRelationByModel(id: Int)	
 

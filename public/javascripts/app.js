@@ -29,6 +29,7 @@ window.onload = function() {
 
 
 function updateall(){
+<<<<<<< HEAD
     
 
 	for (var i=0; i<ActivityElements.length; i++){
@@ -40,8 +41,20 @@ function updateall(){
 		alert("x " +xArvo+ " y " +yArvo+ " cx " + testi.get("cx") + " cy " + testi.get("cy"))
 		testi.collection = ActivityElements;
 		testi.save();
+=======
+	for (var i=0; i<ActivityElements.length; i++) {
+		ActivityElements.at(i).save();
+>>>>>>> b6f1e5fc2761bd31eeac682d3bcc6ae8b9844942
 	}
-   
-    
-    
+	for (var i=0; i<StartElements.length; i++) {
+		StartElements.at(i).save();
+	}
+	for (var i=0; i<EndElements.length; i++) {
+		EndElements.at(i).save();
+	}
+	for (var i=0; i<GatewayElements.length; i++) {
+		GatewayElements.at(i).save();
+	}
+	
+    alert("Elements hopefully saved, now refresh page.");
 } 
