@@ -145,8 +145,8 @@ var gateway = Backbone.Model.extend({
 	
 	save: function(attributes, options) {
       var elem = this.get("element");
-      this.set({cx: elem.attr("x")});
-	  this.set({cy: elem.attr("y")});
+      this.set({cx: elem.attr("ox")});
+	  this.set({cy: elem.attr("oy")});
       var that = this;
       var attrs = ["element"];
       _.each(attrs, function(attr){ 
