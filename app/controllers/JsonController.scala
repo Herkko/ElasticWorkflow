@@ -5,8 +5,11 @@ import play.api._
 import play.api.mvc._
 import play.api.libs.json.Json.toJson
 import play.api.libs.json._
+
 import collection.mutable.HashMap
 import service.ProcessElementService
+
+import app.actions.CORSAction
 /**
  * Control all actions related to showing, creating and deleting json objects.
  */
@@ -16,64 +19,64 @@ object JsonController extends Controller {
 
   //val map = new HashMap[String, Element]() //withDefaultValue("")
 
-  def list() = Action { implicit request =>
+  def list() = CORSAction { implicit request =>
     val elements = Element.findAll
     Ok(toJson(elements))
   }
 
-  def getSwimlane = Action { implicit request =>
+  def getSwimlane = CORSAction { implicit request =>
     Ok(toJson(Element.findType("Swimlane")))
   }
 
-  def getSwimlaneByModel(id: Int) = Action { implicit request =>
+  def getSwimlaneByModel(id: Int) = CORSAction { implicit request =>
     Ok(toJson(Element.findTypeByModel(id, "Swimlane")))
   }
 
-  def getStart = Action { implicit request =>
+  def getStart = CORSAction { implicit request =>
     Ok(toJson(Element.findType("Start")))
   }
 
-  def getStartByModel(id: Int) = Action { implicit request =>
+  def getStartByModel(id: Int) = CORSAction { implicit request =>
     Ok(toJson(Element.findTypeByModel(id, "Start")))
   }
 
-  def getEnd = Action { implicit request =>
+  def getEnd = CORSAction { implicit request =>
     Ok(toJson(Element.findType("End")))
   }
 
-  def getEndByModel(id: Int) = Action { implicit request =>
+  def getEndByModel(id: Int) = CORSAction { implicit request =>
     Ok(toJson(Element.findTypeByModel(id, "End")))
   }
 
-  def getActivity = Action { implicit request =>
+  def getActivity = CORSAction { implicit request =>
     Ok(toJson(Element.findType("Activity")))
   }
 
-  def getActivityByRelationId(id: Int) = Action { implicit request =>
+  def getActivityByRelationId(id: Int) = CORSAction { implicit request =>
     Ok(toJson(Element.findTypeById(id, "Activity")))
   }
 
-  def getActivityByModel(id: Int) = Action { implicit request =>
+  def getActivityByModel(id: Int) = CORSAction { implicit request =>
     Ok(toJson(Element.findTypeByModel(id, "Activity")))
   }
 
-  def getGateway = Action { implicit request =>
+  def getGateway = CORSAction { implicit request =>
     Ok(toJson(Element.findType("Gateway")))
   }
 
-  def getGatewayByModel(id: Int) = Action { implicit request =>
+  def getGatewayByModel(id: Int) = CORSAction { implicit request =>
     Ok(toJson(Element.findTypeByModel(id, "Gateway")))
   }
 
-  def getRelation = Action { implicit request =>
+  def getRelation = CORSAction { implicit request =>
     Ok(toJson(Relation.findAll))
   }
 
-  def getRelationByModel(id: Int) = Action { implicit request =>
+  def getRelationByModel(id: Int) = CORSAction { implicit request =>
     Ok(toJson(Relation.findByModel(id)))
   }
 
-  def toElement(id: Int) = Action { request =>
+  def toElement(id: Int) = CORSAction { request =>
     request.body.asJson.map { json => {
         val Some(relationId) = (json \ "id").asOpt[Int]
         val Some(value) = (json \ "value").asOpt[String]
