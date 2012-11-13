@@ -28,4 +28,13 @@ object Application extends Controller {
   def showEditPage = Action { implicit request =>
     Ok(views.html.edit())
   }
+  
+  def options(url: String) = Action {
+    Ok("").withHeaders(
+      "Access-Control-Allow-Origin" -> "*",
+      "Access-Control-Allow-Methods" -> "GET, POST, PUT, DELETE, OPTIONS",
+      "Access-Control-Allow-Headers" -> "Content-Type, X-Requested-With, Accept",
+      "Access-Control-Max-Age" -> (60 * 60 * 24).toString
+    )
+  }
 }

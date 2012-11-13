@@ -85,7 +85,7 @@ var dragger = function() {
     };
 
     var up = function() {
-        this.animate({"fill-opacity": 0}, 500);       
+        this.animate({"fill-opacity": 0}, 500); 
     };
 
     var upStart = function() {

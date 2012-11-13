@@ -2,7 +2,6 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-#Javascript way to make post/put/delete requests to specified URL. Can be run in Firebug. Doesn't refresh page.
 #	
 #  $.ajax({
 #      url: "/models",
@@ -12,6 +11,8 @@
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+OPTIONS /*url                          controllers.Application.options(url: String)
 
 # Home page
 GET     /                   						controllers.Application.index
@@ -48,7 +49,7 @@ PUT     /end/:id									controllers.JsonController.toElement(id: Int)
 GET   	/swimlane									controllers.JsonController.getSwimlane	
 GET   	/swimlane/:id								controllers.JsonController.getSwimlaneByModel(id: Int)	
 GET   	/activity									controllers.JsonController.getActivity	
-PUT    /activity/:id								controllers.JsonController.toElement(id: Int)
+PUT     /activity/:id								controllers.JsonController.toElement(id: Int)
 #GET   	/activity/:id								controllers.JsonController.getActivityByModel(id: Int)	
 GET		/activity/:id								controllers.JsonController.getActivityByRelationId(id: Int)
 #PUT	/activity/:id								controllers.JsonController.editElement
