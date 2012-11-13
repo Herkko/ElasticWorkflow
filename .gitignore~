@@ -9,4 +9,3 @@ dist
 project
 .target
 .target/models
-bin
