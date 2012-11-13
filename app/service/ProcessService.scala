@@ -7,10 +7,15 @@ import java.util.Date
 class ProcessService {
 
   def create(modelId: Int): Int = {
-    val processId: Int = Process.create(Process(NotAssigned, "Process", new Date()))
-    ModelProcess.create(ModelProcess(NotAssigned, modelId, processId, new Date()))
+    val processId: Int = Process.create(NotAssigned, "Process", new Date())
+    ModelProcess.create(NotAssigned, modelId, processId)
+    processId
   }
-
+  
+  def read(processId: Int): Option[Process] = Process.read(processId)
+  
+  def update(id: Int, name: String) = Process.update(id, name) 
+ 
   def delete(id: Int) = {
     ModelProcess.delete(id)
     Process.delete(id)
@@ -19,4 +24,6 @@ class ProcessService {
   def countByModel(id: Int) = Process.countByModel(id)
   
   def findByModelWithElements(id: Int) = Process.findByModelWithElements(id)
+  
+  def getModelId(processId: Int) : Int = Process.getModelId(processId)
 }

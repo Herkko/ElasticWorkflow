@@ -6,39 +6,100 @@ import play.api.mvc._
 import play.api.libs.json.Json.toJson
 import play.api.libs.json._
 
+import collection.mutable.HashMap
+import service.ProcessElementService
+
+import app.actions.CORSAction
 /**
  * Control all actions related to showing, creating and deleting json objects.
  */
 object JsonController extends Controller {
-  /*
-  implicit object JsonFormat extends Format[JsonObject] {
-    def reads(json: JsValue) = JsonObject(
-      (json \ "type").as[String],
-      (json \ "cx").as[Int],
-      (json \ "cy").as[Int])
 
-    def writes(jsonObject: JsonObject) = JsObject(Seq(
-      "type" -> JsString(jsonObject.`type`),
-      "cx" -> JsNumber(jsonObject.cx),
-      "cy" -> JsNumber(jsonObject.cy)))
+  val processElementService = new ProcessElementService
+
+  //val map = new HashMap[String, Element]() //withDefaultValue("")
+
+  def list() = CORSAction { implicit request =>
+    val elements = Element.findAll
+    Ok(toJson(elements))
   }
 
-  /**
-   * Find all the elements from the database and create json object of each element, using Jerkson. This method can be
-   * accessed by path /json.
-   */
-  def showAll = Action { implicit request =>
-    val jsonElements = JsonObject.findAll
-    Ok(toJson(jsonElements))
-  }*/
-  
-  def getElements(elementType: String) = Action { implicit request =>
+  def getSwimlane = CORSAction { implicit request =>
+    Ok(toJson(Element.findType("Swimlane")))
+  }
+
+  def getSwimlaneByModel(id: Int) = CORSAction { implicit request =>
+    Ok(toJson(Element.findTypeByModel(id, "Swimlane")))
+  }
+
+  def getStart = CORSAction { implicit request =>
+    Ok(toJson(Element.findType("Start")))
+  }
+
+  def getStartByModel(id: Int) = CORSAction { implicit request =>
+    Ok(toJson(Element.findTypeByModel(id, "Start")))
+  }
+
+  def getEnd = CORSAction { implicit request =>
+    Ok(toJson(Element.findType("End")))
+  }
+
+  def getEndByModel(id: Int) = CORSAction { implicit request =>
+    Ok(toJson(Element.findTypeByModel(id, "End")))
+  }
+
+  def getActivity = CORSAction { implicit request =>
+    Ok(toJson(Element.findType("Activity")))
+  }
+
+  def getActivityByRelationId(id: Int) = CORSAction { implicit request =>
+    Ok(toJson(Element.findTypeById(id, "Activity")))
+  }
+
+  def getActivityByModel(id: Int) = CORSAction { implicit request =>
+    Ok(toJson(Element.findTypeByModel(id, "Activity")))
+  }
+
+  def getGateway = CORSAction { implicit request =>
+    Ok(toJson(Element.findType("Gateway")))
+  }
+
+  def getGatewayByModel(id: Int) = CORSAction { implicit request =>
+    Ok(toJson(Element.findTypeByModel(id, "Gateway")))
+  }
+
+  def getRelation = CORSAction { implicit request =>
+    Ok(toJson(Relation.findAll))
+  }
+
+  def getRelationByModel(id: Int) = CORSAction { implicit request =>
+    Ok(toJson(Relation.findByModel(id)))
+  }
+
+  def toElement(id: Int) = CORSAction { request =>
+    request.body.asJson.map { json => {
+        val Some(relationId) = (json \ "id").asOpt[Int]
+        val Some(value) = (json \ "value").asOpt[String]
+        val Some(size) = (json \ "size").asOpt[Int]
+        val Some(x) = (json \ "cx").asOpt[Int]
+        val Some(y) = (json \ "cy").asOpt[Int]
+        println(relationId + " " + value + " " + size + " " + x + " " + y)
+        processElementService.update(relationId, value, size, x, y)
+        Redirect(routes.Models.list)
+      }
+    }.getOrElse {
+      BadRequest("Expecting Json data")
+    }
+  }
+
+  /* def getElements(elementType: String) = Action { implicit request =>
     elementType match {
       case "swimlane" => Ok(toJson(Swimlane.findAll))
       case "start" => Ok(toJson(Start.findAll))  
       case "end" => Ok(toJson(End.findAll))
       case "relation" => Ok(toJson(Relation.findAll))
       case "activity" => Ok(toJson(Activity.findAll))
+      case "gateway" => Ok(toJson(Gateway.findAll))
       case _ => Ok("NotFound")
     }
   }
@@ -50,7 +111,8 @@ object JsonController extends Controller {
       case "end" => Ok(toJson(End.findByModel(id)))
       case "relation" => Ok(toJson(Relation.findByModel(id)))
       case "activity" => Ok(toJson(Activity.findByModel(id))) 
+      case "gateway" => Ok(toJson(Gateway.findByModel(id)))
       case _ => Ok("NotFound")
     }
-  }
+  }*/
 }

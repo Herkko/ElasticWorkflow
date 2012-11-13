@@ -10,7 +10,7 @@ class ApplicationSpec extends Specification {
 
   "The Application controller" should {
     "respond to the index Action" in {
-      val result = controllers.Application.index(FakeRequest())
+      val result = Application.index(FakeRequest())
 
       status(result) must equalTo(OK)
       contentType(result) must beSome("text/html")

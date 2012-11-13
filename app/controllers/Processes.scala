@@ -17,31 +17,47 @@ object Processes extends Controller {
   /**
    * Add new process to a model. Called when a new model is created, or user wants to add a process to existing model.
    * Redirects to a page that lists all models, if model with id equal to parameter modelId doesn't exist.
-   * to fix: processId isnt used anywhere
    */
-  def create(id: Int) = Action { implicit request =>
-    if (modelService.exists(id)) {
-      createNewProcess(id)
-      Redirect(routes.Models.read(id))
-    } else {
-      Redirect(routes.Models.list)
+  def create(modelId: Int) = Action { implicit request =>
+    modelService.read(modelId) match {
+      case Some(model) => {
+        createNewProcess(modelId)
+        Redirect(routes.Models.read(modelId))
+      }
+      case None => NotFound("This Model doesn't exist. Thrown by: " + getClass.getName + " when creating new process.")
     }
   }
 
-  /*
-   * these two methods can be replaced with a method that takes function as parameter
-   */
-  def delete(modelId: Int, id: Int) = Action { implicit request =>
-    if (modelService.exists(modelId)) {
-      relationService.deleteByProcess(id)
-      processElementService.deleteByProcess(id)
-      processService.delete(id)
-      Redirect(routes.Models.read(modelId))
-    } else {
-      Redirect(routes.Models.list)
+  def update(id: Int, name: String) = Action {
+    processService.read(id) match {
+      case Some(process) => {
+        processService.update(id, name)
+        Redirect(routes.Models.read(processService.getModelId(id)))
+      }
+      case None => NotFound("This Process doesn't exist. Thrown by: " + getClass.getName + " when updating process.")
     }
   }
 
+  def delete(id: Int) = Action { implicit request =>
+    processService.read(id) match {
+      case Some(process) => {
+        val modelId = processService.getModelId(id)
+        deleteProcess(id)
+        Redirect(routes.Models.read(modelId))
+      }
+      case None => NotFound("This Process doesn't exist. Thrown by: " + getClass.getName + " when deleting process.")
+    }
+  }
+
+  /**
+   * Delete process along with all the data it contains.
+   */
+  def deleteProcess(id: Int) = {
+    relationService.deleteByProcess(id)
+    processElementService.deleteByProcess(id)
+    processService.delete(id)
+  }
+  
   /**
    * Create new process and set it to belong to a model specified by parameter modelId. Each process by default contains
    * SwimLane and StartElement and no relations.
@@ -49,15 +65,18 @@ object Processes extends Controller {
   def createNewProcess(modelId: Int) = {
     val y = (processService.countByModel(modelId)) * 220 + 20
 
-    val modelProcess = processService.create(modelId);
+    val processId = processService.create(modelId);
+    
+    val elem1 = processElementService.createSwimlane(modelId, processId, 20, y)
+    val elem2 = processElementService.createStart(modelId, processId, 70, y + 110)
+    val elem3 = processElementService.createEnd(modelId, processId, 480, y + 110)
+    val elem4 = processElementService.createActivity(modelId, processId, 170, y + 90)
+    val elem5 = processElementService.createActivity(modelId, processId, 250, y + 90)
+    val elem6 = processElementService.createActivity(modelId, processId, 320, y + 90)
+    val elem7 = processElementService.createGateway(modelId, processId, 300, y + 30)
 
-    val elem1 = processElementService.createSwimlane(modelProcess, 20, y);
-    val elem2 = processElementService.createStart(modelProcess, 70, y + 110);
-    val elem3 = processElementService.createEnd(modelProcess, 480, y + 110);
-    val elem4 = processElementService.createActivity(modelProcess, 170, y + 90);
-    val elem5 = processElementService.createActivity(modelProcess, 250, y + 90);
-    val elem6 = processElementService.createActivity(modelProcess, 320, y + 90);
-
-    val rel = relationService.create(70, y + 70, 170, y + 90, "Relation between Start and End?", elem2, elem3);
+    processElementService.update(elem5, "HI, I have been modified, YAY!", 10, 0, 0)
+    val rel = relationService.create(elem2, elem3, "Relation between Start and End")
+    
   }
 }

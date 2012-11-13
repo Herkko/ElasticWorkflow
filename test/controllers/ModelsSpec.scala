@@ -49,7 +49,7 @@ class ModelsSpec extends Specification {
 
       "create a new model with browser and then see it listed at /models" in {
         running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
-          val Some(before) = routeAndCall(FakeRequest(GET, "/models"))
+          val Some(before) = routeAndCall(FakeRequest(POST, "/models"))
           contentAsString(before) must not contain ("Model: 1")
 
           routeAndCall(FakeRequest(GET, "/models/new"))
@@ -63,7 +63,7 @@ class ModelsSpec extends Specification {
 
       "when no models exist" in {
         running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
-          routeAndCall(FakeRequest(GET, "/models/new"))
+          routeAndCall(FakeRequest(POST, "/models"))
           val Some(result) = routeAndCall(FakeRequest(GET, "/models"))
           contentAsString(result) must contain("Model: 1")
         }
@@ -71,27 +71,57 @@ class ModelsSpec extends Specification {
 
       "when one other model already exists" in {
         running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
-          routeAndCall(FakeRequest(GET, "/models/new"))
-          routeAndCall(FakeRequest(GET, "/models/new"))
+          routeAndCall(FakeRequest(POST, "/models"))
+          routeAndCall(FakeRequest(POST, "/models"))
           val Some(result) = routeAndCall(FakeRequest(GET, "/models"))
           contentAsString(result) must contain("Model: 1")
           contentAsString(result) must contain("Model: 2")
         }
       }
 
-      "have automatically created process in each new model" in {
+      /*   "have automatically created process in each new model" in {
         running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
-          val Some(result) = routeAndCall(FakeRequest(GET, "/models/new"))
+          val Some(result) = routeAndCall(FakeRequest(POST, "/models"))
           status(result) should be equalTo (SEE_OTHER)
           redirectLocation(result) must beSome.which(_ == "/models/1/processes/new")
         }
-      }
+      }*/
 
       "be able to see model page after creating model" in {
         running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
-          val Some(result0) = routeAndCall(FakeRequest(GET, "/models/new"))
+          val Some(result0) = routeAndCall(FakeRequest(POST, "/models"))
           val Some(result) = routeAndCall(FakeRequest(GET, "/models/1"))
           contentAsString(result) must contain("Name: Model")
+        }
+      }
+    }
+
+    "User should be able to update model" >> {
+      "when model with given id exists" in {
+        running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+          routeAndCall(FakeRequest(POST, "/models"))
+          routeAndCall(FakeRequest(PUT, "/models/id=1&name=I+has+new+name!"))
+          val Some(result) = routeAndCall(FakeRequest(GET, "/models/1"))
+
+          contentAsString(result) must contain("Name: I has new name!")
+        }
+      }
+
+      "fail when model with given id doesn't exist" in {
+        running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+          val Some(result) = routeAndCall(FakeRequest(PUT, "/models/id=1&name=I+has+new+name!"))
+          status(result) must equalTo(404)
+        }
+      }
+
+      "failing to change model doesn't affect other models" in {
+        running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+          routeAndCall(FakeRequest(POST, "/models"))
+          val Some(result) = routeAndCall(FakeRequest(PUT, "/models/id=2&name=I+has+new+name!"))
+          status(result) must equalTo(404)
+          
+          val Some(result0) = routeAndCall(FakeRequest(GET, "/models/1"))
+          contentAsString(result0) must not contain("I has new name")
         }
       }
     }

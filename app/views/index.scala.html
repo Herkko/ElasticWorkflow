@@ -2,6 +2,11 @@
 
 @main("Welcome to Play 2.0") {
     
+    <form action="http://localhost:9000/models" method="post">
+      <input type="submit" id="add-model" value="Add Model"/>	
+    </form>
+  
     @play20.welcome(message)
+    
     
 }

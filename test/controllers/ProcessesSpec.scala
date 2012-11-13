@@ -20,34 +20,54 @@ class ProcessesSpec extends Specification {
           contentAsString(before) must contain("Model: 1")
           contentAsString(before) must not contain ("Process: 1")
 
-          routeAndCall(FakeRequest(GET, "/models/1/processes/new"))
+          routeAndCall(FakeRequest(POST, "/models/1/processes"))
           val Some(after) = routeAndCall(FakeRequest(GET, "/models/1"))
           contentAsString(after) must contain("Model: 1")
           contentAsString(after) must contain("Process: 1")
         }
       }
 
-      "have one process added to each new model automatically" in {
+     /* "have one process added to each new model automatically" in {
         running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
-          val Some(result) = routeAndCall(FakeRequest(GET, "/models/new"))
+          val Some(result) = routeAndCall(FakeRequest(POST, "/models"))
           status(result) should be equalTo (SEE_OTHER)
           redirectLocation(result) must beSome.which(_ == "/models/1/processes/new")
         }
-      }
+      }*/
 
       "when model has one process automatically generated" in {
         running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
-          routeAndCall(FakeRequest(GET, "/models/new"))
-          routeAndCall(FakeRequest(GET, "/models/1/processes/new"))
+          routeAndCall(FakeRequest(POST, "/models"))
+          routeAndCall(FakeRequest(POST, "/models/1/processes"))
+          
           val Some(before) = routeAndCall(FakeRequest(GET, "/models/1"))
           contentAsString(before) must contain("Model: 1")
           contentAsString(before) must contain("Process: 1")
 
-          routeAndCall(FakeRequest(GET, "/models/1/processes/new"))
+          routeAndCall(FakeRequest(POST, "/models/1/processes"))
           val Some(after) = routeAndCall(FakeRequest(GET, "/models/1"))
           contentAsString(after) must contain("Model: 1")
           contentAsString(after) must contain("Process: 1")
           contentAsString(after) must contain("Process: 2")
+        }
+      }
+    }
+    
+    "User should be able to update process" >> {
+      "when process with given id exists" in {
+        running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+          routeAndCall(FakeRequest(POST, "/models"))
+          routeAndCall(FakeRequest(PUT, "/processes/id=1&name=My+new+name"))
+          val Some(result) = routeAndCall(FakeRequest(GET, "/models/1"))
+
+          contentAsString(result) must contain("Name: My new name")
+        }
+      }
+
+      "fail when process with given id doesn't exist" in {
+        running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+          val Some(result) = routeAndCall(FakeRequest(PUT, "/processes/id=1&name=My+new+name"))
+          status(result) must equalTo(404)
         }
       }
     }

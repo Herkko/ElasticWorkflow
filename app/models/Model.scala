@@ -6,7 +6,13 @@ import java.util.Date
 import anorm.SqlParser._
 import anorm._
 
-case class Model(id: Pk[Int], name: String, dateCreated: Date)
+case class Model(val id: Pk[Int], val name: String, val dateCreated: Date) 
+//{
+  //def toXML =
+    //{id}
+    //{name}
+    //{dateCreated}
+//}
 
 /**
  * Model is a collection of processes, elements and relations.
@@ -25,14 +31,14 @@ object Model {
   /**
    * Insert new model to database.
    */
-  def create(model: Model): Int = {
+  def create(id: Pk[Int], name: String, dateCreated: Date): Int = {
     DB.withConnection { implicit connection =>
       SQL(""" insert into models values ({id}, {name}, {dateCreated})""").on(
-        "id" -> model.id,
-        "name" -> model.name,
-        "dateCreated" -> model.dateCreated).executeInsert()
+        "id" -> id,
+        "name" -> name,
+        "dateCreated" -> dateCreated).executeInsert()
     } match {
-      case Some(long) => long.intValue()
+      case Some(pk) => pk.intValue()
       case None => throw new Exception("Model couldn't be added to database")
     }
   }
@@ -40,11 +46,22 @@ object Model {
  /**
    * Find a model with a certain id. //TODO What happens if id doesn't exist?
    */
-  def read(id: Int): Model = DB.withConnection { implicit connection =>
+  def read(id: Int): Option[Model] = DB.withConnection { implicit connection =>
     SQL(""" 
         select * from models
 	    where models.id = {id}
-	   """).on('id -> id).as(parse *).head
+	   """).on('id -> id).as(parse *) match {
+      case Nil         => None
+      case model :: xs => Some(model)
+    }
+  }
+   
+  def update(id: Int, name: String): Boolean =  {
+    DB.withConnection { implicit connection =>
+      SQL("""update models 
+          set name = {name} where id = {id}""").
+        on('id -> id, 'name -> name).executeUpdate() == 0
+    }
   }
   
   /**
@@ -65,5 +82,5 @@ object Model {
 		 """).on('id -> id).as(parse *).toList.size == 1
     }
   }
- 
+   
 }
