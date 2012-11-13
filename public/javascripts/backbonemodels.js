@@ -120,7 +120,7 @@ var relation = Backbone.Model.extend({
 	  };
 	
        var relation = connections.push(RaphaelElement.connection(
-       		getBackboneModelById(this.get("startId")).get("element"), 	// TARVITAAN JOKU JOSTA L�YTYY KYSEISELL� ID:LL� VARUSTETTU ELEMENTTI
+       		getBackboneModelById(this.get("startId")).get("element"), 	
         	getBackboneModelById(this.get("endId")).get("element"),
         	"#000")
         );
@@ -199,12 +199,8 @@ var element = Backbone.Model.extend({
 
     
 var AllElementsList = Backbone.Collection.extend({
-<<<<<<< HEAD
-	model: all,        
-=======
+
 	model: element,
-                
->>>>>>> b6f1e5fc2761bd31eeac682d3bcc6ae8b9844942
 	url: '/element'
 });
     

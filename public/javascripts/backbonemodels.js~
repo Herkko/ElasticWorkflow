@@ -1,6 +1,9 @@
 
 var activity = Backbone.Model.extend({
-<<<<<<< HEAD
+
+  
+  
+  /* <<<<<<< HEAD
     apu: render(),
     
    
@@ -30,7 +33,8 @@ var activity = Backbone.Model.extend({
         
     }
   
-=======
+======= 
+  
 	/*idAttribute: "relationId",
 	
 	defaults: {
@@ -76,24 +80,14 @@ var activity = Backbone.Model.extend({
       this.set({element: elem});
     }
     
->>>>>>> b6f1e5fc2761bd31eeac682d3bcc6ae8b9844942
+
 });
 
-<<<<<<< HEAD
-	var StartList = Backbone.Collection.extend({
-		model: StartElement,
-		url: '/json/start'
-	});
-	
-	var ActivityElements = new ActivityList;
-	var StartElements = new StartList;
-=======
 var start = Backbone.Model.extend({
 
     render: function(element) {
         var start = RaphaelElement.circle(element.cx, element.cy, 20);
         this.set({element: start});
->>>>>>> developer
 
         var color = Raphael.getColor();
         start.attr({fill: color, stroke: color, "fill-opacity": 1, "stroke-width": 2, cursor: "move"});
@@ -187,8 +181,8 @@ var gateway = Backbone.Model.extend({
 	
 	save: function(attributes, options) {
       var elem = this.get("element");
-      this.set({cx: elem.attr("x")});
-	  this.set({cy: elem.attr("y")});
+      this.set({cx: elem.attr("ox")});
+	  this.set({cy: elem.attr("oy")});
       var that = this;
       var attrs = ["element"];
       _.each(attrs, function(attr){ 
