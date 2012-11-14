@@ -152,15 +152,21 @@ var end = Backbone.Model.extend({
 });
 
 var swimlane = Backbone.Model.extend({
-
+   //set resizing doesnt work yet
     render: function(element) {
         var swimlane = RaphaelElement.rect(element.cx, element.cy, 500, 300, 1);
         var swimlaneNameBox = RaphaelElement.rect(element.cx, element.cy, 25, 300, 1);
         var swimlaneNameText = RaphaelElement.text(element.cx, element.cy, element.value).attr({fill: "#000000", "font-size": 18}).transform('t12,150r270');      
         this.set({element: swimlane});
         swimlane.attr({stroke: "#000", "stroke-width": 2});
-        swimlane.drag(resize_move, resize_start);
+      //  swimlane.drag(resize_move, resize_start);
         swimlane.toBack();
+        
+        var set = RaphaelElement.set();
+		set.push(swimlane);
+		set.push(swimlaneNameBox);
+		set.drag(resize_move, resize_start);
+		//swimlane.toBack();
     }
 });
 
