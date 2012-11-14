@@ -7,6 +7,11 @@ var AppView = Backbone.View.extend({
      },
      */
     // fetch the list of elements and do a render method
+    
+    //modifikaatio!!
+    
+    
+    
     initialize: function() {
 
         var activitySuccess = function() {
@@ -63,3 +68,5 @@ var ElementsView = Backbone.View.extend({
         return this;
     }
 });
+
+var z = 0;
