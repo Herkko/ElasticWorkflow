@@ -20,11 +20,35 @@ window.onload = function() {
     connections = [];
 
     RaphaelElement = Raphael(10, 100, "100%", "100%");
-
+  
+    
     App = new AppView;
-
-
+    
+   
+    
+  function RenderActivities() {
+     
+       for(var i=0; i<ActivityElements.length; i++){
+        activityElementsView = new ActivityView({model: ActivityElements.models[i]});
+        activityElementsView.render();
+        };     
+        
+   }
+    
+    
+    
+    ActivityElements.fetch({success: RenderActivities});    
+    
+    
+    
+  
+   
+   
 };
+    
+    
+
+
 
 
 function updateall(){

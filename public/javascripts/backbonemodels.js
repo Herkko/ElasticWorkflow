@@ -1,85 +1,11 @@
 
 var activity = Backbone.Model.extend({
-
-  
-  
-  /* <<<<<<< HEAD
-    apu: render(),
     
-   
-    
-    render: function(element) {
-        var activity = RaphaelElement.rect(element.cx, element.cy, 100, 60, 4);
-        //this.set({element: activity}); 
-        
-        //tee funktiokutsu missä setataan activity omaan olioonsa
-        function setRaphael(){
-            var activity = RaphaelElement.rect(element.cx, element.cy, 100, 60, 4);
-            var color = Raphael.getColor();
-            activity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-            activity.drag(move, dragger, up);
-        
-        }
-        
-        function getRaphael(){
-            return activity;
-        }
-            
-        return{
-            get:getRaphael,
-            set:setRaphael        
-            };
-        
-        
+    updateModel: function(){
+       var g = 10;
+      this.save();
     }
   
-======= 
-  
-	/*idAttribute: "relationId",
-	
-	defaults: {
-		value: "Activity"
-	},
-	
-	url: function() {
-		return "activity/" + this.get("id");
-	},
-
-	updateLocation: function(element){
-		var activityRaphaelElement = this.render(element);
-		element.set({cx: activityRaphaelElement.attr("x")});
-		element.set({cy: activityRaphaelElement.attr("y")});
-	},*/
-	
-    render: function(element) {
-    	if (!element) return raphaelActivity;
-    	var i = 10;
-    	var raphaelActivity = RaphaelElement.rect(element.cx, element.cy, 100, 60, 4);
-        this.set({element: raphaelActivity});
-        var color = Raphael.getColor();
-        raphaelActivity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-        raphaelActivity.drag(move, dragger, up);
-        
-        function get(){
-        	return raphaelActivity;
-        }
-        
-        return raphaelActivity;
-    },
-    
-    save: function(attributes, options) {
-      var elem = this.get("element");
-      this.set({cx: elem.attr("x")});
-	  this.set({cy: elem.attr("y")});
-      var that = this;
-      var attrs = ["element"];
-      _.each(attrs, function(attr){ 
-        that.unset(attr);
-      });
-      Backbone.Model.prototype.save.call(this, attributes, options);
-      this.set({element: elem});
-    }
-    
 
 });
 
