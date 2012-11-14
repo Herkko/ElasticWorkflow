@@ -68,15 +68,22 @@ Raphael.fn.connection = function(obj1, obj2, line, bg) {
 
 
 };
-   /* var startText = function() {
-    	this.oBB = this.getBBox();
-	};
-	
-    var moveText = function(dx, dy) {
-        var bb = this.getBBox();
-        this.transform('...T' + [this.oBB.x - bb.x + dx, this.oBB.y - bb.y + dy]);
-    };*/
+   	resize_start = function () {
+       // this.ox = this.attr("x");
+       // this.oy = this.attr("y");
 
+       // this.box.ow = this.box.attr("width");
+       // this.box.oh = this.box.attr("height");  
+       this.ow = this.attr("width");  
+       this.oh = this.attr("height");      
+    },
+    resize_move = function (dx, dy) {
+        // move will be called with dx and dy
+       // this.attr({x: this.ox + dx, y: this.oy + dy});
+       // this.box.attr({width: this.box.ow + dx, height: this.box.oh + dy});
+       this.attr({width: this.ow + dx, height: this.oh + dy});
+    };   
+    
 	var dragger = function() {
         this.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
         this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");

@@ -159,6 +159,7 @@ var swimlane = Backbone.Model.extend({
         var swimlaneNameText = RaphaelElement.text(element.cx, element.cy, element.value).attr({fill: "#000000", "font-size": 18}).transform('t12,150r270');      
         this.set({element: swimlane});
         swimlane.attr({stroke: "#000", "stroke-width": 2});
+        swimlane.drag(resize_move, resize_start);
         swimlane.toBack();
     }
 });
