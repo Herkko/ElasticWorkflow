@@ -63,7 +63,7 @@ var ElementsView = Backbone.View.extend({
 
     render: function(eventName) {
         _.each(this.model.models, function(element) {
-            element.render(element.toJSON());
+            element.render(element.toJSON());e
         }, this);
         return this;
     }

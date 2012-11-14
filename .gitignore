@@ -12,3 +12,4 @@ project
 bin
 *~
 *DS_Store
+public/javascripts/tempppi.*
