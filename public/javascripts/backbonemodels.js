@@ -8,7 +8,7 @@ var activity = Backbone.Model.extend({
         this.set({element: raphaelActivity});
         
         var raphaelText = RaphaelElement.text(element.cx + 50, element.cy + 30, element.value).attr({fill: '#383838', "font-size": 16});
-        this.set({text: raphaelText});
+       // this.set({text: raphaelText});
         
         var color = Raphael.getColor();
         raphaelActivity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
@@ -135,8 +135,8 @@ var gateway = Backbone.Model.extend({
 	
 	save: function(attributes, options) {
       var elem = this.get("element");
-      this.set({cx: elem.attr("ox")});
-	  this.set({cy: elem.attr("oy")});
+      this.set({cx: elem.getBBox().x + elem.getBBox().width/2});
+	  this.set({cy: elem.getBBox().y});
       var that = this;
       var attrs = ["element"];
       _.each(attrs, function(attr){ 
