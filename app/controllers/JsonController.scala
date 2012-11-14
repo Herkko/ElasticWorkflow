@@ -109,7 +109,7 @@ object JsonController extends Controller {
       BadRequest("Expecting Json data")
     } */
     processElementService.createActivity(1, 1, 100, 100);
-    Redirect(routes.Models.list)
+    Ok(views.html.edit())
   }
 
   /* def getElements(elementType: String) = Action { implicit request =>
