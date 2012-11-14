@@ -1,12 +1,17 @@
 var AppView = Backbone.View.extend({
     el: "elements",
     /*
-    events: {
-        'click .clickable': 'handleClick',
-        'change': 'handleChange'
-    },
-    */
+     events: {
+     'click .clickable': 'handleClick',
+     'change': 'handleChange'
+     },
+     */
     // fetch the list of elements and do a render method
+    
+    //modifikaatio!!
+    
+    
+    
     initialize: function() {
 
         var activitySuccess = function() {
@@ -22,12 +27,13 @@ var AppView = Backbone.View.extend({
         var endSuccess = function() {
             var endElementsView = new ElementsView({model: EndElements});
             endElementsView.render();
-		}
+        }
 
         var swimlaneSuccess = function() {
             var swimlaneElementsView = new ElementsView({model: SwimlaneElements});
             swimlaneElementsView.render();
-		}
+
+  }
         
         var gatewaySuccess = function(){
 			var gatewayElementsView = new ElementsView({model:GatewayElements});
@@ -45,24 +51,11 @@ var AppView = Backbone.View.extend({
 	    SwimlaneElements.fetch({success: swimlaneSuccess}),
 		GatewayElements.fetch({success: gatewaySuccess})).then(function() {
 		    RelationElements.fetch({success: relationSuccess});
-		 //	connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), EndElements.at(0).get("element"), "#000"));
-            //connections.push(RaphaelElement.connection(ActivityElements.at(2).get("element"), EndElements.at(0).get("element"), "#000"));
-            //connections.push(RaphaelElement.connection(ActivityElements.at(0).get("element"), GatewayElements.at(0).get("element"), "#000"));
-            //connections.push(RaphaelElement.connection(GatewayElements.at(0).get("element"), ActivityElements.at(1).get("element"), "#000"));
-            //connections.push(RaphaelElement.connection(GatewayElements.at(0).get("element"), ActivityElements.at(2).get("element"), "#000"));
+
 	
 		});
 	}
-    /*
-    , <- MUISTA
-    
-    handleClick: function() {
-        alert("Klikkaus");
-    },
-    handleChange: function() {
-        alert("Muutos");
-    }
-	*/
+   
 
 });
 
@@ -75,3 +68,5 @@ var ElementsView = Backbone.View.extend({
         return this;
     }
 });
+
+var z = 0;

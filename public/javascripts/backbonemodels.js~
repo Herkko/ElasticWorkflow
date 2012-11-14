@@ -120,7 +120,7 @@ var relation = Backbone.Model.extend({
 	  };
 	
        var relation = connections.push(RaphaelElement.connection(
-       		getBackboneModelById(this.get("startId")).get("element"), 	
+       		getBackboneModelById(this.get("startId")).get("element"), 	// TARVITAAN JOKU JOSTA L�YTYY KYSEISELL� ID:LL� VARUSTETTU ELEMENTTI
         	getBackboneModelById(this.get("endId")).get("element"),
         	"#000")
         );
@@ -199,43 +199,47 @@ var element = Backbone.Model.extend({
 
     
 var AllElementsList = Backbone.Collection.extend({
-
+<<<<<<< HEAD
+	model: all,        
+=======
 	model: element,
-	url: 'http://morning-fjord-4117.herokuapp.com/element'
+                
+>>>>>>> b6f1e5fc2761bd31eeac682d3bcc6ae8b9844942
+	url: '/element'
 });
     
 var ActivityList = Backbone.Collection.extend({
     model: activity,
-    url: 'http://morning-fjord-4117.herokuapp.com/activity'
+    url: '/activity'
 });
 
 var StartList = Backbone.Collection.extend({
     model: start,
-    url: 'http://morning-fjord-4117.herokuapp.com/start'
+    url: '/start'
 });
 
 var EndList = Backbone.Collection.extend({
     model: end,
-    url: 'http://morning-fjord-4117.herokuapp.com/end'
+    url: '/end'
 });
 
 var SwimlaneList = Backbone.Collection.extend({
     model: swimlane,
-    url: 'http://morning-fjord-4117.herokuapp.com/swimlane'
+    url: '/swimlane'
 });
 
 var GatewayList = Backbone.Collection.extend({
 	model: gateway,
-	url: 'http://morning-fjord-4117.herokuapp.com/gateway'
+	url: '/gateway'
 });
 
 var RelationList = Backbone.Collection.extend({
 	model: relation,
-	url: 'http://morning-fjord-4117.herokuapp.com/relation',
+	url: '/relation',
         
        render: function(){
          for (var i=0; i<this.length; i++){
-            var relation = this.get(i);
+            var relation = this.get(i) 
                
                
             connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
