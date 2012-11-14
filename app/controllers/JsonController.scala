@@ -91,6 +91,26 @@ object JsonController extends Controller {
       BadRequest("Expecting Json data")
     }
   }
+  
+  def createElement(id: Int) = CORSAction { request =>
+  /*  request.body.asJson.map { json => {
+    	val Some(modelProcessId) = (json \ "modelProcessId").asOpt[Int]
+        val Some(elementTypeId) = (json \ "elementTypeId").asOpt[Int]
+        val Some(relationId) = (json \ "id").asOpt[Int]
+        val Some(value) = (json \ "value").asOpt[String]
+        val Some(size) = (json \ "size").asOpt[Int]
+        val Some(x) = (json \ "cx").asOpt[Int]
+        val Some(y) = (json \ "cy").asOpt[Int]
+       // println(relationId + " " + value + " " + size + " " + x + " " + y)
+        processElementService.createActivity(1, 1, 100, 100);//create(modelProcessId, elementTypeId, relationId, value, x, y)
+        Redirect(routes.Models.list)
+      }
+    }.getOrElse {
+      BadRequest("Expecting Json data")
+    } */
+    processElementService.createActivity(1, 1, 100, 100);
+    Redirect(routes.Models.list)
+  }
 
   /* def getElements(elementType: String) = Action { implicit request =>
     elementType match {
