@@ -69,6 +69,7 @@ Raphael.fn.connection = function(obj1, obj2, line, bg) {
 
 };
 
+
 var dragger = function() {
     this.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
     this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
@@ -83,6 +84,38 @@ var move = function(dx, dy) {
     }
     RaphaelElement.safari();
 };
+
+   	resize_start = function () {
+       // this.ox = this.attr("x");
+       // this.oy = this.attr("y");
+
+       // this.box.ow = this.box.attr("width");
+       // this.box.oh = this.box.attr("height");  
+       this.ow = this.attr("width");  
+       this.oh = this.attr("height");      
+    },
+    resize_move = function (dx, dy) {
+        // move will be called with dx and dy
+       // this.attr({x: this.ox + dx, y: this.oy + dy});
+       // this.box.attr({width: this.box.ow + dx, height: this.box.oh + dy});
+       this.attr({width: this.ow + dx, height: this.oh + dy});
+    };   
+    
+	var dragger = function() {
+        this.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
+        this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
+        this.animate({"fill-opacity": .3}, 500);
+    };
+
+    var move = function(dx, dy) {
+        var att = this.type == "rect" ? {x: this.ox + dx, y: this.oy + dy} : {cx: this.ox + dx, cy: this.oy + dy};
+        this.attr(att);
+        for (var i = connections.length; i--; ) {
+            RaphaelElement.connection(connections[i]);
+        }
+        RaphaelElement.safari();
+    };
+
 
 var up = function() {
     this.animate({"fill-opacity": 0}, 500);

@@ -1,5 +1,6 @@
 
 var activity = Backbone.Model.extend({
+
     
     updateModel: function(){
        var g = 10;
@@ -14,10 +15,50 @@ var start = Backbone.Model.extend({
     render: function(element) {
         var start = RaphaelElement.circle(element.cx, element.cy, 20);
         this.set({element: start});
-
         var color = Raphael.getColor();
         start.attr({fill: color, stroke: color, "fill-opacity": 1, "stroke-width": 2, cursor: "move"});
-        start.drag(move, dragger, upStart);
+        //start.drag(move, dragger, upStart);
+
+		var raphaelText = RaphaelElement.text(element.cx, element.cy, element.value).attr({fill: '#383838', "font-size": 16, cx: element.cx, cy: element.cy});
+		//raphaelText.drag(moveText, startText);
+		
+		var set = RaphaelElement.set();
+		set.push(start);
+		set.push(raphaelText);
+
+    	var ox = 0;
+    	var oy = 0;
+    	var dragging = false;
+    	
+    	set.mousedown(function(event) {
+    		ox = event.screenX;
+   	 		oy = event.screenY;
+   	 		set.attr({
+        		opacity: .5
+    		});
+    		dragging = true;	
+		});
+
+    	$(document).mousemove(function(event) {
+    		if (dragging) {
+        		set.translate(event.screenX - ox, event.screenY - oy);
+       	 		ox = event.screenX;
+        		oy = event.screenY;
+        		for (var i = connections.length; i--; ) {
+            		RaphaelElement.connection(connections[i]);
+        		}
+        		RaphaelElement.safari();
+    		}
+		});
+
+    	set.mouseup(function(event) {
+    		dragging = false;
+    		set.attr({
+        		opacity: 1
+    		});
+		});
+         
+
     },
     
     save: function(attributes, options) {
@@ -86,8 +127,11 @@ var swimlane = Backbone.Model.extend({
 
     render: function(element) {
         var swimlane = RaphaelElement.rect(element.cx, element.cy, 500, 300, 1);
+        var swimlaneNameBox = RaphaelElement.rect(element.cx, element.cy, 25, 300, 1);
+        var swimlaneNameText = RaphaelElement.text(element.cx, element.cy, element.value).attr({fill: "#000000", "font-size": 18}).transform('t12,' + 300/2 + 'r270');      
         this.set({element: swimlane});
         swimlane.attr({stroke: "#000", "stroke-width": 2});
+        swimlane.drag(resize_move, resize_start);
         swimlane.toBack();
     }
 });
@@ -107,8 +151,8 @@ var gateway = Backbone.Model.extend({
 	
 	save: function(attributes, options) {
       var elem = this.get("element");
-      this.set({cx: elem.attr("ox")});
-	  this.set({cy: elem.attr("oy")});
+      this.set({cx: elem.getBBox().x + elem.getBBox().width/2});
+	  this.set({cy: elem.getBBox().y});
       var that = this;
       var attrs = ["element"];
       _.each(attrs, function(attr){ 
@@ -170,10 +214,65 @@ var RelationList = Backbone.Collection.extend({
                 
                 
        makeRelations: function(){
-            
-         
-           
-       } 
-
+               
+       }
 });
 
+function post_to_url(path, params, method) {
+    method = method || "post"; // Set method to post by default, if not specified.
+
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    form.setAttribute("action", path);
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+         }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+};
+
+function newActivity() {
+	activity = new activity();
+	view = new activityView({model: activity});
+	activity.save();
+	activityElements.push(activity);
+};
+
+function newStart() {
+	start = new start();
+	view = new startView({model: start});
+	start.save();
+	startElements.push(start);
+};
+
+function newEnd() {
+	end = new end();
+	view = new endView({model: end});
+	end.save();
+	endElements.push(end);
+};
+
+function newGateway() {
+	gateway = new gateway();
+	view = new gatewayView({model: gateway});
+	gateway.save();
+	gatewayElements.push(gateway);
+};
+
+function newRelation() {
+	relation = new relation();
+	view = new relationView({model: relation});
+	relation.save();
+	relationElements.push(relations);
+};
