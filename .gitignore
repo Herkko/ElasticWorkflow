@@ -11,3 +11,4 @@ project
 .target/models
 bin
 *~
+*DS_Store
