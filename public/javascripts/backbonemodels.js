@@ -235,7 +235,7 @@ var RelationList = Backbone.Collection.extend({
         
        render: function(){
          for (var i=0; i<this.length; i++){
-            var relation = this.get(i) 
+            var relation = this.get(i);
                
                
             connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
