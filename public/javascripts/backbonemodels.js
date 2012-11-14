@@ -201,37 +201,37 @@ var element = Backbone.Model.extend({
 var AllElementsList = Backbone.Collection.extend({
 
 	model: element,
-	url: '/element'
+	url: 'http://morning-fjord-4117.herokuapp.com/element'
 });
     
 var ActivityList = Backbone.Collection.extend({
     model: activity,
-    url: '/activity'
+    url: 'http://morning-fjord-4117.herokuapp.com/activity'
 });
 
 var StartList = Backbone.Collection.extend({
     model: start,
-    url: '/start'
+    url: 'http://morning-fjord-4117.herokuapp.com/start'
 });
 
 var EndList = Backbone.Collection.extend({
     model: end,
-    url: '/end'
+    url: 'http://morning-fjord-4117.herokuapp.com/end'
 });
 
 var SwimlaneList = Backbone.Collection.extend({
     model: swimlane,
-    url: '/swimlane'
+    url: 'http://morning-fjord-4117.herokuapp.com/swimlane'
 });
 
 var GatewayList = Backbone.Collection.extend({
 	model: gateway,
-	url: '/gateway'
+	url: 'http://morning-fjord-4117.herokuapp.com/gateway'
 });
 
 var RelationList = Backbone.Collection.extend({
 	model: relation,
-	url: '/relation',
+	url: 'http://morning-fjord-4117.herokuapp.com/relation',
         
        render: function(){
          for (var i=0; i<this.length; i++){
