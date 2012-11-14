@@ -269,12 +269,6 @@ var function post_to_url(path, params, method) {
     form.submit();
 };
 
-<<<<<<< HEAD
 function newElement(type) {
 	post_to_url("type");
 }
-=======
-function newActivity() {
-	post_to_url("activity/1");
-}
->>>>>>> 29b0d5d4e2f1a80326dc246e183bd267850e15a0
