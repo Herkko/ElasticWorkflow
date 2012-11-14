@@ -12,7 +12,7 @@ var GatewayElements = new GatewayList;
 var RelationElements = new RelationList;
 
 
-var AllElements = new AllElementsList;
+
 
 
 window.onload = function() {
@@ -27,22 +27,67 @@ window.onload = function() {
     
    
     
-  function RenderActivities() {
+  function renderActivities() {
      
        for(var i=0; i<ActivityElements.length; i++){
-        activityElementsView = new ActivityView({model: ActivityElements.models[i]});
-        activityElementsView.render();
+        activityElements = new ActivityView({model: ActivityElements.models[i]});
+        activityElements.render();
         };     
         
    }
     
-    
-    
-    ActivityElements.fetch({success: RenderActivities});    
-    
-    
-    
+  function renderStarts(){
+        for(var i=0; i<StartElements.length; i++){
+        startsViewElement = new StartsView({model: StartElements.models[i]});
+        startsViewElement.render();
+        };  
+      
+  }  
   
+  function renderEnds(){
+        for(var i=0; i<EndElements.length; i++){
+        endsViewElement = new endsView({model: EndElements.models[i]});
+        endsViewElement.render();
+        };  
+  }
+  
+  function renderSwimlanes(){
+       for(var i=0; i<SwimlaneElements.length; i++){
+        swimlanesElement = new swimlanesView({model: SwimlaneElements.models[i]});
+        swimlanesElement.render();
+        };  
+  }
+  
+  
+  function renderGateways(){
+       for(var i=0; i<GatewayElements.length; i++){
+        gatewayElement = new gatewayView({model: GatewayElements.models[i]});
+        gatewayElement.render();
+        };  
+  }
+  
+  
+  function renderRelations(){
+      for(var i=0; i<RelationElements.length; i++){
+        relationViewElement = new relationView({model: RelationElements.models[i]});
+        //relationViewElement.render();
+        }; 
+      
+      
+  }
+  
+    
+    $.when(ActivityElements.fetch({success: renderActivities}),    
+    StartElements.fetch({success: renderStarts}),
+    EndElements.fetch({success: renderEnds}),
+    SwimlaneElements.fetch({success: renderSwimlanes}),
+    GatewayElements.fetch({success: renderGateways}))
+    .then(function() {
+        RelationElements.fetch({success: renderRelations}); 
+    });
+       
+
+    
    
    
 };

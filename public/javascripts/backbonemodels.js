@@ -1,179 +1,78 @@
 
 var activity = Backbone.Model.extend({
 
-    
-    updateModel: function(){
-       var g = 10;
-      this.save();
+
+    updateModel: function() {
+        this.save();
     }
-  
+
 
 });
 
 var start = Backbone.Model.extend({
 
-    render: function(element) {
-        var start = RaphaelElement.circle(element.cx, element.cy, 20);
-        this.set({element: start});
-        var color = Raphael.getColor();
-        start.attr({fill: color, stroke: color, "fill-opacity": 1, "stroke-width": 2, cursor: "move"});
-        //start.drag(move, dragger, upStart);
-
-		var raphaelText = RaphaelElement.text(element.cx, element.cy, element.value).attr({fill: '#383838', "font-size": 16, cx: element.cx, cy: element.cy});
-		//raphaelText.drag(moveText, startText);
-		
-		var set = RaphaelElement.set();
-		set.push(start);
-		set.push(raphaelText);
-
-    	var ox = 0;
-    	var oy = 0;
-    	var dragging = false;
-    	
-    	set.mousedown(function(event) {
-    		ox = event.screenX;
-   	 		oy = event.screenY;
-   	 		set.attr({
-        		opacity: .5
-    		});
-    		dragging = true;	
-		});
-
-    	$(document).mousemove(function(event) {
-    		if (dragging) {
-        		set.translate(event.screenX - ox, event.screenY - oy);
-       	 		ox = event.screenX;
-        		oy = event.screenY;
-        		for (var i = connections.length; i--; ) {
-            		RaphaelElement.connection(connections[i]);
-        		}
-        		RaphaelElement.safari();
-    		}
-		});
-
-    	set.mouseup(function(event) {
-    		dragging = false;
-    		set.attr({
-        		opacity: 1
-    		});
-		});
-         
-
-    },
-    
-    save: function(attributes, options) {
-      var elem = this.get("element");
-      this.set({cx: elem.attr("cx")});
-	  this.set({cy: elem.attr("cy")});
-      var that = this;
-      var attrs = ["element"];
-      _.each(attrs, function(attr){ 
-        that.unset(attr);
-      });
-      Backbone.Model.prototype.save.call(this, attributes, options);
-      this.set({element: elem});
+    updateModel: function() {
+        this.save();
     }
+
 });
 
 var relation = Backbone.Model.extend({
 
-    render: function(element) {
-	  function getBackboneModelById(id) {
-	    if(ActivityElements.get(id) != null) return ActivityElements.get(id);
-	    else if(StartElements.get(id) != null) return StartElements.get(id);
-	    else if(EndElements.get(id) != null) return EndElements.get(id);
-	    else if(SwimlaneElements.get(id) != null) return SwimlaneElements.get(id);
-	    else if(GatewayElements.get(id) != null) return GatewayElements.get(id);
-	  };
-	
-       var relation = connections.push(RaphaelElement.connection(
-       		getBackboneModelById(this.get("startId")).get("element"), 	
-        	getBackboneModelById(this.get("endId")).get("element"),
-        	"#000")
-        );
-        
-        this.set({element: relation});
-
-        var color = Raphael.getColor();
+    
+   
+    init: function() {
+        function getBackboneModelById(id) {
+                    if (ActivityElements.get(id) != null)
+                        return ActivityElements.get(id);
+                    else if (StartElements.get(id) != null)
+                        return StartElements.get(id);
+                    else if (EndElements.get(id) != null)
+                        return EndElements.get(id);
+                    else if (SwimlaneElements.get(id) != null)
+                        return SwimlaneElements.get(id);
+                    else if (GatewayElements.get(id) != null)
+                        return GatewayElements.get(id);
+                }
+        ;
+        this.set({ startPointModel:  getBackboneModelById(this.get("startId")).get("element")}),   
+       
+        this.set({endPointModel:  getBackboneModelById(this.get("endId")).get("element")});
     }
+
+
+
+
 });
 
 var end = Backbone.Model.extend({
 
-    render: function(element) {
-        var end = RaphaelElement.circle(element.cx, element.cy, 20);
-        this.set({element: end});
-
-        var color = Raphael.getColor();
-        end.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-        end.drag(move, dragger, up);
-    },
-    
-    save: function(attributes, options) {
-      var elem = this.get("element");
-      this.set({cx: elem.attr("cx")});
-	  this.set({cy: elem.attr("cy")});
-      var that = this;
-      var attrs = ["element"];
-      _.each(attrs, function(attr){ 
-        that.unset(attr);
-      });
-      Backbone.Model.prototype.save.call(this, attributes, options);
-      this.set({element: elem});
+    updateModel: function() {
+        this.save();
     }
 });
 
 var swimlane = Backbone.Model.extend({
 
-    render: function(element) {
-        var swimlane = RaphaelElement.rect(element.cx, element.cy, 500, 300, 1);
-        var swimlaneNameBox = RaphaelElement.rect(element.cx, element.cy, 25, 300, 1);
-        var swimlaneNameText = RaphaelElement.text(element.cx, element.cy, element.value).attr({fill: "#000000", "font-size": 18}).transform('t12,' + 300/2 + 'r270');      
-        this.set({element: swimlane});
-        swimlane.attr({stroke: "#000", "stroke-width": 2});
-        swimlane.drag(resize_move, resize_start);
-        swimlane.toBack();
+    updateModel: function() {
+        this.save();
     }
+
 });
 
 var gateway = Backbone.Model.extend({
-	
-	
-	render: function(element) {
-		
-		var gateway = RaphaelElement.path('M' + element.cx + ',' + element.cy + 'L' + (element.cx-50) + ',' + (element.cy+50) + 'L' + (element.cx) + ',' + (element.cy+100) + 'L' + (element.cx+50) + ',' + (element.cy+50) + 'Z');
-		this.set({element: gateway});
-		var color = Raphael.getColor();
-		gateway.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-		gateway.drag(movePath, dragger, up);
-		   
-	},
-	
-	save: function(attributes, options) {
-      var elem = this.get("element");
-      this.set({cx: elem.getBBox().x + elem.getBBox().width/2});
-	  this.set({cy: elem.getBBox().y});
-      var that = this;
-      var attrs = ["element"];
-      _.each(attrs, function(attr){ 
-        that.unset(attr);
-      });
-      Backbone.Model.prototype.save.call(this, attributes, options);
-      this.set({element: elem});
+
+    updateModel: function() {
+        this.save();
     }
-});
-
-var element = Backbone.Model.extend({
 
 });
 
-    
-var AllElementsList = Backbone.Collection.extend({
 
-	model: element,
-	url: 'http://morning-fjord-4117.herokuapp.com/element'
-});
-    
+
+
+
+
 var ActivityList = Backbone.Collection.extend({
     model: activity,
     url: 'http://morning-fjord-4117.herokuapp.com/activity'
@@ -195,27 +94,22 @@ var SwimlaneList = Backbone.Collection.extend({
 });
 
 var GatewayList = Backbone.Collection.extend({
-	model: gateway,
-	url: 'http://morning-fjord-4117.herokuapp.com/gateway'
+    model: gateway,
+    url: 'http://morning-fjord-4117.herokuapp.com/gateway'
 });
 
 var RelationList = Backbone.Collection.extend({
-	model: relation,
-	url: 'http://morning-fjord-4117.herokuapp.com/relation',
-        
-       render: function(){
-         for (var i=0; i<this.length; i++){
+    model: relation,
+    url: 'http://morning-fjord-4117.herokuapp.com/relation',
+    render: function() {
+        for (var i = 0; i < this.length; i++) {
             var relation = this.get(i);
-               
-               
+
+
             connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
-         }
-       },         
-                
-                
-       makeRelations: function(){
-               
-       }
+        }
+    }
+
 });
 
 function post_to_url(path, params, method) {
@@ -227,52 +121,58 @@ function post_to_url(path, params, method) {
     form.setAttribute("method", method);
     form.setAttribute("action", path);
 
-    for(var key in params) {
-        if(params.hasOwnProperty(key)) {
+    for (var key in params) {
+        if (params.hasOwnProperty(key)) {
             var hiddenField = document.createElement("input");
             hiddenField.setAttribute("type", "hidden");
             hiddenField.setAttribute("name", key);
             hiddenField.setAttribute("value", params[key]);
 
             form.appendChild(hiddenField);
-         }
+        }
     }
 
     document.body.appendChild(form);
     form.submit();
-};
+}
+;
 
 function newActivity() {
-	activity = new activity();
-	view = new activityView({model: activity});
-	activity.save();
-	activityElements.push(activity);
-};
+    activity = new activity();
+    view = new activityView({model: activity});
+    activity.save();
+    activityElements.push(activity);
+}
+;
 
 function newStart() {
-	start = new start();
-	view = new startView({model: start});
-	start.save();
-	startElements.push(start);
-};
+    start = new start();
+    view = new startView({model: start});
+    start.save();
+    startElements.push(start);
+}
+;
 
 function newEnd() {
-	end = new end();
-	view = new endView({model: end});
-	end.save();
-	endElements.push(end);
-};
+    end = new end();
+    view = new endView({model: end});
+    end.save();
+    endElements.push(end);
+}
+;
 
 function newGateway() {
-	gateway = new gateway();
-	view = new gatewayView({model: gateway});
-	gateway.save();
-	gatewayElements.push(gateway);
-};
+    gateway = new gateway();
+    view = new gatewayView({model: gateway});
+    gateway.save();
+    gatewayElements.push(gateway);
+}
+;
 
 function newRelation() {
-	relation = new relation();
-	view = new relationView({model: relation});
-	relation.save();
-	relationElements.push(relations);
-};
+    relation = new relation();
+    view = new relationView({model: relation});
+    relation.save();
+    relationElements.push(relations);
+}
+;

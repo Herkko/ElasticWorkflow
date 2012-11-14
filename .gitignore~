@@ -9,3 +9,7 @@ dist
 project
 .target
 .target/models
+bin
+*~
+*DS_Store
+public/javascripts/tempppi.*
