@@ -270,5 +270,5 @@ function post_to_url(path, params, method) {
 };
 
 function newElement(type) {
-	post_to_url("type");
+	post_to_url(type);
 }

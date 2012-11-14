@@ -39,22 +39,28 @@ POST	/models/:id/processes/:pId/elements/elemType=:elemType&value=:value&x=:x&y=
 PUT    	/elements/id=:id&value=:value&size=:size&x=:x&y=:y								controllers.ProcessElements.update(id: Int, value: String, size: Int, x: Int, y: Int)
 
 #JSON methods
-GET   	/element									controllers.JsonController.list	
+GET   	/element									controllers.JsonController.list
+	
 GET   	/start									    controllers.JsonController.getStart	
 GET   	/start/:id									controllers.JsonController.getStartByModel(id: Int)	
 PUT     /start/:id									controllers.JsonController.toElement(id: Int)
+
 GET   	/end										controllers.JsonController.getEnd
 GET   	/end/:id									controllers.JsonController.getEndByModel(id: Int)	
 PUT     /end/:id									controllers.JsonController.toElement(id: Int)
+
 GET   	/swimlane									controllers.JsonController.getSwimlane	
 GET   	/swimlane/:id								controllers.JsonController.getSwimlaneByModel(id: Int)	
+
 GET   	/activity									controllers.JsonController.getActivity	
 PUT     /activity/:id								controllers.JsonController.toElement(id: Int)
 POST    /activity/:id								controllers.JsonController.createElement(id: Int)
 GET		/activity/:id								controllers.JsonController.getActivityByRelationId(id: Int)
+
 GET   	/gateway									controllers.JsonController.getGateway	
 GET   	/gateway/:id							    controllers.JsonController.getGatewayByModel(id: Int)
 PUT     /gateway/:id								controllers.JsonController.toElement(id: Int)	
+
 GET   	/relation									controllers.JsonController.getRelation	
 GET   	/relation/:id								controllers.JsonController.getRelationByModel(id: Int)	
 
