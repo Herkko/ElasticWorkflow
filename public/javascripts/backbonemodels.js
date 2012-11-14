@@ -270,5 +270,5 @@ function post_to_url(path, params, method) {
 };
 
 function newActivity() {
-	post_to_url(activity);
+	post_to_url("activity/1");
 }
