@@ -63,7 +63,7 @@ object Processes extends Controller {
    * SwimLane and StartElement and no relations.
    */
   def createNewProcess(modelId: Int) = {
-    val y = (processService.countByModel(modelId)) * 220 + 20
+    val y = (processService.countByModel(modelId)) * 300 + 20
 
     val processId = processService.create(modelId);
     
