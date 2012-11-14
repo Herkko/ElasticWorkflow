@@ -53,14 +53,22 @@
                     <a class="brand" href="#">Elastic Workflow</a>
                     <div class="nav-collapse collapse">
                         <ul class="nav">
-                            <li class="active"><a href="#">Home</a></li>
-                            <li><a href="#about">About</a></li>
+                            <li class="dropdown">
+                			<a href="#" class="dropdown-toggle" data-toggle="dropdown">New <b class="caret"></b></a>
+                				<ul class="dropdown-menu">
+                  					<li><a href="#" onclick="newActivity();return false;">Activity</a></li>
+                  					<li><a href="#" onclick="newStart();return false;">Start</a></li>
+                  					<li><a href="#" onclick="newEnd();return false;">End</a></li>
+                  					<li><a href="#" onclick="newGateway();return false;">Gateway</a></li>
+                  					<li><a href="#" onclick="newRelation();return false;">Relation</a></li>
+                				</ul>
+              				</li>                            
+              				<li><a href="#about">About</a></li>
                             <li><a href="#contact">Contact</a></li>
                         </ul>
                     </div><!--/.nav-collapse -->
                 </div>
             </div>
-     </div>
 		
 	  <div id="mainArea">
 	
