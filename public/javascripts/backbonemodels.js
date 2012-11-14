@@ -43,10 +43,50 @@ var start = Backbone.Model.extend({
     render: function(element) {
         var start = RaphaelElement.circle(element.cx, element.cy, 20);
         this.set({element: start});
-
         var color = Raphael.getColor();
         start.attr({fill: color, stroke: color, "fill-opacity": 1, "stroke-width": 2, cursor: "move"});
-        start.drag(move, dragger, upStart);
+        //start.drag(move, dragger, upStart);
+
+		var raphaelText = RaphaelElement.text(element.cx, element.cy, element.value).attr({fill: '#383838', "font-size": 16, cx: element.cx, cy: element.cy});
+		//raphaelText.drag(moveText, startText);
+		
+		var set = RaphaelElement.set();
+		set.push(start);
+		set.push(raphaelText);
+
+    	var ox = 0;
+    	var oy = 0;
+    	var dragging = false;
+    	
+    	set.mousedown(function(event) {
+    		ox = event.screenX;
+   	 		oy = event.screenY;
+   	 		set.attr({
+        		opacity: .5
+    		});
+    		dragging = true;	
+		});
+
+    	$(document).mousemove(function(event) {
+    		if (dragging) {
+        		set.translate(event.screenX - ox, event.screenY - oy);
+       	 		ox = event.screenX;
+        		oy = event.screenY;
+        		for (var i = connections.length; i--; ) {
+            		RaphaelElement.connection(connections[i]);
+        		}
+        		RaphaelElement.safari();
+    		}
+		});
+
+    	set.mouseup(function(event) {
+    		dragging = false;
+    		set.attr({
+        		opacity: 1
+    		});
+		});
+         
+
     },
     
     save: function(attributes, options) {

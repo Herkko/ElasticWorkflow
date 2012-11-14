@@ -68,8 +68,16 @@ Raphael.fn.connection = function(obj1, obj2, line, bg) {
 
 
 };
+   /* var startText = function() {
+    	this.oBB = this.getBBox();
+	};
+	
+    var moveText = function(dx, dy) {
+        var bb = this.getBBox();
+        this.transform('...T' + [this.oBB.x - bb.x + dx, this.oBB.y - bb.y + dy]);
+    };*/
 
-var dragger = function() {
+	var dragger = function() {
         this.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
         this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
         this.animate({"fill-opacity": .3}, 500);
