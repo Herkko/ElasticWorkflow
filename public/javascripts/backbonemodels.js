@@ -6,6 +6,10 @@ var activity = Backbone.Model.extend({
     	var i = 10;
     	var raphaelActivity = RaphaelElement.rect(element.cx, element.cy, 100, 60, 4);
         this.set({element: raphaelActivity});
+        
+        var raphaelText = RaphaelElement.text(element.cx + 50, element.cy + 30, element.value).attr({fill: '#383838', "font-size": 16});
+        this.set({text: raphaelText});
+        
         var color = Raphael.getColor();
         raphaelActivity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
         raphaelActivity.drag(move, dragger, up);

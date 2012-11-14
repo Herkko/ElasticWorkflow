@@ -19,7 +19,7 @@ window.onload = function() {
 
     connections = [];
 
-    RaphaelElement = Raphael(10, 100, "100%", "100%");
+    RaphaelElement = Raphael(10, 120, "100%", "100%");
 
     App = new AppView;
 
