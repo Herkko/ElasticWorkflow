@@ -245,7 +245,7 @@ var RelationList = Backbone.Collection.extend({
        }
 });
 
-var function post_to_url(path, params, method) {
+function post_to_url(path, params, method) {
     method = method || "post"; // Set method to post by default, if not specified.
 
     // The rest of this code assumes you are not using a library.
