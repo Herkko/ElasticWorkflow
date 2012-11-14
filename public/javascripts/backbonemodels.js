@@ -269,6 +269,37 @@ function post_to_url(path, params, method) {
     form.submit();
 };
 
-function newElement(type) {
-	post_to_url(type);
-}
+function newActivity() {
+	activity = new activity();
+	view = new activityView({model: activity});
+	activity.save();
+	activityElements.push(activity);
+};
+
+function newStart() {
+	start = new start();
+	view = new startView({model: start});
+	start.save();
+	startElements.push(start);
+};
+
+function newEnd() {
+	end = new end();
+	view = new endView({model: end});
+	end.save();
+	endElements.push(end);
+};
+
+function newGateway() {
+	gateway = new gateway();
+	view = new gatewayView({model: gateway});
+	gateway.save();
+	gatewayElements.push(gateway);
+};
+
+function newRelation() {
+	relation = new relation();
+	view = new relationView({model: relation});
+	relation.save();
+	relationElements.push(relations);
+};
