@@ -68,6 +68,23 @@ Raphael.fn.connection = function(obj1, obj2, line, bg) {
 
 
 };
+
+
+var dragger = function() {
+    this.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
+    this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
+    this.animate({"fill-opacity": .3}, 500);
+};
+
+var move = function(dx, dy) {
+    var att = this.type == "rect" ? {x: this.ox + dx, y: this.oy + dy} : {cx: this.ox + dx, cy: this.oy + dy};
+    this.attr(att);
+    for (var i = connections.length; i--; ) {
+        RaphaelElement.connection(connections[i]);
+    }
+    RaphaelElement.safari();
+};
+
    	resize_start = function () {
        // this.ox = this.attr("x");
        // this.oy = this.attr("y");
@@ -99,33 +116,39 @@ Raphael.fn.connection = function(obj1, obj2, line, bg) {
         RaphaelElement.safari();
     };
 
-    var up = function() {
-        this.animate({"fill-opacity": 0}, 500); 
-    };
 
-    var upStart = function() {
-        this.animate({"fill-opacity": 1}, 500);
-    };
-    
-    var startPath = function () {
-    	  this.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
-    	  this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
-    	  this.animate({"fill-opacity": .3}, 500);
-    },
-   
-    movePath = function (dx, dy) {
-    	  var trans_x = (dx)-this.ox;
-    	  var trans_y = (dy)-this.oy;
+var up = function() {
+    this.animate({"fill-opacity": 0}, 500);
+};
 
-    	  this.translate(trans_x,trans_y);
-    	  this.ox = dx;
-    	  this.oy = dy;
-    	  
-    	  for (var i = connections.length; i--; ) {
-              RaphaelElement.connection(connections[i]);
-          }
-    },
+var upStart = function() {
+    this.animate({"fill-opacity": 1}, 500);
+};
+
+var startPath = function() {
+    this.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
+    this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
+    this.animate({"fill-opacity": .3}, 500);
+},
+        movePath = function(dx, dy) {
+    var trans_x = (dx) - this.ox;
+    var trans_y = (dy) - this.oy;
+
+    this.translate(trans_x, trans_y);
+    this.ox = dx;
+    this.oy = dy;
+
+    for (var i = connections.length; i--; ) {
+        RaphaelElement.connection(connections[i]);
+    }
+},
+        upPath = function() {
+    // nothing special
+};
+
+var activityUp = function(){
+   this.animate({"fill-opacity": 0}, 500);
+   //var g = d;
     
-    upPath = function () {
-    	  // nothing special
-    };
+    
+};
