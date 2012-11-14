@@ -1,55 +1,5 @@
 
 var activity = Backbone.Model.extend({
-
-  
-  
-  /* <<<<<<< HEAD
-    apu: render(),
-    
-   
-    
-    render: function(element) {
-        var activity = RaphaelElement.rect(element.cx, element.cy, 100, 60, 4);
-        //this.set({element: activity}); 
-        
-        //tee funktiokutsu missä setataan activity omaan olioonsa
-        function setRaphael(){
-            var activity = RaphaelElement.rect(element.cx, element.cy, 100, 60, 4);
-            var color = Raphael.getColor();
-            activity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-            activity.drag(move, dragger, up);
-        
-        }
-        
-        function getRaphael(){
-            return activity;
-        }
-            
-        return{
-            get:getRaphael,
-            set:setRaphael        
-            };
-        
-        
-    }
-  
-======= 
-  
-	/*idAttribute: "relationId",
-	
-	defaults: {
-		value: "Activity"
-	},
-	
-	url: function() {
-		return "activity/" + this.get("id");
-	},
-
-	updateLocation: function(element){
-		var activityRaphaelElement = this.render(element);
-		element.set({cx: activityRaphaelElement.attr("x")});
-		element.set({cy: activityRaphaelElement.attr("y")});
-	},*/
 	
     render: function(element) {
     	if (!element) return raphaelActivity;
