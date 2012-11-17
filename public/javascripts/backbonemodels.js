@@ -21,7 +21,7 @@ var relation = Backbone.Model.extend({
 
     
    
-    init: function() {
+    initialize: function() {
         function getBackboneModelById(id) {
                     if (ActivityElements.get(id) != null)
                         return ActivityElements.get(id);
@@ -36,7 +36,6 @@ var relation = Backbone.Model.extend({
                 }
         ;
         this.set({ startPointModel:  getBackboneModelById(this.get("startId")).get("element")}),   
-       
         this.set({endPointModel:  getBackboneModelById(this.get("endId")).get("element")});
     }
 

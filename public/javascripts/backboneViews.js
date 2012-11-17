@@ -108,24 +108,28 @@ var StartsView = Backbone.View.extend({
       var raphaelStart = RaphaelElement.circle(this.model.get("cx"), this.model.get("cy"), 20);
       var color = Raphael.getColor();
       raphaelStart.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-      raphaelStart.drag(move, dragger, up);
-      this.el = raphaelStart.node;
+      //raphaelStart.drag(move, dragger, up);
+   //   this.el = raphaelStart.node;
      
-      $(this.el).click(_.bind(function(){this.click()}, this));
+   //   $(this.el).click(_.bind(function(){this.click()}, this));
       
       
-       var raphaelText = RaphaelElement.text(this.model.get("cx"), this.model.get("cy"), this.model.get("value")).attr({fill: '#383838', "font-size": 16, cx: this.model.get("cx"), cy: this.model.get("cy")});
+        var raphaelText = RaphaelElement.text(this.model.get("cx"), this.model.get("cy"), this.model.get("value")).attr({fill: '#383838', "font-size": 16, cx: this.model.get("cx"), cy: this.model.get("cy")});
         //raphaelText.drag(moveText, startText);
 
         var set = RaphaelElement.set();
         set.push(start);
         set.push(raphaelText);
 
+        this.el = set.node;
+      //  $(this.el).click(_.bind(function(){this.click()}, this));
+        
         var ox = 0;
         var oy = 0;
         var dragging = false;
 
         set.mousedown(function(event) {
+        alert("lala");
             ox = event.screenX;
             oy = event.screenY;
             set.attr({
@@ -239,8 +243,7 @@ var endsView = Backbone.View.extend({
 
 var swimlanesView = Backbone.View.extend({
     
-     render: function(element) {
-     
+     render: function(element) {   
         var swimlane = RaphaelElement.rect(this.model.get("cx"), this.model.cy, 500, 300, 1);
         var swimlaneNameBox = RaphaelElement.rect(this.model.get("cx"), this.model.cy, 25, 300, 1);
         var swimlaneNameText = RaphaelElement.text(this.model.get("cx"), this.model.cy, this.model.value).attr({fill: "#000000", "font-size": 18}).transform('t12,' + 300 / 2 + 'r270');
@@ -248,35 +251,20 @@ var swimlanesView = Backbone.View.extend({
         swimlane.attr({stroke: "#000", "stroke-width": 2});
         swimlane.drag(resize_move, resize_start);
         swimlane.toBack();  
-         
-    
-     
-      this.el = swimlane.node;
-     
-      
-  
-      },
-    
-  
+
+        this.el = swimlane.node;  
+      }
 })
-
-
 
 var gatewayView = Backbone.View.extend({
     
-     render: function(){
-         
- 
-     var gateway = RaphaelElement.path('M' + this.model.get("cx") + ',' + this.model.get("cy") + 'L' + (this.model.get("cx") - 50) + ',' + (this.model.get("cy") + 50) + 'L' + (this.model.get("cx")) + ',' + (this.model.get("cy") + 100) + 'L' + (this.model.get("cx") + 50) + ',' + (this.model.get("cy") + 50) + 'Z');
-
-        var color = Raphael.getColor();
+     render: function(){        
+       var gateway = RaphaelElement.path('M' + this.model.get("cx") + ',' + this.model.get("cy") + 'L' + (this.model.get("cx") - 50) + ',' + (this.model.get("cy") + 50) + 'L' + (this.model.get("cx")) + ',' + (this.model.get("cy") + 100) + 'L' + (this.model.get("cx") + 50) + ',' + (this.model.get("cy") + 50) + 'Z');
+       var color = Raphael.getColor();
        gateway.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-       gateway.drag(movePath, dragger, up);
-     
+       gateway.drag(movePath, dragger, up);   
      }
 })
-
-
 
 var relationView = Backbone.View.extend({
     
@@ -284,11 +272,8 @@ var relationView = Backbone.View.extend({
         var startPointti =  this.model.get("startPointModel");
         var endPointti =  this.model.get("endPointModel");
          
-     connections.push(RaphaelElement.connection( this.model.get("startPointModel"), this.model.get("endPointModel"),"#000"));
-         
-         
+        connections.push(RaphaelElement.connection( this.model.get("startPointModel"), this.model.get("endPointModel"),"#000")); 
      }
-     
 })
 
 

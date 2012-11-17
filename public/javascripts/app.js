@@ -70,7 +70,7 @@ window.onload = function() {
   function renderRelations(){
       for(var i=0; i<RelationElements.length; i++){
         relationViewElement = new relationView({model: RelationElements.models[i]});
-        //relationViewElement.render();
+        relationViewElement.render();
         }; 
       
       
