@@ -52,6 +52,7 @@ var StartsView = Backbone.View.extend({
 
     render: function() {
 
+
         var raphaelStart = RaphaelElement.circle(this.model.get("cx"), this.model.get("cy"), 20);
         var color = Raphael.getColor();
         raphaelStart.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
@@ -65,6 +66,7 @@ var StartsView = Backbone.View.extend({
         }, this));
 
 
+
         var raphaelText = RaphaelElement.text(this.model.get("cx"), this.model.get("cy"), this.model.get("value")).attr({fill: '#383838', "font-size": 16, cx: this.model.get("cx"), cy: this.model.get("cy")});
         //raphaelText.drag(moveText, startText);
 
@@ -72,11 +74,15 @@ var StartsView = Backbone.View.extend({
         set.push(start);
         set.push(raphaelText);
 
+        this.el = set.node;
+      //  $(this.el).click(_.bind(function(){this.click()}, this));
+        
         var ox = 0;
         var oy = 0;
         var dragging = false;
 
         set.mousedown(function(event) {
+        alert("lala");
             ox = event.screenX;
             oy = event.screenY;
             set.attr({
@@ -189,7 +195,8 @@ var endsView = Backbone.View.extend({
 
 var swimlanesView = Backbone.View.extend({
 
-    render: function(element) {
+    
+     render: function(element) {   
 
         var swimlane = RaphaelElement.rect(this.model.get("cx"), this.model.cy, 500, 300, 1);
         var swimlaneNameBox = RaphaelElement.rect(this.model.get("cx"), this.model.cy, 25, 300, 1);
@@ -197,6 +204,7 @@ var swimlanesView = Backbone.View.extend({
 
         swimlane.attr({stroke: "#000", "stroke-width": 2});
         swimlane.drag(resize_move, resize_start);
+
         swimlane.toBack();
 
 
@@ -237,8 +245,6 @@ var relationView = Backbone.View.extend({
 
 
     }
-
-
 
 })
 

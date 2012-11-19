@@ -73,8 +73,7 @@ function setUpApplication(){
       
       for(var i=0; i<RelationElements.length; i++){
         relationViewElement = new relationView({model: RelationElements.models[i]});
-        
-          
+
         relationViewElement.render();
         }; 
       
