@@ -10,7 +10,7 @@ var EndElements = new EndList;
 var SwimlaneElements = new SwimlaneList;
 var GatewayElements = new GatewayList;
 var RelationElements = new RelationList;
-
+RaphaelObjects = [];
 
 
 
@@ -18,16 +18,18 @@ var RelationElements = new RelationList;
 window.onload = function() {
 
     connections = [];
-
-
+    
     RaphaelElement = Raphael(10, 120, "100%", "100%");
-
-
     App = new AppView;
+    setUpApplication();
     
+  
    
+};
     
-  function renderActivities() {
+
+function setUpApplication(){
+    function renderActivities() {
      
        for(var i=0; i<ActivityElements.length; i++){
         activityElements = new ActivityView({model: ActivityElements.models[i]});
@@ -66,17 +68,19 @@ window.onload = function() {
         };  
   }
   
-  
   function renderRelations(){
+      
+      
       for(var i=0; i<RelationElements.length; i++){
         relationViewElement = new relationView({model: RelationElements.models[i]});
-        //relationViewElement.render();
+        
+          
+        relationViewElement.render();
         }; 
       
       
   }
   
-    
     $.when(ActivityElements.fetch({success: renderActivities}),    
     StartElements.fetch({success: renderStarts}),
     EndElements.fetch({success: renderEnds}),
@@ -85,16 +89,8 @@ window.onload = function() {
     .then(function() {
         RelationElements.fetch({success: renderRelations}); 
     });
-       
-
-    
-   
-   
-};
-    
-    
-
-
+ 
+}
 
 
 function updateall(){
@@ -113,7 +109,7 @@ function updateall(){
 		GatewayElements.at(i).save();
 	}
 	
-    alert("Elements hopefully saved, now refresh page.");
+    console.log("Elements hopefully saved, now refresh page.");
 } 
 
 function changeText(id, text) {
@@ -129,3 +125,10 @@ function getBackboneModelById(id) {
 	    else if(SwimlaneElements.get(id) != null) return SwimlaneElements.get(id);
 	    else if(GatewayElements.get(id) != null) return GatewayElements.get(id);
 }
+
+function newActivity() {
+    activity = new activity();
+    view = new ActivityView({model: activity});
+    activity.save();
+    activityElements.push(activity);
+};

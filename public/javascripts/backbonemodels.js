@@ -6,11 +6,14 @@ var activity = Backbone.Model.extend({
         this.save();
     }
 
-
 });
 
 var start = Backbone.Model.extend({
-
+    defaults: {
+        cx: 10,
+        cy: 10,        
+    },
+    
     updateModel: function() {
         this.save();
     }
@@ -19,8 +22,6 @@ var start = Backbone.Model.extend({
 
 var relation = Backbone.Model.extend({
 
-    
-   
     init: function() {
         function getBackboneModelById(id) {
                     if (ActivityElements.get(id) != null)
@@ -70,12 +71,11 @@ var gateway = Backbone.Model.extend({
 
 
 
-
-
-
 var ActivityList = Backbone.Collection.extend({
     model: activity,
-    url: 'http://morning-fjord-4117.herokuapp.com/activity'
+    url: 'http://morning-fjord-4117.herokuapp.com/activity',
+    
+    
 });
 
 var StartList = Backbone.Collection.extend({
@@ -104,7 +104,6 @@ var RelationList = Backbone.Collection.extend({
     render: function() {
         for (var i = 0; i < this.length; i++) {
             var relation = this.get(i);
-
 
             connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
         }
@@ -137,17 +136,17 @@ function post_to_url(path, params, method) {
 }
 ;
 
-function newActivity() {
-    activity = new activity();
-    view = new activityView({model: activity});
-    activity.save();
-    activityElements.push(activity);
-}
-;
+//function newActivity() {
+//    activity = new activity();
+//    view = new activityView({model: activity});
+//    activity.save();
+//    activityElements.push(activity);
+//};
 
 function newStart() {
     start = new start();
     view = new startView({model: start});
+    view.render();
     start.save();
     startElements.push(start);
 }
@@ -175,4 +174,4 @@ function newRelation() {
     relation.save();
     relationElements.push(relations);
 }
-;
+
