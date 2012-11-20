@@ -55,7 +55,7 @@ function setUpApplication(){
   function renderSwimlanes(){
        for(var i=0; i<SwimlaneElements.length; i++){
         swimlanesElement = new swimlanesView({model: SwimlaneElements.models[i]});
-        swimlanesElement.render();
+        
         };  
   }
   

@@ -133,6 +133,7 @@ var endsView = Backbone.View.extend({
         }, this));
 
     },
+            
     render: function() {
 
         this.raphaelEnd = RaphaelElement.circle(this.model.get("cx"), this.model.get("cy"), 20);
