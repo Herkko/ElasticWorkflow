@@ -4,75 +4,65 @@ var AppView = Backbone.View.extend({
 
 });
 
-//var ElementsView = Backbone.View.extend({
-//
-//    render: function(eventName) {
-//        _.each(this.model.models, function(element) {
-//            element.render(element.toJSON());
-//        }, this);
-//        return this;
-//    }
-//});
+
 
 var ActivityView = Backbone.View.extend({
 
         
     initialize: function(){
-        this.raphaelActivity = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 100, 60, 4);    
+        this.render();
+        var color = "#000";
+        this.raphaelActivity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+        this.raphaelActivity.drag(move, dragger, up);
         
+        this.el = this.raphaelActivity.node;
+        $(this.el).click(_.bind(function() {this.click()}, this));
+       
+        this.raphaelActivity.attr({data: this.model.get("id")});
+        RaphaelObjects[this.model.get("id")] = this.raphaelActivity;
     },
 
 
-    render: function(element) {
-       
-
+    render: function() {
+       this.raphaelActivity = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 100, 60, 4);    
         
-        var color = Raphael.getColor();
-        this.raphaelActivity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-        this.raphaelActivity.drag(move, dragger, up);
-        this.el = this.raphaelActivity.node;
-        
-        this.raphaelActivity.attr({data: this.model.get("id")});
-        RaphaelObjects[this.model.get("id")] = this.raphaelActivity;
-        
-     
-        $(this.el).click(_.bind(function() {
-            this.click()
-        }, this));
-
-
 
     },
     click: function() {
-        //var raphaelActivity = this.el;
+        var raphaelActivity = this.el;
 
-        this.model.set({cx: this.raphaelActivity.getAttribute("x")});
-        this.model.set({cy: this.raphaelActivity.getAttribute("y")});
+        this.model.set({cx: raphaelActivity.getAttribute("x")});
+        this.model.set({cy: raphaelActivity.getAttribute("y")});
         this.model.updateModel();
     }
 
 });
 
 var StartsView = Backbone.View.extend({
-
-
-    render: function() {
-    //    $(this.el).unbind("click");
-
-        var raphaelStart = RaphaelElement.circle(this.model.get("cx"), this.model.get("cy"), 20);
-        var color = Raphael.getColor();
-        raphaelStart.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-        raphaelStart.drag(move, dragger, up);
-        this.el = raphaelStart.node;
+    
+    
+    initialize: function(){
+        this.render();
+        var color = "red";
+        this.raphaelStart.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+        this.raphaelStart.drag(move, dragger, up);
+        this.el = this.raphaelStart.node;
         
-        raphaelStart.attr({data: this.model.get("id")});
-         RaphaelObjects[this.model.get("id")] = raphaelStart;
+        this.raphaelStart.attr({data: this.model.get("id")});
+         RaphaelObjects[this.model.get("id")] = this.raphaelStart;
         
         $(this.el).click(_.bind(function() {
             this.click()
         }, this));
 
+    },
+    
 
+    render: function() {
+    
+
+        this.raphaelStart = RaphaelElement.circle(this.model.get("cx"), this.model.get("cy"), 20);
+        
 
         var raphaelText = RaphaelElement.text(this.model.get("cx"), this.model.get("cy"), this.model.get("value")).attr({fill: '#383838', "font-size": 16, cx: this.model.get("cx"), cy: this.model.get("cy")});
         //raphaelText.drag(moveText, startText);
@@ -89,7 +79,7 @@ var StartsView = Backbone.View.extend({
         var dragging = false;
 
         set.mousedown(function(event) {
-        alert("lala");
+      
             ox = event.screenX;
             oy = event.screenY;
             set.attr({
@@ -120,8 +110,9 @@ var StartsView = Backbone.View.extend({
 
 
     },
+   
     click: function() {
-        var raphaelStart = this.el;
+       var raphaelStart = this.el;
 
         this.model.set({cx: raphaelStart.getAttribute("x")});
         this.model.set({cy: raphaelStart.getAttribute("y")});
@@ -131,21 +122,29 @@ var StartsView = Backbone.View.extend({
 });
 
 var endsView = Backbone.View.extend({
-    render: function() {
-
-
-        var raphaelEnd = RaphaelElement.circle(this.model.get("cx"), this.model.get("cy"), 20);
+    
+    
+    initialize: function(){
+      this.render();
         var color = Raphael.getColor();
-        raphaelEnd.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-        raphaelEnd.drag(move, dragger, up);
-        this.el = raphaelEnd.node;
-        raphaelEnd.attr({data: this.model.get("id")});
-        RaphaelObjects[this.model.get("id")] = raphaelEnd ;
+        this.raphaelEnd.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+       this.raphaelEnd.drag(move, dragger, up);
+        this.el = this.raphaelEnd.node;
+        this.raphaelEnd.attr({data: this.model.get("id")});
+        RaphaelObjects[this.model.get("id")] = this.raphaelEnd ;
         
         $(this.el).click(_.bind(function() {
             this.click()
         }, this));
 
+    },
+    
+    
+    render: function() {
+
+        this.raphaelEnd = RaphaelElement.circle(this.model.get("cx"), this.model.get("cy"), 20);
+        
+      
 
         var raphaelText = RaphaelElement.text(this.model.get("cx"), this.model.get("cy"), this.model.get("value")).attr({fill: '#383838', "font-size": 16, cx: this.model.get("cx"), cy: this.model.get("cy")});
        // raphaelText.drag(moveText, startText);

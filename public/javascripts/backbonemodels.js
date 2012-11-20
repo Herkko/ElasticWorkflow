@@ -1,6 +1,6 @@
 
 var activity = Backbone.Model.extend({
-
+    
 
     updateModel: function() {
         this.save();
@@ -140,12 +140,13 @@ function post_to_url(path, params, method) {
 }
 ;
 
-//function newActivity() {
-//    activity = new activity();
-//    view = new activityView({model: activity});
-//    activity.save();
-//    activityElements.push(activity);
-//};
+function newActivity() {
+    activity = new activity();
+    view = new activityView({model: activity});
+    activityElements.push(activity);
+    activity.save();
+    
+};
 
 function newStart() {
     start = new start();

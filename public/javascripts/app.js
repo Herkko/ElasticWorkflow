@@ -23,21 +23,16 @@ window.onload = function() {
     App = new AppView;
     setUpApplication();
     
-     setInterval(function() { 
-         console.log("testi");
-         refresh(); }, 4000);
     
-  
-   
-};
     
+}
 
 function setUpApplication(){
     function renderActivities() {
      
        for(var i=0; i<ActivityElements.length; i++){
         activityElements = new ActivityView({model: ActivityElements.models[i]});
-        activityElements.render();
+       // activityElements.render();
         };     
         
    }
@@ -45,7 +40,7 @@ function setUpApplication(){
   function renderStarts(){
         for(var i=0; i<StartElements.length; i++){
         startsViewElement = new StartsView({model: StartElements.models[i]});
-        startsViewElement.render();
+       
         };  
       
   }  
@@ -96,6 +91,13 @@ function setUpApplication(){
 }
 
 
+function refresh(){
+    ActivityElements.fetch();
+    
+    StartElements.fetch();
+    EndElements.fetch();
+    
+}
 
 
 function updateall(){
