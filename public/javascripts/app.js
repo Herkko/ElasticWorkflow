@@ -23,6 +23,10 @@ window.onload = function() {
     App = new AppView;
     setUpApplication();
     
+     setInterval(function() { 
+         console.log("testi");
+         refresh(); }, 4000);
+    
   
    
 };
@@ -90,6 +94,8 @@ function setUpApplication(){
     });
  
 }
+
+
 
 
 function updateall(){
