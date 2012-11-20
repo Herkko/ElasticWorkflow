@@ -85,7 +85,7 @@ object JsonController extends Controller {
         val Some(y) = (json \ "cy").asOpt[String]
         println(relationId + " " + value + " " + size + " " + x + " " + y)
         processElementService.update(relationId, value, size, x.toInt, y.toInt)
-        Redirect(routes.Models.list)
+         Ok(views.html.edit())
       }
     }.getOrElse {
       BadRequest("Expecting Json data")
