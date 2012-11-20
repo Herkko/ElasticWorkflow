@@ -76,7 +76,10 @@ object Processes extends Controller {
     val elem7 = processElementService.createGateway(modelId, processId, 300, y + 30)
 
     processElementService.update(elem5, "HI, I have been modified, YAY!", 10, 0, 0)
-    val rel = relationService.create(elem2, elem3, "Relation between Start and End")
-    
+    val rel = relationService.create(elem2, elem4, "First Relation")
+    val rel1 = relationService.create(elem4, elem5, "Second Relation")
+    val rel2 = relationService.create(elem5, elem6, "Third Relation")
+    val rel3 = relationService.create(elem6, elem3, "Fourth Relation")
+    val rel4 = relationService.create(elem5, elem7, "Fifth Relation")
   }
 }
