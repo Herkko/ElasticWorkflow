@@ -76,15 +76,15 @@ object JsonController extends Controller {
     Ok(toJson(Relation.findByModel(id)))
   }
 
-  def toElement(id: Int) = CORSAction { request =>
+  def toElement(id: Int) = CORSAction { implicit request =>
     request.body.asJson.map { json => {
         val Some(relationId) = (json \ "id").asOpt[Int]
         val Some(value) = (json \ "value").asOpt[String]
         val Some(size) = (json \ "size").asOpt[Int]
-        val Some(x) = (json \ "cx").asOpt[Int]
-        val Some(y) = (json \ "cy").asOpt[Int]
+        val Some(x) = (json \ "cx").asOpt[String]
+        val Some(y) = (json \ "cy").asOpt[String]
         println(relationId + " " + value + " " + size + " " + x + " " + y)
-        processElementService.update(relationId, value, size, x, y)
+        processElementService.update(relationId, value, size, x.toInt, y.toInt)
         Redirect(routes.Models.list)
       }
     }.getOrElse {
