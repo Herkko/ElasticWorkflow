@@ -57,7 +57,7 @@ var StartsView = Backbone.View.extend({
 
 
     render: function() {
-
+    //    $(this.el).unbind("click");
 
         var raphaelStart = RaphaelElement.circle(this.model.get("cx"), this.model.get("cy"), 20);
         var color = Raphael.getColor();

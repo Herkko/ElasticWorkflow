@@ -76,8 +76,8 @@ var gateway = Backbone.Model.extend({
 
 var ActivityList = Backbone.Collection.extend({
     model: activity,
-    url: 'http://morning-fjord-4117.herokuapp.com/activity',
-    
+    url: 'http://morning-fjord-4117.herokuapp.com/activity'
+  //  url: 'http://localhost:9000/activity'
     
 });
 
@@ -104,6 +104,7 @@ var GatewayList = Backbone.Collection.extend({
 var RelationList = Backbone.Collection.extend({
     model: relation,
     url: 'http://morning-fjord-4117.herokuapp.com/relation',
+    
     render: function() {
         for (var i = 0; i < this.length; i++) {
             var relation = this.get(i);
