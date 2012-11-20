@@ -4,30 +4,36 @@ var AppView = Backbone.View.extend({
 
 });
 
-var ElementsView = Backbone.View.extend({
-
-    render: function(eventName) {
-        _.each(this.model.models, function(element) {
-            element.render(element.toJSON());
-        }, this);
-        return this;
-    }
-});
+//var ElementsView = Backbone.View.extend({
+//
+//    render: function(eventName) {
+//        _.each(this.model.models, function(element) {
+//            element.render(element.toJSON());
+//        }, this);
+//        return this;
+//    }
+//});
 
 var ActivityView = Backbone.View.extend({
 
+        
+    initialize: function(){
+        this.raphaelActivity = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 100, 60, 4);    
+        
+    },
+
 
     render: function(element) {
-        var BackBoneModeli = this.model;
+       
 
-        var raphaelActivity = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 100, 60, 4);
-        var color = Raphael.getColor();
-        raphaelActivity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-        raphaelActivity.drag(move, dragger, up);
-        this.el = raphaelActivity.node;
         
-        raphaelActivity.attr({data: this.model.get("id")});
-        RaphaelObjects[this.model.get("id")] = raphaelActivity;
+        var color = Raphael.getColor();
+        this.raphaelActivity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+        this.raphaelActivity.drag(move, dragger, up);
+        this.el = this.raphaelActivity.node;
+        
+        this.raphaelActivity.attr({data: this.model.get("id")});
+        RaphaelObjects[this.model.get("id")] = this.raphaelActivity;
         
      
         $(this.el).click(_.bind(function() {
@@ -38,10 +44,10 @@ var ActivityView = Backbone.View.extend({
 
     },
     click: function() {
-        var raphaelActivity = this.el;
+        //var raphaelActivity = this.el;
 
-        this.model.set({cx: raphaelActivity.getAttribute("x")});
-        this.model.set({cy: raphaelActivity.getAttribute("y")});
+        this.model.set({cx: this.raphaelActivity.getAttribute("x")});
+        this.model.set({cy: this.raphaelActivity.getAttribute("y")});
         this.model.updateModel();
     }
 
@@ -58,6 +64,7 @@ var StartsView = Backbone.View.extend({
         raphaelStart.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
         raphaelStart.drag(move, dragger, up);
         this.el = raphaelStart.node;
+        
         raphaelStart.attr({data: this.model.get("id")});
          RaphaelObjects[this.model.get("id")] = raphaelStart;
         
@@ -240,9 +247,7 @@ var relationView = Backbone.View.extend({
         var endPointti = RaphaelObjects[EndPointId];
 
         connections.push(RaphaelElement.connection(startPointti, endPointti, "#000"));
-        
-        var z = 10;
-
+       
 
     }
 
