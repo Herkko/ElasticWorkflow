@@ -25,8 +25,8 @@ var workflow = {
     },
             
       refresh: function(){
-        ActivityElements.fetch();
-
+        ActivityElements.fetch({error: function() { console.log(arguments); }});
+        
        // StartElements.fetch();
        // EndElements.fetch();
     
@@ -42,7 +42,7 @@ $(document).ready(function() {
     
 //     setInterval(function() {
 //         workflow.refresh(); 
-//     }, 3000);
+//     }, 7000);
    
     
 });
@@ -53,7 +53,7 @@ function setUpApplication(){
     function renderActivities() {
      
        for(var i=0; i<ActivityElements.length; i++){
-        activityElements = new workflow.views.ActivityView({model: ActivityElements.models[i]});
+        activityViwElement = new workflow.views.ActivityView({model: ActivityElements.models[i]});
       
         };     
         

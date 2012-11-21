@@ -24,8 +24,9 @@ workflow.views.ActivityView = Backbone.View.extend({
         
         //binded event for mouseclick and doubleClick
         $(this.el).click(_.bind(function() { this.click()}, this));
-       // $(this.el).dblclick(_.bind(function() { this.editFunc()}, this));
-        this.model.change(_.bind(function() { this.editFunc()}, this));
+        $(this.el).dblclick(_.bind(function() { this.editFunc()}, this));
+        //this.model.change(_.bind(function() { this.change()}, this));
+        this.model.collection.bind('reset', this.change, this);
         //this.model.bind("change", this.render, this);
         
         
@@ -50,9 +51,14 @@ workflow.views.ActivityView = Backbone.View.extend({
         console.log("activityä klikattu, päivitetään")
         this.model.updateModel();
     },
+    change: function(){
+        console.log("muutos view puolella" + JSON.stringify(this.model));
+        this.render;
+    },
         
     editFunc: function(){
         console.log("muuttui");
+       this.render;
       // EditTemplate.startEdit(this.model);
         
         
