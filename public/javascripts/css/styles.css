@@ -1,0 +1,14 @@
+#editElements {
+    float: right;
+    width: 200px;
+    height: 200px;
+    background-color: #655454;  
+    border:appworkspace;
+    border: 1px;
+    
+}
+#elements {
+    background-color: #655454;
+    width: 700px;
+    float: left;
+}
