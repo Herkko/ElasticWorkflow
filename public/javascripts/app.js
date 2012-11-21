@@ -1,74 +1,91 @@
 
-
-var App;
-var RaphaelElement;
-
-
-var ActivityElements = new ActivityList;
-var StartElements = new StartList;
-var EndElements = new EndList;
-var SwimlaneElements = new SwimlaneList;
-var GatewayElements = new GatewayList;
-var RelationElements = new RelationList;
-RaphaelObjects = [];
-
-
-
-
-window.onload = function() {
-
-    connections = [];
+var workflow = {
+    models: {},
+    collections: {},
+    views: {},
     
-    RaphaelElement = Raphael(10, 120, "100%", "100%");
-    App = new AppView;
-    setUpApplication();
+     
+           
+            
+        
+    initialize: function(){
+        //all collections
+        ActivityElements = new workflow.collections.ActivityList();
+        StartElements= new workflow.collections.StartList();
+        EndElements= new workflow.collections.EndList();
+        SwimlaneElements= new workflow.collections.SwimlaneList();
+        GatewayElements= new workflow.collections.GatewayList();
+        RelationElements= new workflow.collections.RelationList();
+        RaphaelObjects= []; 
+        connections = [];
+
+        RaphaelElement = Raphael(10, 120, "100%", "100%");
+        App = new workflow.views.AppView;
+        setUpApplication();
+    },
+            
+      refresh: function(){
+        ActivityElements.fetch({error: function() { console.log(arguments); }});
+        
+       // StartElements.fetch();
+       // EndElements.fetch();
     
-     setInterval(function() { 
-         console.log("testi");
-         refresh(); }, 4000);
-    
+        }      
+            
   
+}
+
+  
+$(document).ready(function() {
+    workflow.initialize();
    
-};
     
+//     setInterval(function() {
+//         workflow.refresh(); 
+//     }, 7000);
+   
+    
+});
+
 
 function setUpApplication(){
+    
     function renderActivities() {
      
        for(var i=0; i<ActivityElements.length; i++){
-        activityElements = new ActivityView({model: ActivityElements.models[i]});
-        activityElements.render();
+        activityViwElement = new workflow.views.ActivityView({model: ActivityElements.models[i]});
+      
         };     
         
    }
     
   function renderStarts(){
         for(var i=0; i<StartElements.length; i++){
-        startsViewElement = new StartsView({model: StartElements.models[i]});
-        startsViewElement.render();
+        startsViewElement = new workflow.views.StartsView({model: StartElements.models[i]});
+       
         };  
       
   }  
   
   function renderEnds(){
         for(var i=0; i<EndElements.length; i++){
-        endsViewElement = new endsView({model: EndElements.models[i]});
-        endsViewElement.render();
+        endsViewElement = new workflow.views.endsView({model: EndElements.models[i]});
+        
         };  
   }
   
   function renderSwimlanes(){
        for(var i=0; i<SwimlaneElements.length; i++){
-        swimlanesElement = new swimlanesView({model: SwimlaneElements.models[i]});
-        swimlanesElement.render();
+        swimlanesElement = new workflow.views.swimlanesView({model: SwimlaneElements.models[i]});
+        
         };  
   }
   
   
   function renderGateways(){
        for(var i=0; i<GatewayElements.length; i++){
-        gatewayElement = new gatewayView({model: GatewayElements.models[i]});
-        gatewayElement.render();
+        gatewayElement = new workflow.views.gatewayView({model: GatewayElements.models[i]});
+      
         };  
   }
   
@@ -76,9 +93,9 @@ function setUpApplication(){
       
       
       for(var i=0; i<RelationElements.length; i++){
-        relationViewElement = new relationView({model: RelationElements.models[i]});
+        relationViewElement = new workflow.views.relationView({model: RelationElements.models[i]});
 
-        relationViewElement.render();
+        
         }; 
       
       
@@ -91,9 +108,11 @@ function setUpApplication(){
     GatewayElements.fetch({success: renderGateways}))
     .then(function() {
         RelationElements.fetch({success: renderRelations}); 
+        //var EditTemplate = new EditElementsView();
     });
  
 }
+
 
 
 

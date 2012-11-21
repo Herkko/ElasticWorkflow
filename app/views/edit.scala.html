@@ -14,10 +14,11 @@
 		<script src="@routes.Assets.at("javascripts/raphael.js")"></script>
 		<script src="@routes.Assets.at("javascripts/underscore.js")"></script>
 		<script src="@routes.Assets.at("javascripts/backbone.js")"></script>
+		<script src="@routes.Assets.at("javascripts/app.js")"></script>
 		<script src="@routes.Assets.at("javascripts/backbonemodels.js")"></script>
 		<script src="@routes.Assets.at("javascripts/backboneViews.js")"></script>
 		<script src="@routes.Assets.at("javascripts/raphaelDrawFunctions.js")"></script>
-		<script src="@routes.Assets.at("javascripts/app.js")"></script>
+		
 		
 
 <!--
@@ -56,15 +57,15 @@
                             <li class="dropdown">
                 			<a href="#" class="dropdown-toggle" data-toggle="dropdown">New <b class="caret"></b></a>
                 				<ul class="dropdown-menu">
-									<li><a href="#" onclick="newActivity();return false;">Activity</a></li>
-                  					<li><a href="#" onclick="newStart();return false;">Start</a></li>
-                  					<li><a href="#" onclick="newEndt();return false;">End</a></li>
-                  					<li><a href="#" onclick="newGateway(');return false;">Gateway</a></li>
-                  					<li><a href="#" onclick="newRelation();return false;">Relation</a></li>
+									<li><a href="#" onclick="uusiActivity();return false;">Activity</a></li>
+                  					<li><a href="#" onclick="uusiStart();return false;">Start</a></li>
+                  					<li><a href="#" onclick="uusiEnd();return false;">End</a></li>
+                  					<li><a href="#" onclick="uusiGateway(');return false;">Gateway</a></li>
+                  					<li><a href="#" onclick="uusiRelation();return false;">Relation</a></li>
                 				</ul>
               				</li>                            
-              				<li><a href="#about">About</a></li>
-                            <li><a href="#contact">Contact</a></li>
+              				<li><a href="#a" onclick="post_to_url(models);return false;">New Model</a></li>
+                            <li><a href="#edit">Muokkaa tekstiä</a></li>
                         </ul>
                     </div><!--/.nav-collapse -->
                 </div>
