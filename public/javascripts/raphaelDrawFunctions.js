@@ -104,10 +104,10 @@ move = function(dx, dy) {
 	}
 		// Move paired element
 	if (this.pair.type != "text") {
-	  var att = this.pair.type == "rect" ? {x: this.pair.ox + dx, y: this.pair.oy + dy} : {cx: this.pair.ox + dx, dy: this.pair.oy + dy};
+	  var att = this.pair.type == "rect" ? {x: this.pair.ox + dx, y: this.pair.oy + dy} : {cx: this.pair.ox + dx, cy: this.pair.oy + dy};
 	  this.pair.attr(att);
 	} else {
-	  var att = this.pair.type == "rect" ? {cx: this.pair.ox + dx, cy: this.pair.oy + dy} : {x: this.pair.ox + dx, y: this.pair.oy + dy};
+	  var att = this.pair.type == "rect" ? {x: this.pair.ox + dx, cy: this.pair.oy + dy} : {x: this.pair.ox + dx, y: this.pair.oy + dy};
       this.pair.attr(att);
 	}
     

@@ -51,6 +51,7 @@ var StartsView = Backbone.View.extend({
         this.raphaelText.attr({fill: '#383838', "font-size": 16, cursor: "move"});
         this.raphaelStart.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
         this.raphaelStart.drag(move, dragger, up);
+        this.raphaelText.drag(move, dragger, up);
         this.el = this.raphaelStart.node;
 
         this.raphaelStart.attr({data: this.model.get("id")});
@@ -133,7 +134,9 @@ var endsView = Backbone.View.extend({
         this.raphaelText.pair = this.raphaelEnd;
         var color = "red";
         this.raphaelEnd.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+        this.raphaelText.attr({fill: '#383838', "font-size": 16, cursor: "move"});
         this.raphaelEnd.drag(move, dragger, up);
+        this.raphaelText.drag(move, dragger, up);
         this.el = this.raphaelEnd.node;
         this.raphaelEnd.attr({data: this.model.get("id")});
         RaphaelObjects[this.model.get("id")] = this.raphaelEnd;
@@ -147,45 +150,44 @@ var endsView = Backbone.View.extend({
     render: function() {
 
         this.raphaelEnd = RaphaelElement.circle(this.model.get("cx"), this.model.get("cy"), 20);
-
-        this.raphaelText = RaphaelElement.text(this.model.get("cx"), this.model.get("cy"), this.model.get("value")).attr({fill: '#383838', "font-size": 16, cx: this.model.get("cx"), cy: this.model.get("cy")});
+        this.raphaelText = RaphaelElement.text(this.model.get("cx"), this.model.get("cy"), this.model.get("value"));
         // raphaelText.drag(moveText, startText);
 
-        var set = RaphaelElement.set();
-        set.push(start);
-        set.push(this.raphaelText);
-
-        var ox = 0;
-        var oy = 0;
-        var dragging = false;
-
-        set.mousedown(function(event) {
-            ox = event.screenX;
-            oy = event.screenY;
-            set.attr({
-                opacity: .5
-            });
-            dragging = true;
-        });
-
-        $(document).mousemove(function(event) {
-            if (dragging) {
-                set.translate(event.screenX - ox, event.screenY - oy);
-                ox = event.screenX;
-                oy = event.screenY;
-                for (var i = connections.length; i--; ) {
-                    RaphaelElement.connection(connections[i]);
-                }
-                RaphaelElement.safari();
-            }
-        });
-
-        set.mouseup(function(event) {
-            dragging = false;
-            set.attr({
-                opacity: 1
-            });
-        });
+//        var set = RaphaelElement.set();
+//        set.push(start);
+//        set.push(this.raphaelText);
+//
+//        var ox = 0;
+//        var oy = 0;
+//        var dragging = false;
+//
+//        set.mousedown(function(event) {
+//            ox = event.screenX;
+//            oy = event.screenY;
+//            set.attr({
+//                opacity: .5
+//            });
+//            dragging = true;
+//        });
+//
+//        $(document).mousemove(function(event) {
+//            if (dragging) {
+//                set.translate(event.screenX - ox, event.screenY - oy);
+//                ox = event.screenX;
+//                oy = event.screenY;
+//                for (var i = connections.length; i--; ) {
+//                    RaphaelElement.connection(connections[i]);
+//                }
+//                RaphaelElement.safari();
+//            }
+//        });
+//
+//        set.mouseup(function(event) {
+//            dragging = false;
+//            set.attr({
+//                opacity: 1
+//            });
+//        });
 
 
 
