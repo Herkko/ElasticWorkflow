@@ -73,7 +73,7 @@ var StartsView = Backbone.View.extend({
 
         this.el = set.node;
       //  $(this.el).click(_.bind(function(){this.click()}, this));
-        
+        /*
         var ox = 0;
         var oy = 0;
         var dragging = false;
@@ -108,7 +108,7 @@ var StartsView = Backbone.View.extend({
         });
 
 
-
+*/
     },
    
     click: function() {
