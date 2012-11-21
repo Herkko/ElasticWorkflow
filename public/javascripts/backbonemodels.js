@@ -1,6 +1,7 @@
 
-var activity = Backbone.Model.extend({
-    
+workflow.models.activity = Backbone.Model.extend({
+	
+	//url: 'http://morning-fjord-4117.herokuapp.com/activity/' + this.relationId,
 
     updateModel: function() {
         this.save();
@@ -8,7 +9,7 @@ var activity = Backbone.Model.extend({
 
 });
 
-var start = Backbone.Model.extend({
+workflow.models.start = Backbone.Model.extend({
     defaults: {
         cx: 10,
         cy: 10,        
@@ -20,7 +21,7 @@ var start = Backbone.Model.extend({
 
 });
 
-var relation = Backbone.Model.extend({
+workflow.models.relation = Backbone.Model.extend({
 
 
     
@@ -49,22 +50,14 @@ var relation = Backbone.Model.extend({
 
 });
 
-var end = Backbone.Model.extend({
+workflow.models.end = Backbone.Model.extend({
 
     updateModel: function() {
         this.save();
     }
 });
 
-var swimlane = Backbone.Model.extend({
-
-    updateModel: function() {
-        this.save();
-    }
-
-});
-
-var gateway = Backbone.Model.extend({
+workflow.models.swimlane = Backbone.Model.extend({
 
     updateModel: function() {
         this.save();
@@ -72,37 +65,44 @@ var gateway = Backbone.Model.extend({
 
 });
 
+workflow.models.gateway = Backbone.Model.extend({
+
+    updateModel: function() {
+        this.save();
+    }
+
+});
 
 
-var ActivityList = Backbone.Collection.extend({
-    model: activity,
+
+workflow.collections.ActivityList = Backbone.Collection.extend({
+    model: workflow.models.activity,
     url: 'http://morning-fjord-4117.herokuapp.com/activity',
-  
- 
+
 });
 
-var StartList = Backbone.Collection.extend({
-    model: start,
+workflow.collections.StartList = Backbone.Collection.extend({
+    model: workflow.models.start,
     url: 'http://morning-fjord-4117.herokuapp.com/start'
 });
 
-var EndList = Backbone.Collection.extend({
-    model: end,
+workflow.collections.EndList = Backbone.Collection.extend({
+    model: workflow.models.end,
     url: 'http://morning-fjord-4117.herokuapp.com/end'
 });
 
-var SwimlaneList = Backbone.Collection.extend({
-    model: swimlane,
+workflow.collections.SwimlaneList = Backbone.Collection.extend({
+    model: workflow.models.swimlane,
     url: 'http://morning-fjord-4117.herokuapp.com/swimlane'
 });
 
-var GatewayList = Backbone.Collection.extend({
-    model: gateway,
+workflow.collections.GatewayList = Backbone.Collection.extend({
+    model: workflow.models.gateway,
     url: 'http://morning-fjord-4117.herokuapp.com/gateway'
 });
 
-var RelationList = Backbone.Collection.extend({
-    model: relation,
+workflow.collections.RelationList = Backbone.Collection.extend({
+    model: workflow.models.relation,
     url: 'http://morning-fjord-4117.herokuapp.com/relation',
     
     render: function() {
@@ -140,20 +140,19 @@ function post_to_url(path, params, method) {
 }
 ;
 
-function newActivity() {
-    activity = new activity();
-    view = new activityView({model: activity});
-    activityElements.push(activity);
-    activity.save();
-    
+function uusActivity() {
+	var uusimodel = new activity({cx:100, cy:200});
+    uusimodel.save();
+    activityElements.add(uusimodel);
+    nakyma = new activityView({model: activity});
 };
 
 function newStart() {
-    start = new start();
-    view = new startView({model: start});
-    view.render();
-    start.save();
-    startElements.push(start);
+	var uusimodel = new start();
+    var nakyma = new StartsView({model: start});
+    nakyma.render();
+    uusimodel.save();
+    startElements.push(uusimodel);
 }
 ;
 
