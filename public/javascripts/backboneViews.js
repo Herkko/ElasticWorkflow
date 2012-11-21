@@ -229,15 +229,17 @@ var gatewayView = Backbone.View.extend({
 
     render: function() {
         this.Raphaelgateway = RaphaelElement.path('M' + this.model.get("cx") + ',' + this.model.get("cy") + 'L' + (this.model.get("cx") - 50) + ',' + (this.model.get("cy") + 50) + 'L' + (this.model.get("cx")) + ',' + (this.model.get("cy") + 100) + 'L' + (this.model.get("cx") + 50) + ',' + (this.model.get("cy") + 50) + 'Z');
-        this.raphaelText = RaphaelElement.text(this.model.get("cx"), this.model.get("cy"), this.model.get("value"));
+        this.raphaelText = RaphaelElement.text(this.model.get("cx"), (this.model.get("cy") + 50), this.model.get("value"));
         this.Raphaelgateway.pair = this.raphaelText;
-        this.raphaelText.pair = this.Raphaelgateway.pair;
+        this.raphaelText.pair = this.Raphaelgateway;
+        this.raphaelText.attr({fill: '#383838', "font-size": 16, cursor: "move"});
         this.Raphaelgateway.attr({data: this.model.get("id")});
         RaphaelObjects[this.model.get("id")] = this.Raphaelgateway;
 
         var color = Raphael.getColor();
         this.Raphaelgateway.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
         this.Raphaelgateway.drag(movePath, dragger, up);
+        this.raphaelText.drag(movePath, dragger, up);
 
     }
 })
