@@ -48,11 +48,11 @@ workflow.views.ActivityView = Backbone.View.extend({
 
         this.model.set({cx: raphaelActivity.getAttribute("x")});
         this.model.set({cy: raphaelActivity.getAttribute("y")});
-        console.log("activityä klikattu, päivitetään")
+        //console.log("activityä klikattu, päivitetään")
         this.model.updateModel();
     },
     change: function(){
-        console.log("muutos view puolella" + JSON.stringify(this.model));
+       // console.log("muutos view puolella" + JSON.stringify(this.model));
         this.render;
     },
         
@@ -99,7 +99,7 @@ workflow.views.StartsView = Backbone.View.extend({
     },
     
     events: {
-    	click: clicked,
+    	"click": "clicked"
     	//dblclick: doubleclicked
     },
     
