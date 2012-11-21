@@ -1,7 +1,13 @@
 
 workflow.models.activity = Backbone.Model.extend({
 	
-	//url: 'http://morning-fjord-4117.herokuapp.com/activity/' + this.relationId,
+	urlRoot: function() {
+		if (!this.id) {
+			return 'http://morning-fjord-4117.herokuapp.com/activity/';
+		} else {
+			return 'http://morning-fjord-4117.herokuapp.com/activity/' + this.id;
+		}
+	},
 
     updateModel: function() {
         this.save();
@@ -141,10 +147,10 @@ function post_to_url(path, params, method) {
 ;
 
 function uusActivity() {
-	var uusimodel = new activity({cx:100, cy:200});
-    uusimodel.save();
-    activityElements.add(uusimodel);
-    nakyma = new activityView({model: activity});
+	var activityModel = new activity({cx:100, cy:200});
+	//activityElements.add(uusimodel);
+	activityModel.save();
+    nakyma = new ActivityView({model: activityModel});
 };
 
 function newStart() {

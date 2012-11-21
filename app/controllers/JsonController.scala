@@ -92,6 +92,11 @@ object JsonController extends Controller {
     }
   }
   
+  def createElement() = CORSAction { request =>
+    processElementService.createActivity(1, 1, 100, 100);
+    Ok(views.html.edit())
+  } 
+  
   def createElement(id: Int) = CORSAction { request =>
   /*  request.body.asJson.map { json => {
     	val Some(modelProcessId) = (json \ "modelProcessId").asOpt[Int]
