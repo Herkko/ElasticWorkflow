@@ -2,41 +2,56 @@ var AppView = Backbone.View.extend({
     el: "elements",
 });
 
-
-
 var ActivityView = Backbone.View.extend({
-
+   
+    events: {
+        "$(this.el).mouseover": "editFunc",
+        
+    },
+    
 
     initialize: function() {
         this.render();
         this.raphaelActivity.pair = this.raphaelText;
         this.raphaelText.pair = this.raphaelActivity;
-        var color = "#000";
+        this.color = "#000";
         this.raphaelText.attr({fill: '#383838', "font-size": 16, cursor: "move"});
-        this.raphaelActivity.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+        this.raphaelActivity.attr({fill: this.color, stroke: this.color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
         this.raphaelActivity.drag(move, dragger, up);
         this.raphaelText.drag(move, dragger, up);
 
         this.el = this.raphaelActivity.node;
-        $(this.el).click(_.bind(function() {
-            this.click()
-        }, this));
-
+        
+        //binded event for mouseclick and doubleClick
+        $(this.el).click(_.bind(function() { this.click()}, this));
+       // $(this.el).dblclick(_.bind(function() { this.editFunc()}, this));
+        
+        //adds id to Raphael Element and stores them to list
         this.raphaelActivity.attr({data: this.model.get("id")});
         RaphaelObjects[this.model.get("id")] = this.raphaelActivity;
     },
+            
     render: function() {
         this.raphaelActivity = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 100, 60, 4);
         this.raphaelText = RaphaelElement.text((this.model.get("cx") + 50), (this.model.get("cy") + 30), this.model.get("value"));
-
     },
+            
     click: function() {
         var raphaelActivity = this.el;
 
         this.model.set({cx: raphaelActivity.getAttribute("x")});
         this.model.set({cy: raphaelActivity.getAttribute("y")});
         this.model.updateModel();
-    }
+    },
+        
+    editFunc: function(){
+        //console.log("doubleclick");
+      // EditTemplate.startEdit(this.model);
+        
+        
+        
+    }        
+            
 
 });
 
@@ -258,3 +273,40 @@ var relationView = Backbone.View.extend({
 })
 
 
+var EditElementsView = Backbone.View.extend({
+   
+    el: $("#editElements"),
+            
+    initialize: function(modelAttribute){
+        this.model = modelAttribute;
+       //käydään kaikki raphael ojektit läpi ja lisätään niille kuuntelu
+       
+        for(var i = 2; i <RaphaelObjects.length; i++){
+            var objekti = RaphaelObjects[i];
+            var objektinNode = objekti.node.el;
+            
+            objektinNode.dblclick(_.bind(function() { this.editFunc()}, this));
+        }
+      
+    },
+    
+   startEdit: function(modelAttribute){
+       this.setModel(modelAttribute);
+        this.render();
+    },       
+            
+    setModel: function(modelAttribute){
+        this.model = modelAttribute;
+    },        
+ 
+    editFunc: function(){
+        console.log("mitä tahansa kliksuteltu");
+    },        
+            
+    render: function(){
+       
+        var html = Mustache.render($("#edit-Template").html(), this.model);
+        $.this.el.html(html);
+    }        
+    
+})

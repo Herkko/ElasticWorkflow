@@ -86,6 +86,7 @@ function setUpApplication(){
     GatewayElements.fetch({success: renderGateways}))
     .then(function() {
         RelationElements.fetch({success: renderRelations}); 
+        var EditTemplate = new EditElementsView();
     });
  
 }
