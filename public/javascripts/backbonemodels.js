@@ -18,7 +18,7 @@ workflow.models.start = Backbone.Model.extend({
     updateModel: function() {
         this.save();
     }
-
+            
 });
 
 workflow.models.relation = Backbone.Model.extend({

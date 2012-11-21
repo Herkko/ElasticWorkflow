@@ -25,15 +25,21 @@ workflow.views.ActivityView = Backbone.View.extend({
         //binded event for mouseclick and doubleClick
         $(this.el).click(_.bind(function() { this.click()}, this));
        // $(this.el).dblclick(_.bind(function() { this.editFunc()}, this));
+        this.model.change(_.bind(function() { this.editFunc()}, this));
+        //this.model.bind("change", this.render, this);
+        
+        
+        
+    },
+            
+    render: function() {
+        
+        this.raphaelActivity = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 100, 60, 4);
+        this.raphaelText = RaphaelElement.text((this.model.get("cx") + 50), (this.model.get("cy") + 30), this.model.get("value"));
         
         //adds id to Raphael Element and stores them to list
         this.raphaelActivity.attr({data: this.model.get("id")});
         RaphaelObjects[this.model.get("id")] = this.raphaelActivity;
-    },
-            
-    render: function() {
-        this.raphaelActivity = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 100, 60, 4);
-        this.raphaelText = RaphaelElement.text((this.model.get("cx") + 50), (this.model.get("cy") + 30), this.model.get("value"));
     },
             
     click: function() {
@@ -41,11 +47,12 @@ workflow.views.ActivityView = Backbone.View.extend({
 
         this.model.set({cx: raphaelActivity.getAttribute("x")});
         this.model.set({cy: raphaelActivity.getAttribute("y")});
+        console.log("activityä klikattu, päivitetään")
         this.model.updateModel();
     },
         
     editFunc: function(){
-        //console.log("doubleclick");
+        console.log("muuttui");
       // EditTemplate.startEdit(this.model);
         
         
@@ -151,9 +158,9 @@ workflow.views.swimlanesView = Backbone.View.extend({
 
     render: function(element) {
 
-        this.swimlane = RaphaelElement.rect(this.model.get("cx"), this.model.cy, 500, 300, 1);
-        this.swimlaneNameBox = RaphaelElement.rect(this.model.get("cx"), this.model.cy, 25, 300, 1);
-        this.swimlaneNameText = RaphaelElement.text(this.model.get("cx"), this.model.cy, this.model.value).attr({fill: "#000000", "font-size": 18}).transform('t12,' + 300 / 2 + 'r270');
+        this.swimlane = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 500, 300, 1);
+        this.swimlaneNameBox = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 25, 300, 1);
+        this.swimlaneNameText = RaphaelElement.text(this.model.get("cx"), this.model.get("cy"), this.model.value).attr({fill: "#000000", "font-size": 18}).transform('t12,' + 300 / 2 + 'r270');
 
         this.swimlane.toBack();
         this.el = this.swimlane.node;
@@ -191,6 +198,10 @@ workflow.views.gatewayView = Backbone.View.extend({
 
 workflow.views.relationView = Backbone.View.extend({
 
+    initialize: function(){
+        this.render();
+    },
+    
 
     render: function() {
         startPointId = this.model.get("startId");

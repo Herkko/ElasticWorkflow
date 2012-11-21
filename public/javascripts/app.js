@@ -23,12 +23,28 @@ var workflow = {
         App = new workflow.views.AppView;
         setUpApplication();
     },
+            
+      refresh: function(){
+        ActivityElements.fetch();
+
+       // StartElements.fetch();
+       // EndElements.fetch();
+    
+        }      
+            
   
 }
 
   
 $(document).ready(function() {
     workflow.initialize();
+   
+    
+//     setInterval(function() {
+//         workflow.refresh(); 
+//     }, 3000);
+   
+    
 });
 
 
@@ -69,7 +85,7 @@ function setUpApplication(){
   function renderGateways(){
        for(var i=0; i<GatewayElements.length; i++){
         gatewayElement = new workflow.views.gatewayView({model: GatewayElements.models[i]});
-        gatewayElement.render();
+      
         };  
   }
   
@@ -79,7 +95,7 @@ function setUpApplication(){
       for(var i=0; i<RelationElements.length; i++){
         relationViewElement = new workflow.views.relationView({model: RelationElements.models[i]});
 
-        relationViewElement.render();
+        
         }; 
       
       
@@ -98,13 +114,7 @@ function setUpApplication(){
 }
 
 
-function refresh(){
-    ActivityElements.fetch();
-    
-    StartElements.fetch();
-    EndElements.fetch();
-    
-}
+
 
 
 function updateall(){
