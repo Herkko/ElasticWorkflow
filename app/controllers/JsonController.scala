@@ -7,69 +7,71 @@ import play.api.libs.json.Json.toJson
 import play.api.libs.json._
 
 import collection.mutable.HashMap
-import service.ProcessElementService
-
+import service.{ ProcessElementService }
+import models.{ ProcessElement, Relation }
 import app.actions.CORSAction
-/**
- * Control all actions related to showing, creating and deleting json objects.
- */
+
+import format.RelationFormat
+import format.ProcessElementFormat
+
 object JsonController extends Controller {
 
+  import RelationFormat._
+  import ProcessElementFormat._
+  
   val processElementService = new ProcessElementService
 
-  //val map = new HashMap[String, Element]() //withDefaultValue("")
-
   def list() = CORSAction { implicit request =>
-    val elements = Element.findAll
+    val elements = ProcessElement.list
     Ok(toJson(elements))
   }
 
   def getSwimlane = CORSAction { implicit request =>
-    Ok(toJson(Element.findType("Swimlane")))
+    Ok(toJson(ProcessElement.findType("Swimlane")))
   }
 
   def getSwimlaneByModel(id: Int) = CORSAction { implicit request =>
-    Ok(toJson(Element.findTypeByModel(id, "Swimlane")))
+    Ok(toJson(ProcessElement.findTypeByModel(id, "Swimlane")))
   }
 
   def getStart = CORSAction { implicit request =>
-    Ok(toJson(Element.findType("Start")))
+    Ok(toJson(ProcessElement.findType("Start")))
   }
 
   def getStartByModel(id: Int) = CORSAction { implicit request =>
-    Ok(toJson(Element.findTypeByModel(id, "Start")))
+    Ok(toJson(ProcessElement.findTypeByModel(id, "Start")))
   }
 
   def getEnd = CORSAction { implicit request =>
-    Ok(toJson(Element.findType("End")))
+    Ok(toJson(ProcessElement.findType("End")))
   }
 
   def getEndByModel(id: Int) = CORSAction { implicit request =>
-    Ok(toJson(Element.findTypeByModel(id, "End")))
+    Ok(toJson(ProcessElement.findTypeByModel(id, "End")))
   }
 
   def getActivity = CORSAction { implicit request =>
-    Ok(toJson(Element.findType("Activity")))
+    Ok(toJson(ProcessElement.findType("Activity")))
   }
 
   def getActivityByRelationId(id: Int) = CORSAction { implicit request =>
-    Ok(toJson(Element.findTypeById(id, "Activity")))
+    Ok(toJson(ProcessElement.findTypeById(id, "Activity")))
   }
 
   def getActivityByModel(id: Int) = CORSAction { implicit request =>
-    Ok(toJson(Element.findTypeByModel(id, "Activity")))
+    Ok(toJson(ProcessElement.findTypeByModel(id, "Activity")))
   }
 
   def getGateway = CORSAction { implicit request =>
-    Ok(toJson(Element.findType("Gateway")))
+    Ok(toJson(ProcessElement.findType("Gateway")))
   }
 
   def getGatewayByModel(id: Int) = CORSAction { implicit request =>
-    Ok(toJson(Element.findTypeByModel(id, "Gateway")))
+    Ok(toJson(ProcessElement.findTypeByModel(id, "Gateway")))
   }
 
   def getRelation = CORSAction { implicit request =>
-    Ok(toJson(Relation.findAll))
+    Ok(toJson(Relation.list))
   }
 
   def getRelationByModel(id: Int) = CORSAction { implicit request =>
@@ -111,28 +113,4 @@ object JsonController extends Controller {
     processElementService.createActivity(1, 1, 100, 100);
     Ok(views.html.edit())
   }
-
-  /* def getElements(elementType: String) = Action { implicit request =>
-    elementType match {
-      case "swimlane" => Ok(toJson(Swimlane.findAll))
-      case "start" => Ok(toJson(Start.findAll))  
-      case "end" => Ok(toJson(End.findAll))
-      case "relation" => Ok(toJson(Relation.findAll))
-      case "activity" => Ok(toJson(Activity.findAll))
-      case "gateway" => Ok(toJson(Gateway.findAll))
-      case _ => Ok("NotFound")
-    }
-  }
-  
-  def getElementsByModel(elementType: String, id: Int) = Action { implicit request =>
-    elementType match {
-      case "swimlane" => Ok(toJson(Swimlane.findByModel(id)))
-      case "start" => Ok(toJson(Start.findByModel(id)))  
-      case "end" => Ok(toJson(End.findByModel(id)))
-      case "relation" => Ok(toJson(Relation.findByModel(id)))
-      case "activity" => Ok(toJson(Activity.findByModel(id))) 
-      case "gateway" => Ok(toJson(Gateway.findByModel(id)))
-      case _ => Ok("NotFound")
-    }
-  }*/
 }
