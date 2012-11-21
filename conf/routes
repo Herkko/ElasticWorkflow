@@ -41,11 +41,13 @@ PUT    	/elements/id=:id&value=:value&size=:size&x=:x&y=:y								controllers.Pr
 #JSON methods
 GET   	/element									controllers.JsonController.list
 	
-GET   	/start									    controllers.JsonController.getStart	
+GET   	/start									    controllers.JsonController.getStart
+POST    /start										controllers.JsonController.createStart()	
 GET   	/start/:id									controllers.JsonController.getStartByModel(id: Int)	
 PUT     /start/:id									controllers.JsonController.toElement(id: Int)
 
 GET   	/end										controllers.JsonController.getEnd
+POST    /end										controllers.JsonController.createEnd()
 GET   	/end/:id									controllers.JsonController.getEndByModel(id: Int)	
 PUT     /end/:id									controllers.JsonController.toElement(id: Int)
 
@@ -58,10 +60,12 @@ POST    /activity									controllers.JsonController.createElement()
 GET		/activity/:id								controllers.JsonController.getActivityByRelationId(id: Int)
 
 GET   	/gateway									controllers.JsonController.getGateway	
+POST    /gateway									controllers.JsonController.createGateway()
 GET   	/gateway/:id							    controllers.JsonController.getGatewayByModel(id: Int)
 PUT     /gateway/:id								controllers.JsonController.toElement(id: Int)	
 
-GET   	/relation									controllers.JsonController.getRelation	
+GET   	/relation									controllers.JsonController.getRelation
+POST    /relation									controllers.JsonController.createRelation()	
 GET   	/relation/:id								controllers.JsonController.getRelationByModel(id: Int)	
 
 #Pages which show javascript
