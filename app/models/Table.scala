@@ -23,11 +23,11 @@ trait Table {
 trait TableCommon[T <: Table] {
 
   val table: String
-  val createCommand: String
-  val readCommand: String
-  val updateCommand: String
-  val deleteCommand: String
-  val listCommand: String
+  val createQuery: String
+  val readQuery: String
+  val updateQuery: String
+  val deleteQuery: String
+  val listQuery: String
 
   implicit def toParams[T](params: Seq[(String, T)]) = {
     params.map { param => param._1 -> anorm.toParameterValue(param._2) }
@@ -36,8 +36,9 @@ trait TableCommon[T <: Table] {
   def parse(as: String = ""): RowParser[T]
 
   def create(table: T): Long = {
+    println("Creating " + table +  " with data " + table.toSeq)
     DB.withConnection { implicit connection =>
-      SQL(createCommand.format(table))
+      SQL(createQuery)
         .on(toParams(table.toSeq): _*).executeInsert() 
     } match {
       case Some(pk) => pk
@@ -47,7 +48,7 @@ trait TableCommon[T <: Table] {
 
   def read(id: Long): Option[T] = {
     DB.withConnection { implicit connection =>
-      SQL(readCommand.format(table))
+      SQL(readQuery)
         .on('id -> id).as(parse(table + '.') *)
     } match {
       case table :: xs => Some(table)
@@ -61,14 +62,14 @@ trait TableCommon[T <: Table] {
 
   def update(table: T): Int = {
     DB.withConnection { implicit connection =>
-      SQL(updateCommand.format(table))
+      SQL(updateQuery)
         .on(toParams(table.toSeq): _*).executeUpdate()
     }
   }
 
   def delete(id: Long): Int = {
     DB.withConnection { implicit connection =>
-      SQL(deleteCommand.format(table))
+      SQL(deleteQuery)
         .on('id -> id).executeUpdate()
     }
   }
@@ -79,7 +80,13 @@ trait TableCommon[T <: Table] {
 
   def list(): List[T] = {
     DB.withConnection { implicit connection =>
-      SQL(listCommand.format(table)).as(parse(table + '.') *)
+      SQL(listQuery).as(parse(table + '.') *)
+    }
+  }
+  
+  def contains(id: Int): Boolean = {
+    DB.withConnection { implicit connection =>
+      SQL(readQuery).on('id -> id).as(parse(table + '.') *).toList.size == 1
     }
   }
 

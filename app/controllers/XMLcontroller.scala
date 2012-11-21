@@ -6,14 +6,12 @@ import scala.xml.Text
 import scala.xml.XML
 import scala.xml.Null
 import scala.xml.Attribute
-import service.{ ModelService, ProcessService, RelationService}
+
 import models.{ Process, ProcessElement, Model, Relation }
 
 object XMLcontroller extends Controller {
 
-  val processService = new ProcessService
-  val modelService = new ModelService
-  val relationService = new RelationService
+
   /* def tag(name: String, content: Seq[Node]): Node =
     <xml></xml>.copy(label = name, child = content)
 
@@ -31,9 +29,9 @@ object XMLcontroller extends Controller {
   }*/*/
 
   def modelToXML(id: Int) = Action {
-    val model = modelService.read(id)
-    val processes = processService.findByModelWithElements(id)
-    val relations = relationService.findByModel(id)
+    val model = Model.read(id)
+    val processes = Process.findByModelWithElements(id)
+    val relations = Relation.findByModel(id)
     
     model match {     
       case Some(model) => Ok(toXML(model, processes, relations)).as("text/xml")
@@ -70,7 +68,7 @@ object XMLcontroller extends Controller {
     <ProcessElement>
       <modelProcessId>{ p.modelProcessId }</modelProcessId>
       <elementTypeId>{ p.elementTypeId }</elementTypeId>
-      <relationId>{ p.relationId }</relationId>
+      <relationId>{ p.id }</relationId>
       <value>{ p.value }</value>
       <size>{ p.size }</size>
       <x>{ p.x }</x>

@@ -97,13 +97,19 @@ workflow.views.StartsView = Backbone.View.extend({
         this.raphaelText = RaphaelElement.text(this.model.get("cx"), this.model.get("cy"), this.model.get("value"));
      
     },
-    click: function() {
+    
+    events: {
+    	click: clicked,
+    	//dblclick: doubleclicked
+    },
+    
+    clicked: function() {
         var raphaelStart = this.el;
 
         this.model.set({cx: raphaelStart.getAttribute("x")});
         this.model.set({cy: raphaelStart.getAttribute("y")});
         this.model.updateModel();
-    }
+    },
 
 });
 
@@ -171,7 +177,8 @@ workflow.views.swimlanesView = Backbone.View.extend({
         this.swimlane.toBack();
         this.el = this.swimlane.node;
 
-    },
+    }
+    
 })
 
 workflow.views.gatewayView = Backbone.View.extend({

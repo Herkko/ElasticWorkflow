@@ -7,77 +7,53 @@ import play.api.libs.json.Json.toJson
 import play.api.libs.json._
 
 import collection.mutable.HashMap
-import service.ProcessElementService
-
+import service.{ ProcessElementService }
+import models.{ ProcessElement, Relation }
 import app.actions.CORSAction
-/**
- * Control all actions related to showing, creating and deleting json objects.
- */
+
+import format.RelationFormat
+import format.ProcessElementFormat
+
 object JsonController extends Controller {
+
+  import RelationFormat._
+  import ProcessElementFormat._
 
   val processElementService = new ProcessElementService
 
-  //val map = new HashMap[String, Element]() //withDefaultValue("")
-
   def list() = CORSAction { implicit request =>
-    val elements = Element.findAll
-    Ok(toJson(elements))
+    Ok(toJson(ProcessElement.list))
   }
 
-  def getSwimlane = CORSAction { implicit request =>
-    Ok(toJson(Element.findType("Swimlane")))
+  def getProcessElement(elem: String) = CORSAction { implicit request =>
+    Ok(toJson(ProcessElement.findType(elem)))
   }
 
-  def getSwimlaneByModel(id: Int) = CORSAction { implicit request =>
-    Ok(toJson(Element.findTypeByModel(id, "Swimlane")))
+  def getProcessElementByModel(id: Long, elem: String) = CORSAction { implicit request =>
+    Ok(toJson(ProcessElement.findTypeByModel(id, elem)))
   }
 
-  def getStart = CORSAction { implicit request =>
-    Ok(toJson(Element.findType("Start")))
-  }
-
-  def getStartByModel(id: Int) = CORSAction { implicit request =>
-    Ok(toJson(Element.findTypeByModel(id, "Start")))
-  }
-
-  def getEnd = CORSAction { implicit request =>
-    Ok(toJson(Element.findType("End")))
-  }
-
-  def getEndByModel(id: Int) = CORSAction { implicit request =>
-    Ok(toJson(Element.findTypeByModel(id, "End")))
-  }
-
-  def getActivity = CORSAction { implicit request =>
-    Ok(toJson(Element.findType("Activity")))
-  }
-
-  def getActivityByRelationId(id: Int) = CORSAction { implicit request =>
-    Ok(toJson(Element.findTypeById(id, "Activity")))
-  }
-
-  def getActivityByModel(id: Int) = CORSAction { implicit request =>
-    Ok(toJson(Element.findTypeByModel(id, "Activity")))
-  }
-
-  def getGateway = CORSAction { implicit request =>
-    Ok(toJson(Element.findType("Gateway")))
-  }
-
-  def getGatewayByModel(id: Int) = CORSAction { implicit request =>
-    Ok(toJson(Element.findTypeByModel(id, "Gateway")))
+  def createProcessElement(id: Long) = CORSAction { request =>
+    processElementService.create(1, 1, id, "New Element", 100, 100);
+    Ok(views.html.edit())
   }
 
   def getRelation = CORSAction { implicit request =>
-    Ok(toJson(Relation.findAll))
+    Ok(toJson(Relation.list))
   }
 
   def getRelationByModel(id: Int) = CORSAction { implicit request =>
     Ok(toJson(Relation.findByModel(id)))
   }
 
+  def createRelation() = CORSAction { request =>
+    println("lol. not going to happen");
+    Ok(views.html.edit())
+  }
+  
   def toElement(id: Int) = CORSAction { implicit request =>
-    request.body.asJson.map { json => {
+    request.body.asJson.map { json =>
+      {
         val Some(relationId) = (json \ "id").asOpt[Int]
         val Some(value) = (json \ "value").asOpt[String]
         val Some(size) = (json \ "size").asOpt[Int]
@@ -85,40 +61,15 @@ object JsonController extends Controller {
         val Some(y) = (json \ "cy").asOpt[String]
         println(relationId + " " + value + " " + size + " " + x + " " + y)
         processElementService.update(relationId, value, size, x.toInt, y.toInt)
-         Ok(views.html.edit())
+        Ok(views.html.edit())
       }
     }.getOrElse {
       BadRequest("Expecting Json data")
     }
   }
-  
-  def createElement() = CORSAction { request =>
-    processElementService.createActivity(1, 1, 100, 100);
-    Ok(views.html.edit())
-  }
-  
-  def createStart() = CORSAction { request =>
-    processElementService.createStart(1, 1, 100, 100);
-    Ok(views.html.edit())
-  } 
-  
-  def createEnd() = CORSAction { request =>
-    processElementService.createEnd(1, 1, 100, 100);
-    Ok(views.html.edit())
-  }
-  
-  def createGateway() = CORSAction { request =>
-    processElementService.createGateway(1, 1, 100, 100);
-    Ok(views.html.edit())
-  }
-  
-  def createRelation() = CORSAction { request =>
-    println("lol. not going to happen");
-    Ok(views.html.edit())
-  }
-  
+
   def createElement(id: Int) = CORSAction { request =>
-  /*  request.body.asJson.map { json => {
+    /*  request.body.asJson.map { json => {
     	val Some(modelProcessId) = (json \ "modelProcessId").asOpt[Int]
         val Some(elementTypeId) = (json \ "elementTypeId").asOpt[Int]
         val Some(relationId) = (json \ "id").asOpt[Int]
@@ -133,31 +84,7 @@ object JsonController extends Controller {
     }.getOrElse {
       BadRequest("Expecting Json data")
     } */
-    processElementService.createActivity(1, 1, 100, 100);
+    processElementService.create(1, 1, 4, "New Activity", 100, 100);
     Ok(views.html.edit())
   }
-
-  /* def getElements(elementType: String) = Action { implicit request =>
-    elementType match {
-      case "swimlane" => Ok(toJson(Swimlane.findAll))
-      case "start" => Ok(toJson(Start.findAll))  
-      case "end" => Ok(toJson(End.findAll))
-      case "relation" => Ok(toJson(Relation.findAll))
-      case "activity" => Ok(toJson(Activity.findAll))
-      case "gateway" => Ok(toJson(Gateway.findAll))
-      case _ => Ok("NotFound")
-    }
-  }
-  
-  def getElementsByModel(elementType: String, id: Int) = Action { implicit request =>
-    elementType match {
-      case "swimlane" => Ok(toJson(Swimlane.findByModel(id)))
-      case "start" => Ok(toJson(Start.findByModel(id)))  
-      case "end" => Ok(toJson(End.findByModel(id)))
-      case "relation" => Ok(toJson(Relation.findByModel(id)))
-      case "activity" => Ok(toJson(Activity.findByModel(id))) 
-      case "gateway" => Ok(toJson(Gateway.findByModel(id)))
-      case _ => Ok("NotFound")
-    }
-  }*/
 }
