@@ -7,12 +7,6 @@ import anorm.SqlParser._
 import anorm._
 
 case class Model(val id: Pk[Int], val name: String, val dateCreated: Date) 
-//{
-  //def toXML =
-    //{id}
-    //{name}
-    //{dateCreated}
-//}
 
 /**
  * Model is a collection of processes, elements and relations.
@@ -84,3 +78,84 @@ object Model {
   }
    
 }
+/*
+case class Model(
+    val id: Pk[Long] = NotAssigned, 
+    val name: String = "Empty name", 
+    val dateCreated: Date = new Date()
+) extends Table {
+  
+  def create(): Long 			= Model.create(this)
+  def read(): Option[Model] 	= Model.read(id)
+  def update() 					= Model.update(this)
+  def delete() 					= Model.delete(id)
+  def list: List[Model] 		= Model.list()
+
+  def toSeq(): Seq[(String, Any)] = Seq(
+    "id" -> id.map(id => id).getOrElse(0L),
+    "name" -> name,
+    "dateCreated" -> dateCreated  
+  )
+}
+
+
+/**
+ * Model is a collection of processes, elements and relations.
+ */
+object Model extends TableCommon[Model] {
+
+   val table = "models"
+
+  val createCommand = """
+    insert into %s(name) values ({name})
+  """
+
+  val readCommand = """
+    select * from %s where id = {id}
+  """
+
+  val updateCommand = """
+    update %s set name = {name} where id = {id}
+  """
+
+  val deleteCommand = """
+    delete from %s where id = {id}
+  """
+
+  val listCommand = """
+    select * from %s
+  """
+  
+  def parse(as: String = "models.") = {
+    get[Pk[Long]]("id") ~
+      get[String]("name") ~
+      get[Date]("dateCreated") map {
+        case id ~ name ~ dateCreated =>
+          Model(id, name, dateCreated)
+      }
+  }
+   
+   
+  val parse = {
+    get[Pk[Long]]("id") ~
+      get[String]("name") ~
+      get[Date]("dateCreated") map {
+        case id ~ name ~ dateCreated =>
+          Model(id, name, dateCreated)
+      }
+  }
+   
+    def findAll: List[Model] = DB.withConnection { implicit connection =>
+    SQL("""select * from models""").as(parse *) //.sortBy(_.id)
+  }
+
+  def contains(id: Int): Boolean = {
+    DB.withConnection { implicit connection =>
+      SQL(""" 
+          select * from models
+		  where models.id = {id}
+		 """).on('id -> id).as(parse *).toList.size == 1
+    }
+  }
+
+}*/

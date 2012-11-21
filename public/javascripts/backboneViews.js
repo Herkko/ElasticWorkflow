@@ -68,8 +68,6 @@ var StartsView = Backbone.View.extend({
         this.raphaelStart = RaphaelElement.circle(this.model.get("cx"), this.model.get("cy"), 20);
         this.raphaelText = RaphaelElement.text(this.model.get("cx"), this.model.get("cy"), this.model.get("value"));
         
-        
-        
 //		  raphaelText.drag(moveText, startText);
 
 //        var set = RaphaelElement.set();
@@ -111,8 +109,6 @@ var StartsView = Backbone.View.extend({
 //                opacity: 1
 //            });
 //        });
-
-
 
     },
     click: function() {

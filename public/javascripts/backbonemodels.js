@@ -76,11 +76,17 @@ var gateway = Backbone.Model.extend({
 
 var ActivityList = Backbone.Collection.extend({
     model: activity,
+<<<<<<< HEAD
+  //  url: 'http://morning-fjord-4117.herokuapp.com/activity'
+    url: 'http://localhost:9000/activity'
+    
+=======
     url: 'http://morning-fjord-4117.herokuapp.com/activity',
   //  url: 'http://localhost:9000/activity'
    
    
   
+>>>>>>> 4ecec5f1db706d6cf93dd27faf4a36f29205e25d
 });
 
 var StartList = Backbone.Collection.extend({
@@ -142,12 +148,11 @@ function post_to_url(path, params, method) {
 }
 ;
 
-function newActivity() {
-    activity = new activity();
+function makeActivity() {
+    var activity = new activity({cx:100, cy:200});
+     activity.save();
+    activityElements.add(activity);
     view = new activityView({model: activity});
-    activityElements.push(activity);
-    activity.save();
-    
 };
 
 function newStart() {
