@@ -1,14 +1,8 @@
 
 workflow.models.activity = Backbone.Model.extend({
 	
-	urlRoot: function() {
-		if (!this.id) {
-			return 'http://morning-fjord-4117.herokuapp.com/activity/';
-		} else {
-			return 'http://morning-fjord-4117.herokuapp.com/activity/' + this.id;
-		}
-	},
-
+	urlRoot: 'http://localhost:9000/activity',
+	
     updateModel: function() {
         this.save();
     }
