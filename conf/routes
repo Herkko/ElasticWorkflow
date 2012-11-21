@@ -54,7 +54,7 @@ GET   	/swimlane/:id								controllers.JsonController.getSwimlaneByModel(id: In
 
 GET   	/activity									controllers.JsonController.getActivity	
 PUT     /activity/:id								controllers.JsonController.toElement(id: Int)
-POST    /activity/:id								controllers.JsonController.createElement(id: Int)
+POST    /activity									controllers.JsonController.createElement()
 GET		/activity/:id								controllers.JsonController.getActivityByRelationId(id: Int)
 
 GET   	/gateway									controllers.JsonController.getGateway	
