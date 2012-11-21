@@ -131,6 +131,8 @@ resize_move = function (dx, dy) {
     // this.attr({x: this.ox + dx, y: this.oy + dy});
     // this.box.attr({width: this.box.ow + dx, height: this.box.oh + dy});
     this.attr({width: this.ow + dx, height: this.oh + dy});
+    this.namebox.attr({height: this.oh + dy});
+    this.nametext.transform('t12,' + ((this.oh + dy) / 2) + 'r270')
 };   
     
 up = function() {

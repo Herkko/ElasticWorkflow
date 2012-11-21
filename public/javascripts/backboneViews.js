@@ -204,6 +204,8 @@ var swimlanesView = Backbone.View.extend({
 
     initialize: function(){
         this.render();
+        this.swimlane.namebox = this.swimlaneNameBox;
+        this.swimlane.nametext = this.swimlaneNameText;
         this.swimlane.attr({stroke: "#000", "stroke-width": 2});
         this.swimlane.drag(resize_move, resize_start);
     },
