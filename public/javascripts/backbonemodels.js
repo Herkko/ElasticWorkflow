@@ -1,6 +1,7 @@
 
 var activity = Backbone.Model.extend({
-    
+	
+	//url: 'http://morning-fjord-4117.herokuapp.com/activity/' + this.relationId,
 
     updateModel: function() {
         this.save();
@@ -138,19 +139,19 @@ function post_to_url(path, params, method) {
 }
 ;
 
-function makeActivity() {
-    var activity = new activity({cx:100, cy:200});
-     activity.save();
-    activityElements.add(activity);
-    view = new activityView({model: activity});
+function uusActivity() {
+	var uusimodel = new activity({cx:100, cy:200});
+    uusimodel.save();
+    activityElements.add(uusimodel);
+    nakyma = new activityView({model: activity});
 };
 
 function newStart() {
-    start = new start();
-    view = new startView({model: start});
-    view.render();
-    start.save();
-    startElements.push(start);
+	var uusimodel = new start();
+    var nakyma = new StartsView({model: start});
+    nakyma.render();
+    uusimodel.save();
+    startElements.push(uusimodel);
 }
 ;
 
