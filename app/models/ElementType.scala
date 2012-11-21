@@ -9,7 +9,6 @@ import anorm.SqlParser._
 case class ElementType(
     val id: 			Pk[Long] = NotAssigned, 
     val name:		 	String = "Empty ElementType name", 
-    val elementType: 	Int, 
     val description: 	String = "No Description", 
     val picture: 		Int = 0
 )
@@ -24,7 +23,6 @@ extends Table {
   def toSeq(): Seq[(String, Any)] = Seq(
     "id" -> id.map(id => id).getOrElse(0L),
     "name" -> name,
-    "elementType" -> elementType,
     "description" -> description,
     "picture" -> picture
  )
@@ -35,8 +33,8 @@ object ElementType extends TableCommon[ElementType] {
   val table = "elementTypes"
 
   val createQuery = """
-    insert into elementTypes(name, elementType, description, picture) 
-    values ({name}, {elementType}, {description}, {picture})
+    insert into elementTypes(name, description, picture) 
+    values ({name}, {description}, {picture})
   """
 
   val readQuery = """
@@ -45,8 +43,7 @@ object ElementType extends TableCommon[ElementType] {
 
   //Doesnt work yet
   val updateQuery = """
-    update elementTypes set name = {name},
-    						elementType = {elementType},
+    update elementTypes set name = {name},   						
     						description = {description},
     						picture = {picture}
     where id = {id}
@@ -60,15 +57,14 @@ object ElementType extends TableCommon[ElementType] {
     select * from elementTypes
   """
 
-    //elementType is useless?
+    //elementType param is useless?
   def parse(as: String = "elementTypes.") = {
     get[Pk[Long]]("id") ~
       get[String]("name") ~
-      get[Int]("elementType") ~
       get[String]("description") ~
       get[Int] ("picture") map {
-        case id ~ name ~ elementType ~ description ~ picture =>
-          ElementType(id, name, elementType, description, picture)
+        case id ~ name ~ description ~ picture =>
+          ElementType(id, name, description, picture)
       }
   }
 }

@@ -35,17 +35,16 @@ INSERT INTO relationTypes VALUES (1, 'normal line');
 CREATE TABLE elementTypes(
 	id 				int(10) 		NOT NULL AUTO_INCREMENT,
 	name 			varchar(100)	NOT NULL,
-	elementType 	int(10)			NOT NULL,
 	description 	varchar(200)    NOT NULL,
 	picture 		int(10)			NOT NULL,
 	PRIMARY KEY (id)
 );
 
-INSERT INTO elementTypes(id, name, elementType, description, picture) VALUES (1, 'Swimlane', 1, 'rect', 0);
-INSERT INTO elementTypes VALUES (2, 'Start', 2, 'circle', 0);
-INSERT INTO elementTypes VALUES (3, 'End', 3, 'circle', 0);
-INSERT INTO elementTypes VALUES (4, 'Activity', 4, 'rect', 0);
-INSERT INTO elementTypes VALUES (5, 'Gateway', 5, 'circle', 0);
+INSERT INTO elementTypes(id, name, description, picture) VALUES (1, 'Swimlane', 'rect', 0);
+INSERT INTO elementTypes VALUES (2, 'Start', 'circle', 0);
+INSERT INTO elementTypes VALUES (3, 'End', 'circle', 0);
+INSERT INTO elementTypes VALUES (4, 'Activity', 'rect', 0);
+INSERT INTO elementTypes VALUES (5, 'Gateway', 'circle', 0);
 
 CREATE TABLE processElements (
 	id 				int(10) 		NOT NULL AUTO_INCREMENT,

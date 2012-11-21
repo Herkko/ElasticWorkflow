@@ -41,27 +41,27 @@ PUT    	/elements/id=:id&value=:value&size=:size&x=:x&y=:y								controllers.Pr
 #JSON methods
 GET   	/element									controllers.JsonController.list
 	
-GET   	/start									    controllers.JsonController.getStart
-POST    /start										controllers.JsonController.createStart()	
-GET   	/start/:id									controllers.JsonController.getStartByModel(id: Int)	
+GET   	/start									    controllers.JsonController.getProcessElement(elem: String = "Start")
+POST    /start										controllers.JsonController.createProcessElement(id: Long = 2)	
+GET   	/start/:id									controllers.JsonController.getProcessElementByModel(id: Int, elem: String = "Start")
 PUT     /start/:id									controllers.JsonController.toElement(id: Int)
 
-GET   	/end										controllers.JsonController.getEnd
-POST    /end										controllers.JsonController.createEnd()
-GET   	/end/:id									controllers.JsonController.getEndByModel(id: Int)	
+GET   	/end										controllers.JsonController.getProcessElement(elem: String = "End")
+POST    /end										controllers.JsonController.createProcessElement(id: Long = 3)
+GET   	/end/:id									controllers.JsonController.getProcessElementByModel(id: Int, elem: String = "End")	
 PUT     /end/:id									controllers.JsonController.toElement(id: Int)
 
-GET   	/swimlane									controllers.JsonController.getSwimlane	
-GET   	/swimlane/:id								controllers.JsonController.getSwimlaneByModel(id: Int)	
+GET   	/swimlane									controllers.JsonController.getProcessElement(elem: String = "Swimlane")
+GET   	/swimlane/:id								controllers.JsonController.getProcessElementByModel(id: Int, elem: String = "Swimlane")
 
-GET   	/activity									controllers.JsonController.getActivity	
+GET   	/activity									controllers.JsonController.getProcessElement(elem: String = "Activity")
 PUT     /activity/:id								controllers.JsonController.toElement(id: Int)
-POST    /activity									controllers.JsonController.createElement()
-GET		/activity/:id								controllers.JsonController.getActivityByRelationId(id: Int)
+POST    /activity									controllers.JsonController.createProcessElement(id: Long = 4)
+GET		/activity/:id								controllers.JsonController.getProcessElementByModel(id: Int, elem: String = "Activity")
 
-GET   	/gateway									controllers.JsonController.getGateway	
-POST    /gateway									controllers.JsonController.createGateway()
-GET   	/gateway/:id							    controllers.JsonController.getGatewayByModel(id: Int)
+GET   	/gateway									controllers.JsonController.getProcessElement(elem: String = "Gateway")
+POST    /gateway									controllers.JsonController.createProcessElement(id: Long = 5)
+GET   	/gateway/:id							    controllers.JsonController.getProcessElementByModel(id: Int, elem: String = "Gateway")
 PUT     /gateway/:id								controllers.JsonController.toElement(id: Int)	
 
 GET   	/relation									controllers.JsonController.getRelation

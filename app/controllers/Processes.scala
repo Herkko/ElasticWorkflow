@@ -70,13 +70,13 @@ object Processes extends Controller {
     ModelProcess.create(new ModelProcess(NotAssigned, modelId, processId))
     
     
-    val elem1 = processElementService.createSwimlane(modelId, processId, 20, y)
-    val elem2 = processElementService.createStart(modelId, processId, 70, y + 110)
-    val elem3 = processElementService.createEnd(modelId, processId, 480, y + 110)
-    val elem4 = processElementService.createActivity(modelId, processId, 170, y + 90)
-    val elem5 = processElementService.createActivity(modelId, processId, 250, y + 90)
-    val elem6 = processElementService.createActivity(modelId, processId, 320, y + 90)
-    val elem7 = processElementService.createGateway(modelId, processId, 300, y + 30)
+    val elem1 = processElementService.create(modelId, processId, 1, "Swimlane", 20, y)
+    val elem2 = processElementService.create(modelId, processId, 2, "Start", 70, y + 110)
+    val elem3 = processElementService.create(modelId, processId, 3, "End", 480, y + 110)
+    val elem4 = processElementService.create(modelId, processId, 4, "Activity 1", 170, y + 90)
+    val elem5 = processElementService.create(modelId, processId, 4, "Activity 2", 250, y + 90)
+    val elem6 = processElementService.create(modelId, processId, 4, "Activity 3", 320, y + 90)
+    val elem7 = processElementService.create(modelId, processId, 5, "Gateway", 300, y + 30)
 
     processElementService.update(elem5, "HI, I have been modified, YAY!", 10, 0, 0)
     val rel = Relation.create(new Relation(NotAssigned, elem2, elem4, 1, "First Relation"))

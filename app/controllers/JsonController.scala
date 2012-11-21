@@ -18,56 +18,24 @@ object JsonController extends Controller {
 
   import RelationFormat._
   import ProcessElementFormat._
-  
+
   val processElementService = new ProcessElementService
 
   def list() = CORSAction { implicit request =>
-    val elements = ProcessElement.list
-    Ok(toJson(elements))
+    Ok(toJson(ProcessElement.list))
   }
 
-  def getSwimlane = CORSAction { implicit request =>
-    Ok(toJson(ProcessElement.findType("Swimlane")))
+  def getProcessElement(elem: String) = CORSAction { implicit request =>
+    Ok(toJson(ProcessElement.findType(elem)))
   }
 
-  def getSwimlaneByModel(id: Int) = CORSAction { implicit request =>
-    Ok(toJson(ProcessElement.findTypeByModel(id, "Swimlane")))
+  def getProcessElementByModel(id: Long, elem: String) = CORSAction { implicit request =>
+    Ok(toJson(ProcessElement.findTypeByModel(id, elem)))
   }
 
-  def getStart = CORSAction { implicit request =>
-    Ok(toJson(ProcessElement.findType("Start")))
-  }
-
-  def getStartByModel(id: Int) = CORSAction { implicit request =>
-    Ok(toJson(ProcessElement.findTypeByModel(id, "Start")))
-  }
-
-  def getEnd = CORSAction { implicit request =>
-    Ok(toJson(ProcessElement.findType("End")))
-  }
-
-  def getEndByModel(id: Int) = CORSAction { implicit request =>
-    Ok(toJson(ProcessElement.findTypeByModel(id, "End")))
-  }
-
-  def getActivity = CORSAction { implicit request =>
-    Ok(toJson(ProcessElement.findType("Activity")))
-  }
-
-  def getActivityByRelationId(id: Int) = CORSAction { implicit request =>
-    Ok(toJson(ProcessElement.findTypeById(id, "Activity")))
-  }
-
-  def getActivityByModel(id: Int) = CORSAction { implicit request =>
-    Ok(toJson(ProcessElement.findTypeByModel(id, "Activity")))
-  }
-
-  def getGateway = CORSAction { implicit request =>
-    Ok(toJson(ProcessElement.findType("Gateway")))
-  }
-
-  def getGatewayByModel(id: Int) = CORSAction { implicit request =>
-    Ok(toJson(ProcessElement.findTypeByModel(id, "Gateway")))
+  def createProcessElement(id: Long) = CORSAction { request =>
+    processElementService.create(1, 1, id, "New Element", 100, 100);
+    Ok(views.html.edit())
   }
 
   def getRelation = CORSAction { implicit request =>
@@ -78,8 +46,14 @@ object JsonController extends Controller {
     Ok(toJson(Relation.findByModel(id)))
   }
 
+  def createRelation() = CORSAction { request =>
+    println("lol. not going to happen");
+    Ok(views.html.edit())
+  }
+  
   def toElement(id: Int) = CORSAction { implicit request =>
-    request.body.asJson.map { json => {
+    request.body.asJson.map { json =>
+      {
         val Some(relationId) = (json \ "id").asOpt[Int]
         val Some(value) = (json \ "value").asOpt[String]
         val Some(size) = (json \ "size").asOpt[Int]
@@ -87,40 +61,15 @@ object JsonController extends Controller {
         val Some(y) = (json \ "cy").asOpt[String]
         println(relationId + " " + value + " " + size + " " + x + " " + y)
         processElementService.update(relationId, value, size, x.toInt, y.toInt)
-         Ok(views.html.edit())
+        Ok(views.html.edit())
       }
     }.getOrElse {
       BadRequest("Expecting Json data")
     }
   }
-  
-  def createElement() = CORSAction { request =>
-    processElementService.createActivity(1, 1, 100, 100);
-    Ok(views.html.edit())
-  }
-  
-  def createStart() = CORSAction { request =>
-    processElementService.createStart(1, 1, 100, 100);
-    Ok(views.html.edit())
-  } 
-  
-  def createEnd() = CORSAction { request =>
-    processElementService.createEnd(1, 1, 100, 100);
-    Ok(views.html.edit())
-  }
-  
-  def createGateway() = CORSAction { request =>
-    processElementService.createGateway(1, 1, 100, 100);
-    Ok(views.html.edit())
-  }
-  
-  def createRelation() = CORSAction { request =>
-    println("lol. not going to happen");
-    Ok(views.html.edit())
-  }
-  
+
   def createElement(id: Int) = CORSAction { request =>
-  /*  request.body.asJson.map { json => {
+    /*  request.body.asJson.map { json => {
     	val Some(modelProcessId) = (json \ "modelProcessId").asOpt[Int]
         val Some(elementTypeId) = (json \ "elementTypeId").asOpt[Int]
         val Some(relationId) = (json \ "id").asOpt[Int]
@@ -135,7 +84,7 @@ object JsonController extends Controller {
     }.getOrElse {
       BadRequest("Expecting Json data")
     } */
-    processElementService.createActivity(1, 1, 100, 100);
+    processElementService.create(1, 1, 4, "New Activity", 100, 100);
     Ok(views.html.edit())
   }
 }
