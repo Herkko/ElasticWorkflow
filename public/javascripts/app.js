@@ -9,6 +9,7 @@ var workflow = {
             
         
     initialize: function(){
+        //all collections
         ActivityElements = new workflow.collections.ActivityList();
         StartElements= new workflow.collections.StartList();
         EndElements= new workflow.collections.EndList();
