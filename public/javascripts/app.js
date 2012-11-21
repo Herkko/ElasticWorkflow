@@ -48,14 +48,14 @@ function setUpApplication(){
   function renderEnds(){
         for(var i=0; i<EndElements.length; i++){
         endsViewElement = new endsView({model: EndElements.models[i]});
-        endsViewElement.render();
+        //endsViewElement.render();
         };  
   }
   
   function renderSwimlanes(){
        for(var i=0; i<SwimlaneElements.length; i++){
         swimlanesElement = new swimlanesView({model: SwimlaneElements.models[i]});
-        swimlanesElement.render();
+        
         };  
   }
   

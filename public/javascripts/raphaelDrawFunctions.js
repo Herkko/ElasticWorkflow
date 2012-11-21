@@ -70,67 +70,88 @@ Raphael.fn.connection = function(obj1, obj2, line, bg) {
 };
 
 
-var dragger = function() {
-    this.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
-    this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
-    this.animate({"fill-opacity": .3}, 500);
+dragger = function() {
+        // Original coords for main element
+	if (this.type != "text") {
+		this.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
+		this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
+		this.animate({"fill-opacity": .3}, 500);
+	} else {
+		this.ox = this.type == "ellipse" ? this.attr("cx") : this.attr("x");
+        this.oy = this.type == "ellipse" ? this.attr("cy") : this.attr("y");
+	}
+  
+  
+		// Original coords for pair element
+	if (this.pair.type != "text") {
+		this.pair.ox = this.pair.type == "rect" ? this.pair.attr("x") : this.pair.attr("cx");
+		this.pair.oy = this.pair.type == "rect" ? this.pair.attr("y") : this.pair.attr("cy");
+		this.pair.animate({"fill-opacity": .3}, 500); 
+	} else {
+		this.pair.ox = this.pair.type == "ellipse" ? this.pair.attr("cx") : this.pair.attr("x");
+        this.pair.oy = this.pair.type == "ellipse" ? this.pair.attr("cy") : this.pair.attr("y");
+	}
 };
 
-var move = function(dx, dy) {
-    var att = this.type == "rect" ? {x: this.ox + dx, y: this.oy + dy} : {cx: this.ox + dx, cy: this.oy + dy};
-    this.attr(att);
+move = function(dx, dy) {
+    	// Move main element
+	if (this.type != "text") {
+	  var att = this.type == "rect" ? {x: this.ox + dx, y: this.oy + dy} : {cx: this.ox + dx, cy: this.oy + dy};
+	  this.attr(att);
+	} else {
+	  var att = this.type == "rect" ? {cx: this.ox + dx, cy: this.oy + dy} : {x: this.ox + dx, y: this.oy + dy};
+      this.attr(att);
+	}
+		// Move paired element
+	if (this.pair.type != "text") {
+	  var att = this.pair.type == "rect" ? {x: this.pair.ox + dx, y: this.pair.oy + dy} : {cx: this.pair.ox + dx, dy: this.pair.oy + dy};
+	  this.pair.attr(att);
+	} else {
+	  var att = this.pair.type == "rect" ? {cx: this.pair.ox + dx, cy: this.pair.oy + dy} : {x: this.pair.ox + dx, y: this.pair.oy + dy};
+      this.pair.attr(att);
+	}
+    
     for (var i = connections.length; i--; ) {
         RaphaelElement.connection(connections[i]);
     }
     RaphaelElement.safari();
 };
 
-   	resize_start = function () {
-       // this.ox = this.attr("x");
-       // this.oy = this.attr("y");
+resize_start = function () {
+    // this.ox = this.attr("x");
+    // this.oy = this.attr("y");
+    // this.box.ow = this.box.attr("width");
+    // this.box.oh = this.box.attr("height");  
+    this.ow = this.attr("width");  
+    this.oh = this.attr("height");      
+},
 
-       // this.box.ow = this.box.attr("width");
-       // this.box.oh = this.box.attr("height");  
-       this.ow = this.attr("width");  
-       this.oh = this.attr("height");      
-    },
-    resize_move = function (dx, dy) {
-        // move will be called with dx and dy
-       // this.attr({x: this.ox + dx, y: this.oy + dy});
-       // this.box.attr({width: this.box.ow + dx, height: this.box.oh + dy});
-       this.attr({width: this.ow + dx, height: this.oh + dy});
-    };   
+resize_move = function (dx, dy) {
+    // move will be called with dx and dy
+    // this.attr({x: this.ox + dx, y: this.oy + dy});
+    // this.box.attr({width: this.box.ow + dx, height: this.box.oh + dy});
+    this.attr({width: this.ow + dx, height: this.oh + dy});
+};   
     
-	var dragger = function() {
-        this.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
-        this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
-        this.animate({"fill-opacity": .3}, 500);
-    };
+up = function() {
+    	// Fade original element on mouse up
+    if (this.type != "text") this.animate({"fill-opacity": 0}, 500);
 
-    var move = function(dx, dy) {
-        var att = this.type == "rect" ? {x: this.ox + dx, y: this.oy + dy} : {cx: this.ox + dx, cy: this.oy + dy};
-        this.attr(att);
-        for (var i = connections.length; i--; ) {
-            RaphaelElement.connection(connections[i]);
-        }
-        RaphaelElement.safari();
-    };
-
-
-var up = function() {
-    this.animate({"fill-opacity": 0}, 500);
+    	// Fade paired element on mouse up
+    if (this.pair.type != "text") this.pair.animate({"fill-opacity": 0}, 500); 
 };
 
-var upStart = function() {
+upStart = function() {
     this.animate({"fill-opacity": 1}, 500);
 };
 
-var startPath = function() {
+startPath = function() {
     this.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
     this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
     this.animate({"fill-opacity": .3}, 500);
 },
-        movePath = function(dx, dy) {
+
+movePath = function(dx, dy) {
     var trans_x = (dx) - this.ox;
     var trans_y = (dy) - this.oy;
 
@@ -142,13 +163,11 @@ var startPath = function() {
         RaphaelElement.connection(connections[i]);
     }
 },
-        upPath = function() {
+
+upPath = function() {
     // nothing special
 };
 
-var activityUp = function(){
+activityUp = function(){
    this.animate({"fill-opacity": 0}, 500);
-   //var g = d;
-    
-    
 };
