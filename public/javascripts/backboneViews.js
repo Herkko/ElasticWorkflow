@@ -86,7 +86,7 @@ workflow.views.StartsView = Backbone.View.extend({
     },
     
     events: {
-    	click: clicked,
+    	click: "clicked",
     	//dblclick: doubleclicked
     },
     
