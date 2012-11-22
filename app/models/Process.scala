@@ -8,21 +8,20 @@ import anorm.SqlParser._
 
 case class Process(
   val id: Pk[Long] = NotAssigned,
-  val name: String = "Empty process name",
-  val dateCreated: String = "No Process Date"
+  val name: String = "Unknown Process",
+  val dateCreated: Date = new Date()
 ) extends Table {
 
-  def create(): Long = Process.create(this)
-  def read(): Option[Process] = Process.read(id)
-  def update() = Process.update(this)
-  def delete() = Process.delete(id)
-  def list: List[Process] = Process.list()
+  def create(): Long 			= Process.create(this)
+  def read(): Option[Process] 	= Process.read(id)
+  def update() 					= Process.update(this)
+  def delete() 					= Process.delete(id)
+  def list: List[Process] 		= Process.list()
 
   def toSeq(): Seq[(String, Any)] = Seq(
     "id" -> id.map(id => id).getOrElse(0L),
     "name" -> name,
-    "dateCreated" -> dateCreated
-  )
+    "dateCreated" -> dateCreated)
 }
 
 object Process extends TableCommon[Process] {
@@ -52,7 +51,7 @@ object Process extends TableCommon[Process] {
   def parse(as: String = "processes.") = {
     get[Pk[Long]]("id") ~
       get[String]("name") ~
-      get[String]("dateCreated") map {
+      get[Date]("dateCreated") map {
         case id ~ name ~ dateCreated =>
           Process(id, name, dateCreated)
       }
@@ -65,63 +64,63 @@ object Process extends TableCommon[Process] {
         on('id -> id, 'name -> name).executeUpdate() == 0
     }
   }
-
- /* val parse = {
-    get[Pk[Long]]("id") ~
-      get[String]("name") ~
-      get[String]("dateCreated") map {
-        case id ~ name ~ dateCreated =>
-          Process(id, name, dateCreated)
-      }
-  }*/
-
-  //BROKEN >> FIX
+  
   def withElements() = {
-    parse("processes.") ~ ProcessElement.parse("processElements.") map {
-      case process ~ processElement => {
-        (process, processElement)
+    get[Pk[Long]]("processes.id") ~
+      get[String]("processes.name") ~
+      get[Date]("processes.dateCreated") ~
+      ProcessElement.parse() map {
+        case id ~ name ~ dateCreated ~ processElement => {
+          (Process(id, name, dateCreated), processElement)
+        }
       }
-    }
   }
-
-  def findByModelWithElements(id: Long): List[(Process, Seq[ProcessElement])] = {
-    DB.withConnection { implicit connection =>
-      SQL(""" 
-          select processes.*, processElements.* from processes, processElements
-		  join modelProcesses on processes.id = modelProcesses.processId
-		  join elementTypes on processElements.elementTypeId = elementTypes.id
-		  join models on models.id = modelProcesses.modelId
-		  where models.id = {id}
-		  and processElements.modelProcessId = modelProcesses.id
-		""").on('id -> id).as(withElements *).groupBy(_._1).toList.sortBy(_._1.id.toString.toInt).map {
+   
+  def findByModelWithElements(id: Long): List[(Process, Seq[ProcessElement])] = DB.withConnection { 
+    implicit connection => {
+      val query = """ 
+        select processes.*, processElements.* from processes, processElements
+	    join modelProcesses on processes.id = modelProcesses.processId
+        join models on models.id = modelProcesses.modelId
+        join elementTypes on processElements.elementTypeId = elementTypes.id
+	    where models.id = {id}
+	    and processElements.modelProcessId = modelProcesses.id
+      """
+         
+      SQL(query).on('id -> id).as(withElements *).groupBy(_._1).toList.sortBy(_._1.id.toString.toInt).map {
         case (process, processWithElements) => (process, processWithElements.map(_._2))
       }
     }
   }
-
-  /**
-   * Count how many processes belong to a model specified by parameter id.
-   */
-  def countByModel(id: Long): Long = DB.withConnection { implicit connection =>
-    SQL("""select count(*) from processes
+ 
+  def countByModel(id: Long): Long = DB.withConnection { 
+    implicit connection => {
+      val query = """
+        select count(*) from processes
         join modelProcesses on modelProcesses.processId = processes.id
         join models on models.id = modelProcesses.modelId
         where models.id = {id}
-        """).on('id -> id).as(scalar[Long].single)
-  } 
+        """
+      SQL(query).on('id -> id).as(scalar[Long].single)
+    }
+  }
   
-  def getModelId(id: Long): Long = DB.withConnection { implicit connection =>
-    SQL("""select models.* from models
+  def getModelId(id: Long): Long = DB.withConnection { 
+    implicit connection => {
+      val query = """
+        select models.* from models
         join modelProcesses on models.id = modelProcesses.modelId
         join processes on modelProcesses.processId = processes.id
         where processes.id = {id}
-        """).on('id -> id).apply().toList match { //.head
-      case Nil => throw new Exception("This process doesn't belong to any model.")
-      case x :: xs => x[Long]("id")
-    }
+        """
+      
+      SQL(query).on('id -> id).apply().toList match {
+        case Nil => throw new Exception("This process doesn't belong to any model.")
+        case x :: xs => x[Long]("id")
+      }
   }
 }
-  
+}
   
   
   

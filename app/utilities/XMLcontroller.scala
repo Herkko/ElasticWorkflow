@@ -1,4 +1,4 @@
-package controllers
+package utilities
 import play.api._
 import play.api.mvc._
 import scala.xml.Node

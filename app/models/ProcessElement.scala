@@ -86,38 +86,45 @@ object ProcessElement extends TableCommon[ProcessElement] {
     }
   }
 
-  def getModelProcessId(modelId: Long, processId: Long): Long = DB.withConnection { implicit connection =>
-    SQL("""select id from modelProcesses
-        where modelId = {modelId}
-        and processId = {processId}""").on('modelId -> modelId, 'processId -> processId).as(
-      get[Long]("id") map {
-        case id => id
-      } *).head
-  }
-
-  def getModelId(id: Long): Long = DB.withConnection { implicit connection =>
-    SQL("""select models.* from models, processElements
-        join modelProcesses on models.id = modelProcesses.modelId
-        where processElements.id = {id}
-        and processElements.modelProcessId = modelProcesses.id
-        """).on('id -> id).apply().toList match {
-      case Nil => throw new Exception("This element doesn't belong to any model.")
-      case x :: xs => x[Long]("id")
+  def getModelProcessId(modelId: Long, processId: Long): Long = DB.withConnection { 
+    implicit connection => {
+      val query = """
+        select id from modelProcesses
+        where modelId = {modelId} and processId = {processId}
+        """
+      SQL(query).on('modelId -> modelId, 'processId -> processId).as(get[Long]("id") *).head
     }
   }
 
-  def deleteByProcess(id: Long): Boolean = {
-    DB.withConnection { implicit connection =>
-      SQL("""delete from processElements
-          where modelProcessId in (select id from modelProcesses where processId in (select id from processes where id = {id}))
-      		""").
-        on('id -> id).executeUpdate() == 0
+  def getModelId(id: Long): Long = DB.withConnection {
+    implicit connection => {
+      val query = """
+          select models.* from models, processElements
+          join modelProcesses on models.id = modelProcesses.modelId
+          where processElements.id = {id}
+          and processElements.modelProcessId = modelProcesses.id
+        """
+      SQL(query).on('id -> id).apply().toList match {
+        case Nil => throw new Exception("This element doesn't belong to any model.")
+        case x :: xs => x[Long]("id")
+      }
+    }
+  }
+
+  def deleteByProcess(id: Long): Boolean = DB.withConnection { 
+    implicit connection => {
+      val query = """
+        delete from processElements where modelProcessId in 
+        (select id from modelProcesses where processId in 
+        (select id from processes where id = {id}))
+      """
+      SQL(query).on('id -> id).executeUpdate() == 0
     }
   }
   
   ///BELOW COPIED FROM OLD ELEMENT CLASS >>>
   
-  val parse = {
+  val parser = {
     get[Pk[Long]]("id") ~
       get[Long]("modelProcessId") ~
       get[Long]("elementTypeId") ~
@@ -134,7 +141,7 @@ object ProcessElement extends TableCommon[ProcessElement] {
     SQL("""select processElements.* from processElements
           join elementTypes on elementTypes.id = processElements.elementTypeId
           where elementTypes.name = {elementType}
-         """).on('elementType -> elementType).as(parse *)
+         """).on('elementType -> elementType).as(parser *)
   }
 
   def findTypeByModel(id: Long, elementType: String): List[ProcessElement] = DB.withConnection { implicit connection =>
@@ -145,7 +152,7 @@ object ProcessElement extends TableCommon[ProcessElement] {
           join processes on processes.id = modelProcesses.processId
           where models.id = {id}
           and elementTypes.name = {elementType}
-         """).on('id -> id, 'elementType -> elementType).as(parse *)
+         """).on('id -> id, 'elementType -> elementType).as(parser *)
   }
 
   def findTypeById(id: Long, elementType: String): List[ProcessElement] = DB.withConnection { implicit connection =>
@@ -154,6 +161,6 @@ object ProcessElement extends TableCommon[ProcessElement] {
   	    join elementTypes on elementTypes.id = processElements.elementTypeId
         where processElements.id = {id}
   	    and elementTypes.name = {elementType}
-  	    """).on('id -> id, 'elementType -> elementType).as(parse *)
+  	    """).on('id -> id, 'elementType -> elementType).as(parser *)
   }
 }

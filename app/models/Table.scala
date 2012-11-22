@@ -36,7 +36,7 @@ trait TableCommon[T <: Table] {
   def parse(as: String = ""): RowParser[T]
 
   def create(table: T): Long = {
-    println("Creating " + table +  " with data " + table.toSeq)
+   // println("Creating " + table +  " with data " + table.toSeq)
     DB.withConnection { implicit connection =>
       SQL(createQuery)
         .on(toParams(table.toSeq): _*).executeInsert() 

@@ -72,12 +72,11 @@ GET   	/relation/:id								controllers.JsonController.getRelationByModel(id: In
 GET		/edit										controllers.Application.showEditPage									
 
 #Random to be cleaned up (currently just akka tryouts)
-GET     /live										controllers.ActorUpdates.live
-GET     /say/:said								    controllers.ActorUpdates.say(said: String)
-GET     /update/:id/:value							controllers.ActorUpdates.update(id: Int, value: String)
-GET	 	/room										controllers.ActorUpdates.room
+#GET     /live										controllers.ActorUpdates.live
+#GET     /say/:said								    controllers.ActorUpdates.say(said: String)
+#GET     /update/:id/:value							controllers.ActorUpdates.update(id: Int, value: String)
+#GET	 	/room										controllers.ActorUpdates.room
 #PUT   	/element/:id/:name							controllers.ActorUpdates.update(id: Int, name: String)
-GET     /xml/:id									controllers.XMLcontroller.modelToXML(id: Int)
 		
 #Removing slash from the end of URL
 GET  	/*path  									controllers.Application.removeSlash(path: String)

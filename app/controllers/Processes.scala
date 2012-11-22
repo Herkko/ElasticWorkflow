@@ -3,8 +3,11 @@ package controllers
 import service._
 import play.api._
 import play.api.mvc._
+import java.util.Date
+
 import anorm.NotAssigned
 import models.{ Model, ModelProcess, Process, Relation }
+
 /**
  * Control all actions related to showing, creating and deleting processes.
  */
@@ -60,13 +63,11 @@ object Processes extends Controller {
    * Create new process and set it to belong to a model specified by parameter modelId. Each process by default contains
    * SwimLane and StartElement and no relations.
    */
-  def createNewProcess(id: Long) = {
-    val modelId = id.toInt
+  def createNewProcess(modelId: Long) = {
     val y = (Process.countByModel(modelId) * 300 + 20).toInt
     
-  //  val processId = processService.create(modelId).toInt;
    
-    val processId: Long = Process.create(new Process(NotAssigned, "Process", "2012-10-21"))
+    val processId: Long = Process.create(new Process(NotAssigned, "Process", new Date()))
     ModelProcess.create(new ModelProcess(NotAssigned, modelId, processId))
     
     
@@ -83,6 +84,6 @@ object Processes extends Controller {
     val rel1 = Relation.create(new Relation(NotAssigned, elem4, elem5, 1, "Second Relation"))
     val rel2 = Relation.create(new Relation(NotAssigned, elem5, elem6, 1, "Third Relation"))
     val rel3 = Relation.create(new Relation(NotAssigned, elem6, elem3, 1, "Fourth Relation"))
-    val rel4 = Relation.create(new Relation(NotAssigned, elem5, elem7, 1, "Fifth Relation"))
+    val rel4 = Relation.create(new Relation(NotAssigned, elem5, elem7, 1, "Fifth Relation"))//something weird with this relation 5 -> 5??
   }
 }
