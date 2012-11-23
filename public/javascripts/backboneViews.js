@@ -71,7 +71,7 @@ workflow.views.StartsView = Backbone.View.extend({
 
         this.raphaelStart.attr({data: this.model.get("id")});
         RaphaelObjects[this.model.get("id")] = this.raphaelStart;
-
+		
         $(this.el).click(_.bind(function() {
             this.click()
         }, this));
@@ -157,9 +157,9 @@ workflow.views.swimlanesView = Backbone.View.extend({
 
     render: function(element) {
 
-        this.swimlane = RaphaelElement.rect(this.model.get("cx"), this.model.cy, 500, 300, 1);
-        this.swimlaneNameBox = RaphaelElement.rect(this.model.get("cx"), this.model.cy, 25, 300, 1);
-        this.swimlaneNameText = RaphaelElement.text(this.model.get("cx"), this.model.cy, this.model.value).attr({fill: "#000000", "font-size": 18}).transform('t12,' + 300 / 2 + 'r270');
+        this.swimlane = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 800, 300, 1);
+        this.swimlaneNameBox = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 25, 300, 1);
+        this.swimlaneNameText = RaphaelElement.text(this.model.get("cx"), this.model.get("cy"), this.model.value).attr({fill: "#000000", "font-size": 18}).transform('t12,' + 300 / 2 + 'r270');
 
         this.swimlane.toBack();
         this.el = this.swimlane.node;
@@ -205,7 +205,8 @@ workflow.views.relationView = Backbone.View.extend({
 
         var startPointti = RaphaelObjects[startPointId];
         var endPointti = RaphaelObjects[EndPointId];
-
+        console.log('backboneViews.js - When drawing relations starting from '+
+        'start element, RaphaelObjects[startPointId] = undefined ???');
         connections.push(RaphaelElement.connection(startPointti, endPointti, "#000"));
 
 

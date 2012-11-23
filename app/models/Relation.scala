@@ -10,7 +10,7 @@ case class Relation(
   val id: Pk[Long],
   val startId: Long,
   val endId: Long,
-  val relationTypeId: Int,
+  val relationTypeId: Long,
   val value: String
 ) extends Table {
 
@@ -66,7 +66,7 @@ object Relation extends TableCommon[Relation] {
     get[Pk[Long]]("id") ~
       get[Long]("startId") ~
       get[Long]("endId") ~
-      get[Int]("relationTypeId") ~
+      get[Long]("relationTypeId") ~
       get[String]("value") map {
         case id ~ startId ~ endId ~ relationTypeId ~ value =>
           Relation(id, startId, endId, relationTypeId, value)
@@ -77,7 +77,7 @@ object Relation extends TableCommon[Relation] {
     get[Pk[Long]]("id") ~
       get[Long]("startId") ~
       get[Long]("endId") ~
-      get[Int]("relationTypeId") ~
+      get[Long]("relationTypeId") ~
       get[String]("value") map {
         case id ~ startId ~ endId ~ relationTypeId ~ value =>
           Relation(id, startId, endId, relationTypeId, value)

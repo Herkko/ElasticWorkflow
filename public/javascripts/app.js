@@ -19,7 +19,7 @@ var workflow = {
         RaphaelObjects= []; 
         connections = [];
 
-        RaphaelElement = Raphael(10, 120, "100%", "100%");
+        RaphaelElement = Raphael(10, 120, 1100, 1000);
         App = new workflow.views.AppView;
         setUpApplication();
     },

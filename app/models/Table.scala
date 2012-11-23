@@ -14,9 +14,6 @@ trait Table {
   def delete(): Int
   def list(): List[Table]
 
-  def isNew(): Boolean = {
-    id == NotAssigned
-  }
   def toSeq(): Seq[(String, Any)]
 }
 
@@ -36,15 +33,15 @@ trait TableCommon[T <: Table] {
   def parse(as: String = ""): RowParser[T]
 
   def create(table: T): Long = {
-   // println("Creating " + table +  " with data " + table.toSeq)
-    DB.withConnection { implicit connection =>
-      SQL(createQuery)
-        .on(toParams(table.toSeq): _*).executeInsert() 
-    } match {
-      case Some(pk) => pk
+    val pid: Option[Long] = DB.withConnection { implicit connection =>
+      SQL(createQuery).on(toParams(table.toSeq): _*).executeInsert() 
+    } 
+    pid match {
+      case Some(long) => long
       case None => throw new Exception(table.toSeq + "could not be created.")
     }
   }
+  
 
   def read(id: Long): Option[T] = {
     DB.withConnection { implicit connection =>
@@ -63,7 +60,7 @@ trait TableCommon[T <: Table] {
   def update(table: T): Int = {
     DB.withConnection { implicit connection =>
       SQL(updateQuery)
-        .on(toParams(table.toSeq): _*).executeUpdate()
+      .on(toParams(table.toSeq): _*).executeUpdate()
     }
   }
 

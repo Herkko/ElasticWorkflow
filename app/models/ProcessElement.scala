@@ -7,9 +7,9 @@ import anorm._
 import anorm.SqlParser._
 
 case class ProcessElement(
-  id: Pk[Long],
+  id: Pk[Long] = NotAssigned,
   modelProcessId: Long,
-  elementTypeId: Long,
+  elementTypeId: Int,
   value: String,
   size: Int,
   x: Int,
@@ -23,7 +23,7 @@ case class ProcessElement(
   def list: List[ProcessElement] = ProcessElement.list()
 
   def toSeq(): Seq[(String, Any)] = Seq(
-    "id" -> id.map(id => id).getOrElse(0L),
+    "id" -> id,
     "modelProcessId" -> modelProcessId,
     "elementTypeId" -> elementTypeId,
     "value" -> value,
@@ -66,7 +66,7 @@ object ProcessElement extends TableCommon[ProcessElement] {
   def parse(as: String = "processElements.") = {
     get[Pk[Long]]("id") ~
       get[Long]("modelProcessId") ~
-      get[Long]("elementTypeId") ~
+      get[Int]("elementTypeId") ~
       get[String]("value") ~
       get[Int]("size") ~
       get[Int]("x") ~
@@ -75,7 +75,7 @@ object ProcessElement extends TableCommon[ProcessElement] {
           ProcessElement(id, modelProcessId, elementTypeId, value, size, x, y)
       }
   }
-
+  
   def update(id: Long, value: String, size: Int, x: Int, y: Int): Boolean = {
     DB.withConnection { implicit connection =>
       SQL("""update processElements 
@@ -127,7 +127,7 @@ object ProcessElement extends TableCommon[ProcessElement] {
   val parser = {
     get[Pk[Long]]("id") ~
       get[Long]("modelProcessId") ~
-      get[Long]("elementTypeId") ~
+      get[Int]("elementTypeId") ~
       get[String]("value") ~
       get[Int]("size") ~
       get[Int]("x") ~

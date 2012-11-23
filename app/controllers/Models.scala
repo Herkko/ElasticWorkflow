@@ -24,7 +24,6 @@ object Models extends Controller {
   }
 
   def read(id: Long) = Action { implicit request =>
-    println("we have " + Process.countByModel(id) + " processes")
     Model.read(id) match {
       case Some(model) => Ok(views.html.modelTest.details(model, Process.findByModelWithElements(id), Relation.findByModel(id)))
       case None => NotFound("This Model doesn't exist. Thrown by: " + getClass.getName + " when reading model from database.")

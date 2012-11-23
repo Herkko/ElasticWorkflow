@@ -41,32 +41,40 @@ PUT    	/elements/id=:id&value=:value&size=:size&x=:x&y=:y								controllers.Pr
 #JSON methods
 GET   	/element									controllers.JsonController.list
 	
-GET   	/start									    controllers.JsonController.getProcessElement(elem: String = "Start")
-POST    /start										controllers.JsonController.createProcessElement(id: Long = 2)	
-GET   	/start/:id									controllers.JsonController.getProcessElementByModel(id: Int, elem: String = "Start")
-PUT     /start/:id									controllers.JsonController.toElement(id: Int)
+GET   	/start										controllers.elements.Start.list
+GET     /start/:id									controllers.elements.Start.read(id: Int)
+PUT     /start/:id									controllers.elements.Start.update(id: Int)
+POST    /start										controllers.elements.Start.create
+DELETE	/start/:id									controllers.elements.Start.delete(id: Int)
 
-GET   	/end										controllers.JsonController.getProcessElement(elem: String = "End")
-POST    /end										controllers.JsonController.createProcessElement(id: Long = 3)
-GET   	/end/:id									controllers.JsonController.getProcessElementByModel(id: Int, elem: String = "End")	
-PUT     /end/:id									controllers.JsonController.toElement(id: Int)
+GET   	/end										controllers.elements.End.list
+GET     /end/:id									controllers.elements.End.read(id: Int)
+PUT     /end/:id									controllers.elements.End.update(id: Int)
+POST    /end										controllers.elements.End.create
+DELETE	/end/:id									controllers.elements.End.delete(id: Int)
 
-GET   	/swimlane									controllers.JsonController.getProcessElement(elem: String = "Swimlane")
-GET   	/swimlane/:id								controllers.JsonController.getProcessElementByModel(id: Int, elem: String = "Swimlane")
+GET   	/swimlane									controllers.elements.Swimlane.list
+GET     /swimlane/:id								controllers.elements.Swimlane.read(id: Int)
+PUT     /swimlane/:id								controllers.elements.Swimlane.update(id: Int)
+POST    /swimlane									controllers.elements.Swimlane.create
+DELETE	/swimlane/:id								controllers.elements.Swimlane.delete(id: Int)
 
-GET   	/activity									controllers.JsonController.getProcessElement(elem: String = "Activity")
-PUT     /activity/:id								controllers.JsonController.toElement(id: Int)
-POST    /activity									controllers.JsonController.createProcessElement(id: Long = 4)
-GET		/activity/:id								controllers.JsonController.getProcessElementByModel(id: Int, elem: String = "Activity")
+#warning: GET will list all activities, not by model
+GET   	/activity									controllers.elements.Activity.list
+GET     /activity/:id								controllers.elements.Activity.read(id: Int)
+PUT     /activity/:id								controllers.elements.Activity.update(id: Int)
+POST    /activity									controllers.elements.Activity.create
+DELETE	/activity/:id								controllers.elements.Activity.delete(id: Int)
 
-GET   	/gateway									controllers.JsonController.getProcessElement(elem: String = "Gateway")
-POST    /gateway									controllers.JsonController.createProcessElement(id: Long = 5)
-GET   	/gateway/:id							    controllers.JsonController.getProcessElementByModel(id: Int, elem: String = "Gateway")
-PUT     /gateway/:id								controllers.JsonController.toElement(id: Int)	
+GET   	/gateway									controllers.elements.Gateway.list
+GET     /gateway/:id								controllers.elements.Gateway.read(id: Int)
+PUT     /gateway/:id								controllers.elements.Gateway.update(id: Int)
+POST    /gateway									controllers.elements.Gateway.create
+DELETE	/gateway/:id								controllers.elements.Gateway.delete(id: Int)	
 
-GET   	/relation									controllers.JsonController.getRelation
-POST    /relation									controllers.JsonController.createRelation()	
-GET   	/relation/:id								controllers.JsonController.getRelationByModel(id: Int)	
+GET   	/relation									controllers.elements.RelationElement.list
+POST    /relation									controllers.elements.RelationElement.create	
+GET   	/relation/:id								controllers.elements.RelationElement.getRelationByModel(id: Int)	
 
 #Pages which show javascript
 GET		/edit										controllers.Application.showEditPage									

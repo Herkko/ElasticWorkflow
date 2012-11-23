@@ -1,8 +1,8 @@
 
 workflow.models.activity = Backbone.Model.extend({
 	
-	urlRoot: 'http://morning-fjord-4117.herokuapp.com/activity',
-	//urlRoot: 'http://localhost:9000/activity',
+	//urlRoot: 'http://morning-fjord-4117.herokuapp.com/activity',
+	urlRoot: 'http://localhost:9000/activity',
 	
     updateModel: function() {
         this.save();
@@ -12,8 +12,8 @@ workflow.models.activity = Backbone.Model.extend({
 
 workflow.models.start = Backbone.Model.extend({
 	
-	urlRoot: 'http://morning-fjord-4117.herokuapp.com/start',
-	//urlRoot: 'http://localhost:9000/start',
+	//urlRoot: 'http://morning-fjord-4117.herokuapp.com/start',
+	urlRoot: 'http://localhost:9000/start',
 	
     defaults: {
         cx: 10,
@@ -28,8 +28,8 @@ workflow.models.start = Backbone.Model.extend({
 
 workflow.models.relation = Backbone.Model.extend({
 
-	urlRoot: 'http://morning-fjord-4117.herokuapp.com/relation',
-    //urlRoot: 'http://localhost:9000/relation',
+	//urlRoot: 'http://morning-fjord-4117.herokuapp.com/relation',
+    urlRoot: 'http://localhost:9000/relation',
     
     initialize: function() {
 
@@ -57,8 +57,8 @@ workflow.models.relation = Backbone.Model.extend({
 
 workflow.models.end = Backbone.Model.extend({
 	
-	urlRoot: 'http://morning-fjord-4117.herokuapp.com/end',
-    //urlRoot: 'http://localhost:9000/end',
+	//urlRoot: 'http://morning-fjord-4117.herokuapp.com/end',
+    urlRoot: 'http://localhost:9000/end',
     
     updateModel: function() {
         this.save();
@@ -67,8 +67,8 @@ workflow.models.end = Backbone.Model.extend({
 
 workflow.models.swimlane = Backbone.Model.extend({
 	
-	urlRoot: 'http://morning-fjord-4117.herokuapp.com/swimlane',
-   //urlRoot: 'http://localhost:9000/swimlane',
+	//urlRoot: 'http://morning-fjord-4117.herokuapp.com/swimlane',
+   urlRoot: 'http://localhost:9000/swimlane',
   
     updateModel: function() {
         this.save();
@@ -78,8 +78,8 @@ workflow.models.swimlane = Backbone.Model.extend({
 
 workflow.models.gateway = Backbone.Model.extend({
 	
-	urlRoot: 'http://morning-fjord-4117.herokuapp.com/gateway',
-	//urlRoot: 'http://localhost:9000/relation',
+	//urlRoot: 'http://morning-fjord-4117.herokuapp.com/gateway',
+	urlRoot: 'http://localhost:9000/relation',
 	
     updateModel: function() {
         this.save();
@@ -91,38 +91,38 @@ workflow.models.gateway = Backbone.Model.extend({
 
 workflow.collections.ActivityList = Backbone.Collection.extend({
     model: workflow.models.activity,
-    url: 'http://morning-fjord-4117.herokuapp.com/activity'
-	//url: 'http://localhost:9000/activity'
+    //url: 'http://morning-fjord-4117.herokuapp.com/activity'
+	url: 'http://localhost:9000/activity'
 });
 
 workflow.collections.StartList = Backbone.Collection.extend({
     model: workflow.models.start,
-    url: 'http://morning-fjord-4117.herokuapp.com/start'
-    //url: 'http://localhost:9000/start'
+    //url: 'http://morning-fjord-4117.herokuapp.com/start'
+    url: 'http://localhost:9000/start'
 });
 
 workflow.collections.EndList = Backbone.Collection.extend({
     model: workflow.models.end,
-    url: 'http://morning-fjord-4117.herokuapp.com/end'
-  //  url: 'http://localhost:9000/end'
+    //url: 'http://morning-fjord-4117.herokuapp.com/end'
+    url: 'http://localhost:9000/end'
 });
 
 workflow.collections.SwimlaneList = Backbone.Collection.extend({
     model: workflow.models.swimlane,
-    url: 'http://morning-fjord-4117.herokuapp.com/swimlane'
-    //url: 'http://localhost:9000/swimlane'
+    //url: 'http://morning-fjord-4117.herokuapp.com/swimlane'
+    url: 'http://localhost:9000/swimlane'
 });
 
 workflow.collections.GatewayList = Backbone.Collection.extend({
     model: workflow.models.gateway,
-    url: 'http://morning-fjord-4117.herokuapp.com/gateway'
-   //url: 'http://localhost:9000/gateway'
+    //url: 'http://morning-fjord-4117.herokuapp.com/gateway'
+   url: 'http://localhost:9000/gateway'
 });
 
 workflow.collections.RelationList = Backbone.Collection.extend({
     model: workflow.models.relation,
-   url: 'http://morning-fjord-4117.herokuapp.com/relation',
-  //  url: 'http://localhost:9000/relation', 
+  // url: 'http://morning-fjord-4117.herokuapp.com/relation',
+    url: 'http://localhost:9000/relation', 
     
     render: function() {
         for (var i = 0; i < this.length; i++) {
