@@ -6,6 +6,6 @@ import play.api.mvc._
 object Start extends Controller with Basic {
 
   val typeName: String = "Start"
-  val elementType: Int = 4
+  val elementType: Int = 2
 
 }

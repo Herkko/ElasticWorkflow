@@ -39,7 +39,7 @@ POST	/models/:id/processes/:pId/elements/elemType=:elemType&value=:value&x=:x&y=
 PUT    	/elements/id=:id&value=:value&size=:size&x=:x&y=:y								controllers.ProcessElements.update(id: Int, value: String, size: Int, x: Int, y: Int)
 
 #JSON methods
-GET   	/element									controllers.JsonController.list
+GET   	/element									controllers.ProcessElements.list
 	
 GET   	/start										controllers.elements.Start.list
 GET     /start/:id									controllers.elements.Start.read(id: Int)

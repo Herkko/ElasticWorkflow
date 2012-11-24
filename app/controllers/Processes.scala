@@ -13,8 +13,6 @@ import models.{ Model, ModelProcess, Process, Relation, ProcessElement }
  */
 object Processes extends Controller {
 
- // val processElementService = new ProcessElementService
-
   /**
    * Add new process to a model. Called when a new model is created, or user wants to add a process to existing model.
    * Redirects to a page that lists all models, if model with id equal to parameter modelId doesn't exist.
@@ -87,4 +85,5 @@ object Processes extends Controller {
     val rel3 = Relation(NotAssigned, elem7, elem6, 1, "Fourth Relation").create
     val rel4 = Relation(NotAssigned, elem5, elem3, 1, "Fifth Relation").create
   }
+
 }

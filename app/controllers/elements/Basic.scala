@@ -37,8 +37,11 @@ trait Basic extends Controller {
         val x = (json \ "cx").asOpt[String].getOrElse("100")
         val y = (json \ "cy").asOpt[String].getOrElse("100")
 
-        ProcessElement.create(new ProcessElement(NotAssigned, modelProcessId, elementTypeId, value, size, x.toInt, y.toInt))
-        Ok(views.html.edit())
+        val newId = ProcessElement(NotAssigned, modelProcessId, elementTypeId, value, size, x.toInt, y.toInt).create
+       
+   //     ProcessElement.create(new ProcessElement(NotAssigned, modelProcessId, elementTypeId, value, size, x.toInt, y.toInt))
+       // Ok(views.html.edit())
+        Ok(toJson(ProcessElement.read(newId)))
       }
     }.getOrElse {
       BadRequest("Expecting Json data")

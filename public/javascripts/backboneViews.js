@@ -5,13 +5,14 @@ workflow.views.AppView = Backbone.View.extend({
 workflow.views.ActivityView = Backbone.View.extend({
    
     events: {
-        "$(this.el).mouseover": "editFunc",
-        
+        "$(this.el).mouseover": "editFunc"
     },
     
 
     initialize: function() {
-        this.render();
+              
+        this.render(); 
+    
         this.raphaelActivity.pair = this.raphaelText;
         this.raphaelText.pair = this.raphaelActivity;
         this.color = "#000";
@@ -21,6 +22,7 @@ workflow.views.ActivityView = Backbone.View.extend({
         this.raphaelText.drag(move, dragger, up);
 
         this.el = this.raphaelActivity.node;
+        
         
         //binded event for mouseclick and doubleClick
         $(this.el).click(_.bind(function() { this.click()}, this));
@@ -32,7 +34,7 @@ workflow.views.ActivityView = Backbone.View.extend({
     },
             
     render: function() {
-        this.raphaelActivity = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 100, 60, 4);
+    	this.raphaelActivity = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 100, 60, 4);
         this.raphaelText = RaphaelElement.text((this.model.get("cx") + 50), (this.model.get("cy") + 30), this.model.get("value"));
     },
             

@@ -160,33 +160,43 @@ function post_to_url(path, params, method) {
 ;
 
 function uusiActivity() {
-	var activityModel = new workflow.models.activity({cx:100, cy:200});
-	//activityElements.add(uusimodel);
-	activityModel.save();
-    nakyma = new workflow.views.ActivityView({model: activityModel});
+    var activityModel = new workflow.models.activity();
+	$.when(activityModel.save()).then(function() {
+	    ActivityElements.add(activityModel);
+		new workflow.views.ActivityView({model: activityModel})
+	});
 };
 
 function uusiStart() {
-	var startModel = new workflow.models.start({cx:100, cy:200});
-	startModel.save();
-	nakyma = new workflow.views.StartsView({model: startModel});
+	var startModel = new workflow.models.start();
+	$.when(startModel.save()).then(function() {
+	    StartElements.add(startModel);
+		new workflow.views.StartsView({model: startModel})
+	});
 };
 
 function uusiEnd() {
-	var endModel = new workflow.models.end({cx:100, cy:200});
-	endModel.save();
-	nakyma = new workflow.views.endsView({model: endModel});
+	var endModel = new workflow.models.end();
+	$.when(endModel.save()).then(function() {
+	    EndElements.add(endModel);
+		new workflow.views.endsView({model: endModel})
+	});
 };
 
+//add to raphaelobjects
 function uusiGateway() {
-	var gatewayModel = new workflow.models.gateway({cx:100, cy:200});
-	gatewayModel.save();
-	nakyma = new workflow.views.gatewayView({model: gatewayModel});
+	var gatewayModel = new workflow.models.gateway();
+	$.when(gatewayModel.save()).then(function() {
+	    GatewayElements.add(gatewayModel);
+		new workflow.views.gatewayView({model: gatewayModel})
+	});
 };
 
 function uusiRelation() {
-	var relationModel = new workflow.models.relation({cx:100, cy:200});
-	relationModel.save();
-	nakyma = new workflow.views.relationView({model: relationModel});
+	var relationModel = new workflow.models.relation();
+	$.when(relationModel.save()).then(function() {
+	    RelationElements.add(relationModel);
+		new workflow.views.relationView({model: relationModel})
+	});
 }
 
