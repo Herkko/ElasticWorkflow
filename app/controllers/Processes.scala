@@ -23,11 +23,12 @@ object Processes extends Controller {
     Model.read(modelId) match {
       case Some(model) => {
         createNewProcess(modelId)
-        Redirect(routes.Models.read(modelId.toInt))
+        Redirect(routes.Application.showEditPage)
       }
       case None => NotFound("This Model doesn't exist. Thrown by: " + getClass.getName + " when creating new process.")
     }
   }
+
 
   def update(id: Int, name: String) = Action {
     Process.read(id) match {

@@ -79,7 +79,7 @@ workflow.models.swimlane = Backbone.Model.extend({
 workflow.models.gateway = Backbone.Model.extend({
 	
 	//urlRoot: 'http://morning-fjord-4117.herokuapp.com/gateway',
-	urlRoot: 'http://localhost:9000/relation',
+	urlRoot: 'http://localhost:9000/gateway',
 	
     updateModel: function() {
         this.save();

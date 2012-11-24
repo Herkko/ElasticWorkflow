@@ -159,7 +159,7 @@ workflow.views.swimlanesView = Backbone.View.extend({
 
         this.swimlane = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 800, 300, 1);
         this.swimlaneNameBox = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 25, 300, 1);
-        this.swimlaneNameText = RaphaelElement.text(this.model.get("cx"), this.model.get("cy"), this.model.value).attr({fill: "#000000", "font-size": 18}).transform('t12,' + 300 / 2 + 'r270');
+        this.swimlaneNameText = RaphaelElement.text(this.model.get("cx"), this.model.get("cy"), this.model.get("value")).attr({fill: "#000000", "font-size": 18}).transform('t12,' + 300 / 2 + 'r270');
 
         this.swimlane.toBack();
         this.el = this.swimlane.node;
@@ -169,7 +169,7 @@ workflow.views.swimlanesView = Backbone.View.extend({
 })
 
 workflow.views.gatewayView = Backbone.View.extend({
-
+/*
      initialize: function(){
          this.render();
         
@@ -194,6 +194,41 @@ workflow.views.gatewayView = Backbone.View.extend({
         this.raphaelText.drag(movePath, dragger, up);
 
     }
+*/    
+    initialize: function() {
+        this.render();
+        this.raphaelGateway.pair = this.raphaelText;
+        this.raphaelText.pair = this.raphaelGateway;
+       
+        var color = Raphael.getColor();
+        this.raphaelGateway.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+        this.raphaelText.attr({fill: '#383838', "font-size": 16, cursor: "move"});
+        
+        this.raphaelGateway.drag(movePath, dragger, up);
+        this.raphaelText.drag(movePath, dragger, up);
+       
+        this.el = this.raphaelGateway.node;
+        this.raphaelGateway.attr({data: this.model.get("id")});
+        RaphaelObjects[this.model.get("id")] = this.raphaelGateway;
+
+        $(this.el).click(_.bind(function() {
+            this.click()
+        }, this));
+
+    },
+            
+    render: function() {
+        this.raphaelGateway = RaphaelElement.path('M' + this.model.get("cx") + ',' + this.model.get("cy") + 'L' + (this.model.get("cx") - 50) + ',' + (this.model.get("cy") + 50) + 'L' + (this.model.get("cx")) + ',' + (this.model.get("cy") + 100) + 'L' + (this.model.get("cx") + 50) + ',' + (this.model.get("cy") + 50) + 'Z');
+        this.raphaelText = RaphaelElement.text(this.model.get("cx"), (this.model.get("cy") + 50), this.model.get("value"));
+    },
+    
+    click: function() {
+        var raphaelGateway = this.el;
+   
+        this.model.set({cx: raphaelGateway.getBBox().x});
+        this.model.set({cy: raphaelGateway.getBBox().y});
+        this.model.updateModel();
+    }
 })
 
 workflow.views.relationView = Backbone.View.extend({
@@ -205,8 +240,7 @@ workflow.views.relationView = Backbone.View.extend({
 
         var startPointti = RaphaelObjects[startPointId];
         var endPointti = RaphaelObjects[EndPointId];
-        console.log('backboneViews.js - When drawing relations starting from '+
-        'start element, RaphaelObjects[startPointId] = undefined ???');
+
         connections.push(RaphaelElement.connection(startPointti, endPointti, "#000"));
 
 
