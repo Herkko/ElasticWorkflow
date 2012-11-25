@@ -39,8 +39,6 @@ trait Basic extends Controller {
 
         val newId = ProcessElement(NotAssigned, modelProcessId, elementTypeId, value, size, x.toInt, y.toInt).create
        
-   //     ProcessElement.create(new ProcessElement(NotAssigned, modelProcessId, elementTypeId, value, size, x.toInt, y.toInt))
-       // Ok(views.html.edit())
         Ok(toJson(ProcessElement.read(newId)))
       }
     }.getOrElse {
@@ -74,9 +72,10 @@ trait Basic extends Controller {
     }
   }
   
-  //add a check here that process element has a correct type!
+  //add a check here that process element has a correct type!also delete its relations
   def delete(id: Long) = CORSAction { implicit request =>
-    Ok(toJson(ProcessElement.delete(id)))
+    ProcessElement.delete(id)
+    Ok(views.html.edit())
   }
 
   def list = CORSAction { implicit request =>

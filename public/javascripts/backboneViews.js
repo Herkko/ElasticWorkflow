@@ -1,11 +1,17 @@
 workflow.views.AppView = Backbone.View.extend({
     el: "elements",
 });
+//test
+deleteActivity = function() {
+		var req = new XMLHttpRequest();
+		req.open("DELETE", "/activity/8", false);
+		req.send();
+},
 
 workflow.views.ActivityView = Backbone.View.extend({
    
     events: {
-        "$(this.el).mouseover": "editFunc"
+ 
     },
     
 
@@ -20,17 +26,25 @@ workflow.views.ActivityView = Backbone.View.extend({
         this.raphaelActivity.attr({fill: this.color, stroke: this.color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
         this.raphaelActivity.drag(move, dragger, up);
         this.raphaelText.drag(move, dragger, up);
-
+        this.raphaelText.toBack();
         this.el = this.raphaelActivity.node;
+        this.delegateEvents();
         
-        
+        this.raphaelActivity.hover(function (e) {
+    		$(e.target).attr({"stroke": "#AAAAAA"});
+    		deleteActivity();
+  		},
+  		function (e) {
+    		$(e.target).attr({"stroke": "#000"});
+  		});
+  		
         //binded event for mouseclick and doubleClick
         $(this.el).click(_.bind(function() { this.click()}, this));
        // $(this.el).dblclick(_.bind(function() { this.editFunc()}, this));
-        
-        //adds id to Raphael Element and stores them to list
+
         this.raphaelActivity.attr({data: this.model.get("id")});
         RaphaelObjects[this.model.get("id")] = this.raphaelActivity;
+
     },
             
     render: function() {
@@ -45,20 +59,19 @@ workflow.views.ActivityView = Backbone.View.extend({
         this.model.set({cy: raphaelActivity.getAttribute("y")});
         this.model.updateModel();
     },
-        
+      
     editFunc: function(){
         //console.log("doubleclick");
       // EditTemplate.startEdit(this.model);
         
-        
+        console.log("hover");
         
     }        
             
 
 });
-
+    
 workflow.views.StartsView = Backbone.View.extend({
-
 
     initialize: function() {
         this.render();
@@ -79,17 +92,14 @@ workflow.views.StartsView = Backbone.View.extend({
         }, this));
 
     },
+    
     render: function() {
-
-
         this.raphaelStart = RaphaelElement.circle(this.model.get("cx"), this.model.get("cy"), 20);
         this.raphaelText = RaphaelElement.text(this.model.get("cx"), this.model.get("cy"), this.model.get("value"));
-     
     },
     
     events: {
-    	click: "clicked",
-    	//dblclick: doubleclicked
+    	click: "clicked"
     },
     
     clicked: function() {
@@ -125,14 +135,8 @@ workflow.views.endsView = Backbone.View.extend({
     },
             
     render: function() {
-
         this.raphaelEnd = RaphaelElement.circle(this.model.get("cx"), this.model.get("cy"), 20);
         this.raphaelText = RaphaelElement.text(this.model.get("cx"), this.model.get("cy"), this.model.get("value"));
-        // raphaelText.drag(moveText, startText);
-
-
-
-
     },
     
     click: function() {
@@ -235,19 +239,11 @@ workflow.views.gatewayView = Backbone.View.extend({
 
 workflow.views.relationView = Backbone.View.extend({
 
-
     render: function() {
-        startPointId = this.model.get("startId");
-        EndPointId = this.model.get("endId");
-
-        var startPointti = RaphaelObjects[startPointId];
-        var endPointti = RaphaelObjects[EndPointId];
-
-        connections.push(RaphaelElement.connection(startPointti, endPointti, "#000"));
-
-
+        var startPoint = RaphaelObjects[this.model.get("startId")];
+        var endPoint = RaphaelObjects[this.model.get("endId")];
+        connections.push(RaphaelElement.connection(startPoint, endPoint, "#000"));
     }
-
 })
 
 
@@ -257,8 +253,7 @@ workflow.views.EditElementsView = Backbone.View.extend({
             
     initialize: function(modelAttribute){
         this.model = modelAttribute;
-       //käydään kaikki raphael ojektit läpi ja lisätään niille kuuntelu
-       
+ 
         for(var i = 2; i <RaphaelObjects.length; i++){
             var objekti = RaphaelObjects[i];
             var objektinNode = objekti.node.el;

@@ -1,7 +1,6 @@
 package controllers
 
 import app.actions.CORSAction
-import service._
 import play.api._
 import play.api.mvc._
 import play.api.libs.json.Json.toJson

@@ -15,11 +15,6 @@ workflow.models.start = Backbone.Model.extend({
 	//urlRoot: 'http://morning-fjord-4117.herokuapp.com/start',
 	urlRoot: 'http://localhost:9000/start',
 	
-    defaults: {
-        cx: 10,
-        cy: 10,        
-    },
-    
     updateModel: function() {
         this.save();
     }
@@ -143,7 +138,7 @@ function post_to_url(path, params, method) {
     form.setAttribute("method", method);
     form.setAttribute("action", path);
 
-    for (var key in params) {
+   for (var key in params) {
         if (params.hasOwnProperty(key)) {
             var hiddenField = document.createElement("input");
             hiddenField.setAttribute("type", "hidden");
