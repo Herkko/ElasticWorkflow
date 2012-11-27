@@ -1,7 +1,8 @@
 
 workflow.models.activity = Backbone.Model.extend({
 	
-	urlRoot: 'http://morning-fjord-4117.herokuapp.com/activity',
+	//urlRoot: 'http://morning-fjord-4117.herokuapp.com/activity',
+	urlRoot: 'http://localhost:9000/activity',
 	
     initialize: function(){
       this.change(_.bind(function() { this.change()}, this));  
@@ -20,13 +21,9 @@ workflow.models.activity = Backbone.Model.extend({
 
 workflow.models.start = Backbone.Model.extend({
 	
-	urlRoot: 'http://morning-fjord-4117.herokuapp.com/start',
+	//urlRoot: 'http://morning-fjord-4117.herokuapp.com/start',
+	urlRoot: 'http://localhost:9000/start',
 	
-    defaults: {
-        cx: 10,
-        cy: 10,        
-    },
-    
     updateModel: function() {
         this.save({success: function(){
                console.log("response data: " + response.status);
@@ -37,8 +34,9 @@ workflow.models.start = Backbone.Model.extend({
 
 workflow.models.relation = Backbone.Model.extend({
 
-	urlRoot: 'http://morning-fjord-4117.herokuapp.com/relation',
-   
+	//urlRoot: 'http://morning-fjord-4117.herokuapp.com/relation',
+    urlRoot: 'http://localhost:9000/relation',
+    
     initialize: function() {
 
         function getBackboneModelById(id) {
@@ -65,8 +63,9 @@ workflow.models.relation = Backbone.Model.extend({
 
 workflow.models.end = Backbone.Model.extend({
 	
-	urlRoot: 'http://morning-fjord-4117.herokuapp.com/end',
-
+	//urlRoot: 'http://morning-fjord-4117.herokuapp.com/end',
+    urlRoot: 'http://localhost:9000/end',
+    
     updateModel: function() {
         this.save();
     }
@@ -74,8 +73,9 @@ workflow.models.end = Backbone.Model.extend({
 
 workflow.models.swimlane = Backbone.Model.extend({
 	
-	urlRoot: 'http://morning-fjord-4117.herokuapp.com/swimlane',
-
+	//urlRoot: 'http://morning-fjord-4117.herokuapp.com/swimlane',
+   urlRoot: 'http://localhost:9000/swimlane',
+  
     updateModel: function() {
         this.save();
     }
@@ -84,8 +84,9 @@ workflow.models.swimlane = Backbone.Model.extend({
 
 workflow.models.gateway = Backbone.Model.extend({
 	
-	urlRoot: 'http://morning-fjord-4117.herokuapp.com/gateway',
-
+	//urlRoot: 'http://morning-fjord-4117.herokuapp.com/gateway',
+	urlRoot: 'http://localhost:9000/gateway',
+	
     updateModel: function() {
         this.save();
     }
@@ -96,33 +97,38 @@ workflow.models.gateway = Backbone.Model.extend({
 
 workflow.collections.ActivityList = Backbone.Collection.extend({
     model: workflow.models.activity,
-    url: 'http://morning-fjord-4117.herokuapp.com/activity',
-
+    //url: 'http://morning-fjord-4117.herokuapp.com/activity'
+	url: 'http://localhost:9000/activity'
 });
 
 workflow.collections.StartList = Backbone.Collection.extend({
     model: workflow.models.start,
-    url: 'http://morning-fjord-4117.herokuapp.com/start'
+    //url: 'http://morning-fjord-4117.herokuapp.com/start'
+    url: 'http://localhost:9000/start'
 });
 
 workflow.collections.EndList = Backbone.Collection.extend({
     model: workflow.models.end,
-    url: 'http://morning-fjord-4117.herokuapp.com/end'
+    //url: 'http://morning-fjord-4117.herokuapp.com/end'
+    url: 'http://localhost:9000/end'
 });
 
 workflow.collections.SwimlaneList = Backbone.Collection.extend({
     model: workflow.models.swimlane,
-    url: 'http://morning-fjord-4117.herokuapp.com/swimlane'
+    //url: 'http://morning-fjord-4117.herokuapp.com/swimlane'
+    url: 'http://localhost:9000/swimlane'
 });
 
 workflow.collections.GatewayList = Backbone.Collection.extend({
     model: workflow.models.gateway,
-    url: 'http://morning-fjord-4117.herokuapp.com/gateway'
+    //url: 'http://morning-fjord-4117.herokuapp.com/gateway'
+   url: 'http://localhost:9000/gateway'
 });
 
 workflow.collections.RelationList = Backbone.Collection.extend({
     model: workflow.models.relation,
-    url: 'http://morning-fjord-4117.herokuapp.com/relation',
+  // url: 'http://morning-fjord-4117.herokuapp.com/relation',
+    url: 'http://localhost:9000/relation', 
     
     render: function() {
         for (var i = 0; i < this.length; i++) {
@@ -143,7 +149,7 @@ function post_to_url(path, params, method) {
     form.setAttribute("method", method);
     form.setAttribute("action", path);
 
-    for (var key in params) {
+   for (var key in params) {
         if (params.hasOwnProperty(key)) {
             var hiddenField = document.createElement("input");
             hiddenField.setAttribute("type", "hidden");
@@ -160,33 +166,43 @@ function post_to_url(path, params, method) {
 ;
 
 function uusiActivity() {
-	var activityModel = new workflow.models.activity({cx:100, cy:200});
-	//activityElements.add(uusimodel);
-	activityModel.save();
-    nakyma = new workflow.views.ActivityView({model: activityModel});
+    var activityModel = new workflow.models.activity();
+	$.when(activityModel.save()).then(function() {
+	    ActivityElements.add(activityModel);
+		new workflow.views.ActivityView({model: activityModel})
+	});
 };
 
 function uusiStart() {
-	var startModel = new workflow.models.start({cx:100, cy:200});
-	startModel.save();
-	nakyma = new workflow.views.StartsView({model: startModel});
+	var startModel = new workflow.models.start();
+	$.when(startModel.save()).then(function() {
+	    StartElements.add(startModel);
+		new workflow.views.StartsView({model: startModel})
+	});
 };
 
 function uusiEnd() {
-	var endModel = new workflow.models.end({cx:100, cy:200});
-	endModel.save();
-	nakyma = new workflow.views.endsView({model: endModel});
+	var endModel = new workflow.models.end();
+	$.when(endModel.save()).then(function() {
+	    EndElements.add(endModel);
+		new workflow.views.endsView({model: endModel})
+	});
 };
 
+//add to raphaelobjects
 function uusiGateway() {
-	var gatewayModel = new workflow.models.gateway({cx:100, cy:200});
-	gatewayModel.save();
-	nakyma = new workflow.views.gatewayView({model: gatewayModel});
+	var gatewayModel = new workflow.models.gateway();
+	$.when(gatewayModel.save()).then(function() {
+	    GatewayElements.add(gatewayModel);
+		new workflow.views.gatewayView({model: gatewayModel})
+	});
 };
 
 function uusiRelation() {
-	var relationModel = new workflow.models.relation({cx:100, cy:200});
-	relationModel.save();
-	nakyma = new workflow.views.relationView({model: relationModel});
+	var relationModel = new workflow.models.relation();
+	$.when(relationModel.save()).then(function() {
+	    RelationElements.add(relationModel);
+		new workflow.views.relationView({model: relationModel})
+	});
 }
 

@@ -1,4 +1,4 @@
-package controllers
+/*package controllers
 
 import play.api._
 import play.api.mvc._
@@ -8,15 +8,13 @@ import play.api.libs.concurrent._
 import play.api.libs.iteratee._
 
 import actors._
+import models.ProcessElement
 import actors.ActorUpdate._
 import akka.util.Timeout
 import akka.pattern.ask
 import play.api.libs.concurrent._ 
-import service.ProcessElementService
 
 object ActorUpdates extends Controller {
-
-  val processElementService = new ProcessElementService
 
   def live = Action {
     AsyncResult {
@@ -33,7 +31,7 @@ object ActorUpdates extends Controller {
   }
 
   def update(id: Int, value: String) = Action {
-    processElementService.update(id, value, 0, 0, 0)
+    ProcessElement.update(id, value, 0, 0, 0)
     ActorUpdate.ref ! Update()
     Ok("Updated " + id + " to " + value)
   }
@@ -42,4 +40,4 @@ object ActorUpdates extends Controller {
     Ok(views.html.modelTest.room())
   }
 
-}
+}*/

@@ -8,14 +8,14 @@ import anorm._
 
 case class Model(
     val id: Pk[Long] = NotAssigned, 
-    val name: String = "Empty name", 
-    val dateCreated: String = "No Date"
+    val name: String = "Unknown Model", 
+    val dateCreated: Date = new Date()
 ) extends Table {
   
   def create(): Long 			= Model.create(this)
   def read(): Option[Model] 	= Model.read(id)
-  def update() 					= Model.update(this)
-  def delete() 					= Model.delete(id)
+  def update(): Int 			= Model.update(this)
+  def delete(): Int 			= Model.delete(id)
   def list: List[Model] 		= Model.list()
 
   def toSeq(): Seq[(String, Any)] = Seq(
@@ -30,7 +30,7 @@ case class Model(
  */
 object Model extends TableCommon[Model] {
 
-   val table = "models"
+  val table = "models"
 
   val createQuery = """
     insert into models(name, dateCreated) values ({name}, {dateCreated})
@@ -55,13 +55,13 @@ object Model extends TableCommon[Model] {
   def parse(as: String = "models.") = {
     get[Pk[Long]]("id") ~
       get[String]("name") ~
-      get[String]("dateCreated") map {
+      get[Date]("dateCreated") map {
         case id ~ name ~ dateCreated =>
           Model(id, name, dateCreated)
       }
   }
-   
-   def update(id: Int, name: String): Boolean =  {
+
+  def update(id: Int, name: String): Boolean = {
     DB.withConnection { implicit connection =>
       SQL("""update models 
           set name = {name} where id = {id}""").

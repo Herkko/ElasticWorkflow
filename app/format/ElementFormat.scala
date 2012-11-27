@@ -14,7 +14,7 @@ object ProcessElementFormat {
     def reads(json: JsValue) = ProcessElement(
       (json \ "id").as[Pk[Long]],
       (json \ "modelProcessId").as[Long],
-      (json \ "elementTypeId").as[Long],
+      (json \ "elementTypeId").as[Int],
       (json \ "value").as[String],
       (json \ "size").as[Int],
       (json \ "cx").as[Int],
