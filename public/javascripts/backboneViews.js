@@ -1,11 +1,22 @@
 workflow.views.AppView = Backbone.View.extend({
     el: "elements",
 });
+
 //test
-deleteActivity = function() {
-		var req = new XMLHttpRequest();
-		req.open("DELETE", "/activity/8", false);
-		req.send();
+changeActivity = function() {
+     console.log("moi");   
+	/*	var xhr = new XMLHttpRequest();
+		xhr.open("PUT", "/activity/4", false);
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		
+		xhr.onreadystatechange = function () {
+    		if (xhr.readyState == 4 && xhr.status == 200) {
+        		alert(xhr.responseText);
+    		}
+		}	
+		
+		xhr.send('{"id":4,"modelProcessId":1,"elementTypeId":4,"value":"O_O","size":0,"cx":"189","cy":"133"}');
+	*/
 },
 
 workflow.views.ActivityView = Backbone.View.extend({
@@ -32,7 +43,7 @@ workflow.views.ActivityView = Backbone.View.extend({
         
         this.raphaelActivity.hover(function (e) {
     		$(e.target).attr({"stroke": "#AAAAAA"});
-    		deleteActivity();
+    	//	changeActivity();
   		},
   		function (e) {
     		$(e.target).attr({"stroke": "#000"});
@@ -203,18 +214,17 @@ workflow.views.gatewayView = Backbone.View.extend({
 */    
     initialize: function() {
         this.render();
+        this.color = Raphael.getColor();
+        this.raphaelGateway.attr({data: this.model.get("id"),  fill: this.color, stroke: this.color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+        this.raphaelText.attr({fill: '#383838', "font-size": 16, cursor: "move"});
+
         this.raphaelGateway.pair = this.raphaelText;
         this.raphaelText.pair = this.raphaelGateway;
        
-        var color = Raphael.getColor();
-        this.raphaelGateway.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-        this.raphaelText.attr({fill: '#383838', "font-size": 16, cursor: "move"});
-        
         this.raphaelGateway.drag(movePath, dragger, up);
         this.raphaelText.drag(movePath, dragger, up);
        
         this.el = this.raphaelGateway.node;
-        this.raphaelGateway.attr({data: this.model.get("id")});
         RaphaelObjects[this.model.get("id")] = this.raphaelGateway;
 
         $(this.el).click(_.bind(function() {
@@ -224,15 +234,15 @@ workflow.views.gatewayView = Backbone.View.extend({
     },
             
     render: function() {
-        this.raphaelGateway = RaphaelElement.path('M' + this.model.get("cx") + ',' + this.model.get("cy") + 'L' + (this.model.get("cx") - 50) + ',' + (this.model.get("cy") + 50) + 'L' + (this.model.get("cx")) + ',' + (this.model.get("cy") + 100) + 'L' + (this.model.get("cx") + 50) + ',' + (this.model.get("cy") + 50) + 'Z');
+        this.raphaelGateway = RaphaelElement.path('M ' + this.model.get("cx") + ' ' + this.model.get("cy") + 'L' + (this.model.get("cx") - 50) + ' ' + (this.model.get("cy") + 50) + 'L' + (this.model.get("cx")) + ' ' + (this.model.get("cy") + 100) + 'L' + (this.model.get("cx") + 50) + ' ' + (this.model.get("cy") + 50) + 'Z');
         this.raphaelText = RaphaelElement.text(this.model.get("cx"), (this.model.get("cy") + 50), this.model.get("value"));
     },
     
     click: function() {
-        var raphaelGateway = this.el;
-   
-        this.model.set({cx: raphaelGateway.getBBox().x});
-        this.model.set({cy: raphaelGateway.getBBox().y});
+        console.log("Gateways coords ("+ this.raphaelGateway.getBBox().x + "," + this.el.getBBox().y + ")" );
+        console.log("Gateways coords ("+ this.model.get("cx") + "," + this.model.get("cy") + ")" );
+        this.model.set({cx: this.el.getBBox().x});
+        this.model.set({cy: this.el.getBBox().y});
         this.model.updateModel();
     }
 })
