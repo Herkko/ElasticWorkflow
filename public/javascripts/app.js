@@ -3,7 +3,7 @@ var workflow = {
     models: {},
     collections: {},
     views: {},
-    
+    domainHost: "http://morning-fjord-4117.herokuapp.com",
      
            
             
@@ -23,12 +23,28 @@ var workflow = {
         App = new workflow.views.AppView;
         setUpApplication();
     },
+            
+      refresh: function(){
+        ActivityElements.fetch({error: function() { console.log(arguments); }});
+        
+       // StartElements.fetch();
+       // EndElements.fetch();
+    
+        }      
+            
   
 }
 
   
 $(document).ready(function() {
     workflow.initialize();
+   
+    
+//     setInterval(function() {
+//         workflow.refresh(); 
+//     }, 7000);
+   
+    
 });
 
 
@@ -37,7 +53,7 @@ function setUpApplication(){
     function renderActivities() {
      
        for(var i=0; i<ActivityElements.length; i++){
-        activityElements = new workflow.views.ActivityView({model: ActivityElements.models[i]});
+        activityViwElement = new workflow.views.ActivityView({model: ActivityElements.models[i]});
       
         };     
         
@@ -69,7 +85,7 @@ function setUpApplication(){
   function renderGateways(){
        for(var i=0; i<GatewayElements.length; i++){
         gatewayElement = new workflow.views.gatewayView({model: GatewayElements.models[i]});
-        gatewayElement.render();
+      
         };  
   }
   
@@ -79,7 +95,7 @@ function setUpApplication(){
       for(var i=0; i<RelationElements.length; i++){
         relationViewElement = new workflow.views.relationView({model: RelationElements.models[i]});
 
-        relationViewElement.render();
+        
         }; 
       
       
@@ -98,13 +114,7 @@ function setUpApplication(){
 }
 
 
-function refresh(){
-    ActivityElements.fetch();
-    
-    StartElements.fetch();
-    EndElements.fetch();
-    
-}
+
 
 
 function updateall(){
