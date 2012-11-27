@@ -3,7 +3,7 @@ var workflow = {
     models: {},
     collections: {},
     views: {},
-    
+    domain: "http://morning-fjord-4117.herokuapp.com",
      
            
             
