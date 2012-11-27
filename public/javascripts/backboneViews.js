@@ -1,18 +1,10 @@
 workflow.views.AppView = Backbone.View.extend({
     el: "elements",
 });
-//test
-deleteActivity = function() {
-		var req = new XMLHttpRequest();
-		req.open("DELETE", "/activity/8", false);
-		req.send();
-},
 
 workflow.views.ActivityView = Backbone.View.extend({
    
-    events: {
- 
-    },
+   
     
 
     initialize: function() {
@@ -30,16 +22,9 @@ workflow.views.ActivityView = Backbone.View.extend({
         this.el = this.raphaelActivity.node;
         this.delegateEvents();
         
-        this.raphaelActivity.hover(function (e) {
-    		$(e.target).attr({"stroke": "#AAAAAA"});
-    		deleteActivity();
-  		},
-  		function (e) {
-    		$(e.target).attr({"stroke": "#000"});
-  		});
-  		
+       	
         //binded event for mouseclick and doubleClick
-        $(this.el).click(_.bind(function() { this.click()}, this));
+        $(this.el).click(_.bind(function() { this.clicked()}, this));
 
        // $(this.el).dblclick(_.bind(function() { this.editFunc()}, this));
 
@@ -58,18 +43,18 @@ workflow.views.ActivityView = Backbone.View.extend({
         RaphaelObjects[this.model.get("id")] = this.raphaelActivity;
     },
             
-    click: function() {
+    clicked: function() {
+        
         var raphaelActivity = this.el;
 
         this.model.set({cx: raphaelActivity.getAttribute("x")});
         this.model.set({cy: raphaelActivity.getAttribute("y")});
-        //console.log("activityä klikattu, päivitetään")
+        
         this.model.updateModel();
     },
 
     change: function(){
-       // console.log("muutos view puolella" + JSON.stringify(this.model));
-        this.render;
+        this.render();
     },
         
 
@@ -102,7 +87,7 @@ workflow.views.StartsView = Backbone.View.extend({
         RaphaelObjects[this.model.get("id")] = this.raphaelStart;
 		
         $(this.el).click(_.bind(function() {
-            this.click()
+            this.clicked()
         }, this));
 
     },
@@ -120,7 +105,7 @@ workflow.views.StartsView = Backbone.View.extend({
     
     clicked: function() {
         var raphaelStart = this.el;
-
+        
         this.model.set({cx: raphaelStart.getAttribute("x")});
         this.model.set({cy: raphaelStart.getAttribute("y")});
         this.model.updateModel();
@@ -144,9 +129,7 @@ workflow.views.endsView = Backbone.View.extend({
         this.raphaelEnd.attr({data: this.model.get("id")});
         RaphaelObjects[this.model.get("id")] = this.raphaelEnd;
 
-        $(this.el).click(_.bind(function() {
-            this.click()
-        }, this));
+        $(this.el).click(_.bind(function() { this.clicked()}, this));
 
     },
             
@@ -155,14 +138,14 @@ workflow.views.endsView = Backbone.View.extend({
         this.raphaelText = RaphaelElement.text(this.model.get("cx"), this.model.get("cy"), this.model.get("value"));
     },
     
-    click: function() {
-        var raphaelStart = this.el;
+    clicked: function() {
+        var raphaelEnd = this.el;
 
-        this.model.set({cx: raphaelStart.getAttribute("x")});
-        this.model.set({cy: raphaelStart.getAttribute("y")});
+        this.model.set({cx: raphaelEnd.getAttribute("x")});
+        this.model.set({cy: raphaelEnd.getAttribute("y")});
+        
         this.model.updateModel();
     }
-
 
 })
 
@@ -179,11 +162,9 @@ workflow.views.swimlanesView = Backbone.View.extend({
 
     render: function(element) {
 
-
         this.swimlane = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 800, 300, 1);
         this.swimlaneNameBox = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 25, 300, 1);
         this.swimlaneNameText = RaphaelElement.text(this.model.get("cx"), this.model.get("cy"), this.model.get("value")).attr({fill: "#000000", "font-size": 18}).transform('t12,' + 300 / 2 + 'r270');
-
 
         this.swimlane.toBack();
         this.el = this.swimlane.node;
@@ -237,7 +218,7 @@ workflow.views.gatewayView = Backbone.View.extend({
 
 
         $(this.el).click(_.bind(function() {
-            this.click()
+            this.clicked()
         }, this));
 
 
@@ -248,16 +229,23 @@ workflow.views.gatewayView = Backbone.View.extend({
         this.raphaelText = RaphaelElement.text(this.model.get("cx"), (this.model.get("cy") + 50), this.model.get("value"));
     },
     
-    click: function() {
+    clicked: function() {
         var raphaelGateway = this.el;
-   
+      
+      console.log("gateway x: " +raphaelGateway.getBBox(false).x + " y "+ raphaelGateway.getBBox(false).y)  
+        
         this.model.set({cx: raphaelGateway.getBBox().x});
         this.model.set({cy: raphaelGateway.getBBox().y});
         this.model.updateModel();
     }
 })
 
+
 workflow.views.relationView = Backbone.View.extend({
+    
+    initialize: function(){
+        this.render();
+    },
 
     render: function() {
         var startPoint = RaphaelObjects[this.model.get("startId")];
@@ -266,7 +254,7 @@ workflow.views.relationView = Backbone.View.extend({
     }
 })
 
-
+//EditBox
 workflow.views.EditElementsView = Backbone.View.extend({
    
     el: $("#editElements"),
