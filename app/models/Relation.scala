@@ -10,7 +10,7 @@ case class Relation(
   val id: Pk[Long],
   val startId: Long,
   val endId: Long,
-  val relationTypeId: Int,
+  val relationTypeId: Long,
   val value: String
 ) extends Table {
 
@@ -66,7 +66,7 @@ object Relation extends TableCommon[Relation] {
     get[Pk[Long]]("id") ~
       get[Long]("startId") ~
       get[Long]("endId") ~
-      get[Int]("relationTypeId") ~
+      get[Long]("relationTypeId") ~
       get[String]("value") map {
         case id ~ startId ~ endId ~ relationTypeId ~ value =>
           Relation(id, startId, endId, relationTypeId, value)
@@ -77,7 +77,7 @@ object Relation extends TableCommon[Relation] {
     get[Pk[Long]]("id") ~
       get[Long]("startId") ~
       get[Long]("endId") ~
-      get[Int]("relationTypeId") ~
+      get[Long]("relationTypeId") ~
       get[String]("value") map {
         case id ~ startId ~ endId ~ relationTypeId ~ value =>
           Relation(id, startId, endId, relationTypeId, value)
@@ -93,19 +93,21 @@ object Relation extends TableCommon[Relation] {
     }
   }
   
-  def deleteByProcess(id: Long): Boolean = {
-    DB.withConnection { implicit connection =>
-      SQL("""delete from relations
-          where startId in (
-          select id from processElements
-          where modelProcessId in (select id from modelProcesses where processId in (select id from processes where id = {id})))
-        """).on('id -> id).executeUpdate() == 0
+  def deleteByProcess(id: Long): Boolean = DB.withConnection { 
+    implicit connection => {
+      val query = """
+        delete from relations where startId in
+        (select id from processElements where modelProcessId in 
+        (select id from modelProcesses where processId in 
+        (select id from processes where id = {id})))
+        """      
+      SQL(query).on('id -> id).executeUpdate() == 0
     }
   }
 
-  def findByModel(id: Long): List[Relation] = {
-    DB.withConnection { implicit connection =>
-      SQL(""" 
+  def findByModel(id: Long): List[Relation] = DB.withConnection { 
+    implicit connection => {
+      val query = """ 
           select relations.* from relations
           join processElements on processElements.id = relations.startId
           join modelProcesses on modelProcesses.id = processElements.modelProcessId
@@ -113,20 +115,25 @@ object Relation extends TableCommon[Relation] {
           join processes on processes.id = modelProcesses.processId
 		  join elementTypes on processElements.elementTypeId = elementTypes.id
 		  where models.id = {id}
-		""").on('id -> id).as(parse *)
+		"""
+      SQL(query).on('id -> id).as(parse *)
     }
   }
 
-  def getModelId(id: Long): Long = DB.withConnection { implicit connection =>
-    SQL("""select models.* from models, processElements, relations
+  def getModelId(id: Long): Long = DB.withConnection { 
+    implicit connection => {
+      val query = """
+        select models.* from models, processElements, relations
         join modelProcesses on modelProcesses.id = processElements.modelProcessId
         where relations.id = {id}
         and (processElements.id = relations.startId or processElements.id = relations.endId)
         and modelProcesses.modelId = models.id
-        """).on('id -> id).apply().toList match {
-      case Nil => throw new Exception("This relation doesn't belong to any model.")
-      case x :: xs => x[Long]("id")
-    }
+        """
+      SQL(query).on('id -> id).apply().toList match {
+          case Nil => throw new Exception("This relation doesn't belong to any model.")
+          case x :: xs => x[Long]("id")
+        }
+     }
   }
 }
 

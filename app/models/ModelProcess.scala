@@ -11,11 +11,11 @@ case class ModelProcess(
   val processId: Long
 ) extends Table {
 
-  def create(): Long = ModelProcess.create(this)
-  def read(): Option[ModelProcess] = ModelProcess.read(id)
-  def update() = ModelProcess.update(this)
-  def delete() = ModelProcess.delete(id)
-  def list: List[ModelProcess] = ModelProcess.list()
+  def create(): Long 				= ModelProcess.create(this)
+  def read(): Option[ModelProcess]  = ModelProcess.read(id)
+  def update(): Int					= ModelProcess.update(this)
+  def delete(): Int 				= ModelProcess.delete(id)
+  def list: List[ModelProcess] 		= ModelProcess.list()
 
   def toSeq(): Seq[(String, Any)] = Seq(
     "id" -> id.map(id => id).getOrElse(0L),
@@ -60,12 +60,14 @@ object ModelProcess extends TableCommon[ModelProcess] {
       }
   }
 
-  def deleteByProcess(id: Long): Boolean = {
-    DB.withConnection { implicit connection =>
-      SQL("""
-          delete from modelProcesses
-          where processId in (select id from processes where id = {id})""").
-        on('id -> id).executeUpdate() == 0
+  def deleteByProcess(id: Long): Boolean = DB.withConnection { 
+    implicit connection => {
+      val query = """
+        delete from modelProcesses
+        where processId in (select id from processes where id = {id})
+      """ 
+      SQL(query).on('id -> id).executeUpdate() == 0
     }
   }
+  
 }
