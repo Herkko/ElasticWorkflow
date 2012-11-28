@@ -29,6 +29,14 @@ object Application extends Controller {
     Ok(views.html.edit())
   }
   
+  def showNewIndex = Action { implicit request =>
+    Ok(views.html.newindex())
+  }
+  
+  def showAboutPage = Action { implicit request =>
+    Ok(views.html.about())
+  }
+  
   def options(url: String) = Action {
     Ok("").withHeaders(
       "Access-Control-Allow-Origin" -> "*",

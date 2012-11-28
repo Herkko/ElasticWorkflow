@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Elastic workflow</title>
+       	<link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("javascripts/css/bootstrap.css")">
+		 <style>
+                    body {
+                        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+                    }
+                    </style>
+        <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("javascripts/css/bootstrap-responsive.css")">
+		<script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
+		<script src="@routes.Assets.at("javascripts/raphael.js")"></script>
+		<script src="@routes.Assets.at("javascripts/underscore.js")"></script>
+		<script src="@routes.Assets.at("javascripts/backbone.js")"></script>
+    	<script src="@routes.Assets.at("javascripts/js/jquery.js")"></script>
+    	<script src="@routes.Assets.at("javascripts/js/bootstrap-transition.js")"></script>
+    	<script src="@routes.Assets.at("javascripts/js/bootstrap-alert.js")"></script>
+    	<script src="@routes.Assets.at("javascripts/js/bootstrap-modal.js")"></script>
+    	<script src="@routes.Assets.at("javascripts/js/bootstrap-dropdown.js")"></script>
+    	<script src="@routes.Assets.at("javascripts/js/bootstrap-scrollspy.js")"></script>
+    	<script src="@routes.Assets.at("javascripts/js/bootstrap-tab.js")"></script>
+    	<script src="@routes.Assets.at("javascripts/js/bootstrap-tooltip.js")"></script>
+    	<script src="@routes.Assets.at("javascripts/js/bootstrap-popover.js")"></script>
+    	<script src="@routes.Assets.at("javascripts/js/bootstrap-button.js")"></script>
+    	<script src="@routes.Assets.at("javascripts/js/bootstrap-collapse.js")"></script>
+    	<script src="@routes.Assets.at("javascripts/js/bootstrap-carousel.js")"></script>
+    	<script src="@routes.Assets.at("javascripts/js/bootstrap-typeahead.js")"></script>
+    </head>
+    <body>
+      <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="./">Elastic Workflow</a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">                            
+              				<li><a href="./edit">New workflow</a></li>
+                            <li><a href="./about">About</a></li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+	 </div>
+	 
+	 <div class="container">
+      	<h1>About the project</h1>
+      	<h2>Implementation tool for directly editable enterprise architectures: an
+		elastic workflow engine for the cloud</h2>
+
+		<h3>Asiakas</h3>
+
+		<p>Pietu Pohjalainen, THL, contact contact firstname.lastname&#64;thl.fi for more details.</p>
+
+		<h3>Työn kuvaus</h3>
+
+		<p>Many organizations use enterprise architecture as a tool for defining their
+		operations. Business process charts are used to model the workflow of the
+		organization's services and operations. Originated in the area of large
+		business information management, the idea of enterprise architecture is now
+		being mandated in organizations of various sizes. For example, in Finland,
+		many public organizations are required to model their enterprise
+		architecture by the law [1]. </p>
+
+		<p>Currently, many tools exist for modeling an organization's enterprise
+		architecture. Many of these tools are notoriously from the pre-web era:
+		they are used as desktop applications, in which an enterprise architect
+		treats the modeling artifacts on her own hard drive; and the results are to
+		be included in the printed documentation binder. When the modeling is
+		completed, the set of documentation is given out to an implementation team
+		as the requirements document. This is a rigid, inflexible way of working;
+		current process researchers would classify this as a waterfall process
+		model. </p>
+
+		<p>Small and medium size businesses and governmental organizations need more
+		flexible tools for implementing their architecture. Organization having too
+		rigid application development cycle leads to development of shadow
+		applications within the organization [2]. This is a productivity losing
+		situation, as different departments reinvent their own versions of the
+		enterprise's applications, using their own view of the organization's
+		functions. </p>
+		
+		<p>Modern web technologies allow the use of direct edibility of modeling
+		artifacts. For example, web-based interface builders can be utilized to
+		build web sites directly: see [3] for a demo. With the term direct
+		editability we refer to the possibility to perform live updates to a
+		running system, and being able to see the effects of the modification
+		instantly. This leads to reduced edit/deploy/test cycle times, since
+		updates can be done at runtime.</p>
+		
+		<p>The final aspect in this project is the elasticity of workflows.
+		Traditionally, cloud-based elasticity refers to the application performance
+		scalability in the cloud environment, since it is possible to up- and
+		downscale the number of servers allocated to a given application. Also
+		processes can be elastic in terms of resource consumption and quality of
+		service [4]. </p>
+		
+		<p>In this project, we build a prototype of a tool for implementing
+		applications for a given enterprise architecture. The tool utilizes
+		directly editable workflows and allows the definition of workflow data
+		models at runtime. This project is done in collaboration with the National
+		Institute for Health and Welfare [5]. </p>
+		
+		<p>
+		Attend to this project if you are interested in the following:
+		<ul>
+		<li>Learning the principles and practices of building modern cloud-based
+		software</li>
+		<li>Understanding the role and formalisms of enterprise architecture</li>
+		<li>Collaborate with world-class research organizations and software
+		developers</li>
+		<li>Have fun</li>
+		</ul>
+		</p>
+		
+		<p>Viitteet<br/>
+		<ol>
+		<li>Laki julkisen hallinnon tietohallinnon ohjauksesta 10.6.2011/634 
+		http://www.finlex.fi/fi/laki/ajantasa/2011/20110634</li>
+		
+		<li>Marc Quast and Mark J. Handel, "Social Information Systems. The End of
+		Shadow Applications?" In proceedings of 14th ICEIS, 2012, Wroclaw, Poland. </li>
+		
+		<li>http://builder.meizo.com</li>
+		
+		<li>Schahram Dustdar, Yike Guo, Benjamin Satzger, Hong-Linh Truong,
+		"Principles of Elastic Processes," IEEE Internet Computing, pp. 66-71,
+		September/October, 2011 </li>
+		
+		<li>http://www.thl.fi</li>
+		</ol>
+		</p>
+		
+		
+		<p>Lisätietoa<br/>
+		<ul>
+		<li>
+		Christoph Dorn, Thomas Burkhart, Dirk Werth, Schahram Dustdar:
+		Self-adjusting Recommendations for People-Driven Ad-Hoc Processes. BPM
+		2010: 327-342</li>
+		
+		<li>Daniel Schall, Schahram Dustdar, M. Brian Blake: Programming Human and
+		Software-Based Web Services. IEEE Computer 43(7): 82-85 (2010)</li>
+		
+		<li>Mark Graban, Joseph Swartz: Healthcare Kaizen: Engaging Front-Line Staff in
+		Sustainable Continuous Improvements
+		http://online.wsj.com/article/PR-CO-20120625-904549.html -
+		http://vimeo.com/8547669</li>
+		</ul>
+		</p>
+    </div>
+
+		<div id="elements">
+		</div>
+
+		
+    </body>
+</html>
