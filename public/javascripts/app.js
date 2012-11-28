@@ -6,7 +6,9 @@ var workflow = {
 
     domainHost: "http://morning-fjord-4117.herokuapp.com",
 
-     
+//domainHost: "http://localhost:9000",
+    ENTER: 13,
+
            
             
         
@@ -20,8 +22,8 @@ var workflow = {
         RelationElements= new workflow.collections.RelationList();
         RaphaelObjects= []; 
         connections = [];
-
-        RaphaelElement = Raphael(10, 120, 1100, 1000);
+        workflow.views.editView;
+        RaphaelElement = Raphael(10, 120, "100%", "100%");
         App = new workflow.views.AppView;
         setUpApplication();
     },

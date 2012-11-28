@@ -10,22 +10,13 @@ import format.ProcessElementFormat
 
 import app.actions.CORSAction
 import models.ProcessElement
-/*trait Basic {
-
-  def create()
-  def read(id: Int)
-  def update(id: Int)
-  def delete(id: Int)
-  def list()
-  
-}*/
 
 trait Basic extends Controller {
 
   import ProcessElementFormat._
 
-  val typeName: String
-  val elementType: Int
+  val typeName: String = ""
+  val elementType: Int = 0
 
   def create() = CORSAction { implicit request =>
     request.body.asJson.map { json =>
@@ -34,11 +25,11 @@ trait Basic extends Controller {
         val elementTypeId = (json \ "elementTypeId").asOpt[Int].getOrElse(elementType)
         val value = (json \ "value").asOpt[String].getOrElse(typeName)
         val size = (json \ "size").asOpt[Int].getOrElse(0)
-        val x = (json \ "cx").asOpt[String].getOrElse("100")
-        val y = (json \ "cy").asOpt[String].getOrElse("100")
+        val x = (json \ "cx").asOpt[Int].get
+        val y = (json \ "cy").asOpt[Int].get
 
-        val newId = ProcessElement(NotAssigned, modelProcessId, elementTypeId, value, size, x.toInt, y.toInt).create
-       
+        val newId = ProcessElement(NotAssigned, modelProcessId, elementTypeId, value, size, x, y).create
+
         Ok(toJson(ProcessElement.read(newId)))
       }
     }.getOrElse {
@@ -61,25 +52,33 @@ trait Basic extends Controller {
         //  val Some(elementTypeId) = (json \ "elementTypeId").asOpt[Int]
         val Some(value) = (json \ "value").asOpt[String]
         val Some(size) = (json \ "size").asOpt[Int]
-        val Some(x) = (json \ "cx").asOpt[String]
-        val Some(y) = (json \ "cy").asOpt[String]
+        val Some(x) = (json \ "cx").asOpt[Int]
+        val Some(y) = (json \ "cy").asOpt[Int]
 
-        ProcessElement.update(id, value, size, x.toInt, y.toInt)
+        ProcessElement.update(id, value, size, x, y)
         Ok(toJson(ProcessElement.read(id)))
       }
     }.getOrElse {
       BadRequest("Expecting Json data")
     }
   }
-  
+
   //add a check here that process element has a correct type!also delete its relations
   def delete(id: Long) = CORSAction { implicit request =>
     ProcessElement.delete(id)
-    Ok(views.html.edit())
+    // Ok(views.html.edit())
+    Ok(toJson(""))
   }
 
   def list = CORSAction { implicit request =>
-    Ok(toJson(ProcessElement.findType(typeName)))
+    Ok(toJson(ProcessElement.list())) //findType(typeName)))
   }
+}
 
+object Basic extends Controller {
+  import ProcessElementFormat._
+
+  def list = CORSAction { implicit request =>
+    Ok(toJson(ProcessElement.list())) //findType(typeName)))
+  }
 }

@@ -46,12 +46,10 @@
                 </div>
             </div>
         </div>
-            <div id="elements">
-           
-            </div>
-                 <section id="editElements">
-            
-            </section> 
+        
+              <div id="mainArea"></div>
+            <div id="elements"> </div>
+             <section id="editElements"></section> 
 
             <script src="jquery-1.7.1.min.js"></script>
             <script src="underscore.js"></script>
@@ -89,7 +87,8 @@
 
     
     <script id="edit-Template" type="text/html">
-        <input id="edit">{{value}}</input>
+        <input id="editValue" value="{{value}}"></input>
+        <input id="newRelationButton" value="Uusi relaatio" type="button"  />
         <!-- other values can be added here also! -->
     </script>
     
