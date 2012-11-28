@@ -212,12 +212,12 @@ workflow.views.gatewayView = Backbone.View.extend({
         this.raphaelGateway.drag(movePath, dragger, up);
         this.raphaelText.drag(movePath, dragger, up);
        
-        this.el = this.raphaelGateway.node;
+        this.el = this.raphaelGateway;
         this.raphaelGateway.attr({data: this.model.get("id")});
         RaphaelObjects[this.model.get("id")] = this.raphaelGateway;
 
 
-        $(this.el).click(_.bind(function() {
+        $(this.el.node).click(_.bind(function() {
             this.clicked()
         }, this));
 
@@ -232,7 +232,7 @@ workflow.views.gatewayView = Backbone.View.extend({
     clicked: function() {
         var raphaelGateway = this.el;
       
-      console.log("gateway x: " +raphaelGateway.getBBox(false).x + " y "+ raphaelGateway.getBBox(false).y)  
+        console.log("gateway x: " +raphaelGateway.getBBox(false).x + " y "+ raphaelGateway.getBBox(false).y)  
         
         this.model.set({cx: raphaelGateway.getBBox().x});
         this.model.set({cy: raphaelGateway.getBBox().y});

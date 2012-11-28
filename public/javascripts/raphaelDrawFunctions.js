@@ -157,33 +157,33 @@ movePath = function(dx, dy) {
 		// Move main element
 	if (this.type != "text") {
 		var trans_x = (dx) - this.ox;
-	    var trans_y = (dy) - this.oy;
+		var trans_y = (dy) - this.oy;
 
-	    this.translate(trans_x, trans_y);
-	    this.ox = dx;
-	    this.oy = dy;
+		this.translate(trans_x, trans_y);
+		this.ox = dx;
+		this.oy = dy;	     
 	} else {
 		var att = this.type == "rect" ? {cx: this.ox + dx, cy: this.oy + dy} : {x: this.ox + dx, y: this.oy + dy};
-	    this.attr(att);
+		this.attr(att);
 	}
-	
+
 		// Move paired element
 	if (this.pair.type != "text") {
 		var trans_x = (dx) - this.pair.ox;
-	    var trans_y = (dy) - this.pair.oy;
+		var trans_y = (dy) - this.pair.oy;
 
-	    this.pair.translate(trans_x, trans_y);
-	    this.pair.ox = dx;
-	    this.pair.oy = dy;
+		this.pair.translate(trans_x, trans_y);
+		this.pair.ox = dx;
+		this.pair.oy = dy;
 	} else {
 		var att = this.pair.type == "rect" ? {x: this.pair.ox + dx, cy: this.pair.oy + dy} : {x: this.pair.ox + dx, y: this.pair.oy + dy};
-	    this.pair.attr(att);
+		this.pair.attr(att);
 	}
-    
 
-    for (var i = connections.length; i--; ) {
-        RaphaelElement.connection(connections[i]);
-    }
+
+	for (var i = connections.length; i--; ) {
+		RaphaelElement.connection(connections[i]);
+	}
 },
 
 upPath = function() {
