@@ -8,10 +8,20 @@ import play.api.test.Helpers._
 import anorm.{ NotAssigned, Id }
 import java.util.Date
 
+import play.api.libs.json.Json.toJson
+import play.api.libs.json._
+
 class ActivitySpec extends Specification {
 
   import models.{ Model, Process, ModelProcess, ProcessElement }
-
+  import format.ProcessElementFormat._
+  
+  def createModel(): Unit = {
+    Model(NotAssigned, "ModelName1", new Date()).create
+    Process(NotAssigned, "ProcessName1", new Date()).create
+    ModelProcess(NotAssigned, 1L, 1L).create
+  }
+   
   "The Activity Controller" should {
     "respond in format application/json at path json/activity" in {
       running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
@@ -22,44 +32,83 @@ class ActivitySpec extends Specification {
         charset(result) must beSome("utf-8")
       }
     }
+  }
 
-    "produce following output in next cases:" >> {
-
-      "return an empty list when there is no elements of this type" in {
+  "User should be able to create activities" >> {
+    
+    "create activites when no activities exist" in {
         running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
-          Model(NotAssigned, "Model", new Date()).create()
-          val Some(result) = routeAndCall(FakeRequest(GET, "/activity"))
-
-          contentAsString(result) must be equalTo ("[]")
+          createModel()
+          routeAndCall(FakeRequest(POST, "/activity").withJsonBody(Json.toJson(ProcessElement(NotAssigned, 1L, 4, "New Activity", 0, 99, 99))))
+         
+          val Some(result) = routeAndCall(FakeRequest(GET, "/activity/1"))
+          contentAsString(result) must be equalTo """{"id":1,"modelProcessId":1,"elementTypeId":4,"value":"New Activity","size":0,"cx":99,"cy":99}"""
         }
+    }
+    
+    "create activites when one other activity exists" in {
+        running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+          createModel()
+          ProcessElement(NotAssigned, 1L, 4, "Old Activity", 0, 199, 199).create
+          routeAndCall(FakeRequest(POST, "/activity").withJsonBody(Json.toJson(ProcessElement(NotAssigned, 1L, 4, "New Activity", 0, 99, 99))))
+         
+          val Some(result) = routeAndCall(FakeRequest(GET, "/activity"))
+          contentAsString(result) must be equalTo """[{"id":1,"modelProcessId":1,"elementTypeId":4,"value":"Old Activity","size":0,"cx":199,"cy":199},{"id":2,"modelProcessId":1,"elementTypeId":4,"value":"New Activity","size":0,"cx":99,"cy":99}]"""
+        }
+    }
+  }
+    
+  "User should be able to list activities" >> {
+
+    "return an empty list when there is no elements of this type" in {
+      running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+        Model(NotAssigned, "Model", new Date()).create()
+        val Some(result) = routeAndCall(FakeRequest(GET, "/activity"))
+
+        contentAsString(result) must be equalTo ("[]")
       }
+    }
 
-      "return a list of one element when there is one activity element" in {
-        running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
-          Model(NotAssigned, "ModelName1", new Date()).create
-          Process(NotAssigned, "ProcessName1", new Date()).create
-          ModelProcess(Id(1), 1L, 1L).create
+    "return a list of one element when there is one activity element" in {
+      running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+        Model(NotAssigned, "ModelName1", new Date()).create
+        Process(NotAssigned, "ProcessName1", new Date()).create
+        ModelProcess(Id(1), 1L, 1L).create
 
-          ProcessElement(NotAssigned, 1L, 4, "Activity", 0, 0, 0).create()
+        ProcessElement(NotAssigned, 1L, 4, "Activity", 0, 0, 0).create()
 
-          val Some(result) = routeAndCall(FakeRequest(GET, "/activity"))
-          contentAsString(result) must be equalTo ("""[{"id":1,"modelProcessId":1,"elementTypeId":4,"value":"Activity","size":0,"cx":0,"cy":0}]""")
-        }
+        val Some(result) = routeAndCall(FakeRequest(GET, "/activity"))
+        contentAsString(result) must be equalTo ("""[{"id":1,"modelProcessId":1,"elementTypeId":4,"value":"Activity","size":0,"cx":0,"cy":0}]""")
       }
+    }
 
-      "return a list of three elements when there is three activity elements in two different processes" in {
-        running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
-          Model(NotAssigned, "ModelName1", new Date()).create
-          Process(NotAssigned, "ProcessName1", new Date()).create
-          ModelProcess(Id(1), 1L, 1L).create
+    "return a list of three elements when there is three activity elements in two different processes" in {
+      running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+        Model(NotAssigned, "ModelName1", new Date()).create
+        Process(NotAssigned, "ProcessName1", new Date()).create
+        ModelProcess(Id(1), 1L, 1L).create
 
-          ProcessElement(NotAssigned, 1L, 4, "Activity1", 0, 0, 0).create()
-          ProcessElement(NotAssigned, 1L, 4, "Activity2", 0, 0, 0).create()
-          ProcessElement(NotAssigned, 1L, 4, "Activity3", 0, 0, 0).create()
+        ProcessElement(NotAssigned, 1L, 4, "Activity1", 0, 0, 0).create()
+        ProcessElement(NotAssigned, 1L, 4, "Activity2", 0, 0, 0).create()
+        ProcessElement(NotAssigned, 1L, 4, "Activity3", 0, 0, 0).create()
 
-          val Some(result) = routeAndCall(FakeRequest(GET, "/activity"))
-          contentAsString(result) must be equalTo ("""[{"id":1,"modelProcessId":1,"elementTypeId":4,"value":"Activity1","size":0,"cx":0,"cy":0},{"id":2,"modelProcessId":1,"elementTypeId":4,"value":"Activity2","size":0,"cx":0,"cy":0},{"id":3,"modelProcessId":1,"elementTypeId":4,"value":"Activity3","size":0,"cx":0,"cy":0}]""")
-        }
+        val Some(result) = routeAndCall(FakeRequest(GET, "/activity"))
+        contentAsString(result) must be equalTo ("""[{"id":1,"modelProcessId":1,"elementTypeId":4,"value":"Activity1","size":0,"cx":0,"cy":0},{"id":2,"modelProcessId":1,"elementTypeId":4,"value":"Activity2","size":0,"cx":0,"cy":0},{"id":3,"modelProcessId":1,"elementTypeId":4,"value":"Activity3","size":0,"cx":0,"cy":0}]""")
+      }
+    }
+  }
+  
+  "User should be able to delete activities" >> {
+    "delete the only activity of a model" in {
+      running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
+        createModel();
+        ProcessElement(NotAssigned, 1L, 4, "Activity", 0, 99, 99).create
+        val Some(before) = routeAndCall(FakeRequest(GET, "/activity/1"))
+        contentAsString(before) must be equalTo """{"id":1,"modelProcessId":1,"elementTypeId":4,"value":"Activity","size":0,"cx":99,"cy":99}"""
+        
+        routeAndCall(FakeRequest(DELETE, "/activity/1"))        
+        val Some(result) = routeAndCall(FakeRequest(GET, "/activity/1"))
+        contentAsString(result) must be equalTo "null"
       }
     }
   }

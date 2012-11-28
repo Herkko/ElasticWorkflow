@@ -49,16 +49,45 @@ class RelationSpec extends Specification {
         Relation(NotAssigned, 1L, 2L, 1L, "First relation").create
         Relation(NotAssigned, 1L, 3L, 1L, "Second relation").create
         
+        val first = Relation.read(1).get
+        val second = Relation.read(2).get
         
+        Relation.list.size must be equalTo 2
         
+        first must not be none
+        first.startId must be equalTo 1
+        first.endId must be equalTo 2
+        
+        second must not be none
+        second.startId must be equalTo 1
+        second.endId must be equalTo 3
       }
     }
     
     "be able to have two relations to same element" in {
       running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
-       
+        createModel();
+        Relation(NotAssigned, 2L, 1L, 1L, "First relation").create
+        Relation(NotAssigned, 3L, 1L, 1L, "Second relation").create
+        
+        val first = Relation.read(1).get
+        val second = Relation.read(2).get
+        
+        Relation.list.size must be equalTo 2
+        
+        first must not be none
+        first.startId must be equalTo 2
+        first.endId must be equalTo 1
+        
+        second must not be none
+        second.startId must be equalTo 3
+        second.endId must be equalTo 1
       }
     }
   }
+  
+  //"User should be able to" should {
+    
+  //}
   
 }
