@@ -1,17 +1,20 @@
 package controllers
 
+import models.{ Model, ModelProcess, Process, Relation, ProcessElement }
+
 import play.api._
 import play.api.mvc._
+import anorm.{ NotAssigned, Id }
 import java.util.Date
 
-import anorm.NotAssigned
-import models.{ Model, ModelProcess, Process, Relation, ProcessElement }
+import app.actions.CORSAction
 
 /**
  * Control all actions related to showing, creating and deleting processes.
  */
 object Processes extends Controller {
 
+  import format.DateFormat._
   /**
    * Add new process to a model. Called when a new model is created, or user wants to add a process to existing model.
    * Redirects to a page that lists all models, if model with id equal to parameter modelId doesn't exist.
@@ -26,15 +29,21 @@ object Processes extends Controller {
     }
   }
 
-  def update(id: Int, name: String) = Action {
-    Process.read(id) match {
-      case Some(process) => {
-        Process.update(id, name)
+  def update() = CORSAction { implicit request =>
+    request.body.asJson.map { json =>
+      {
+        val Some(id) = (json \ "id").asOpt[Long]
+        val Some(name) = (json \ "name").asOpt[String]
+        val Some(date) = (json \ "dateCreated").asOpt[Date]
+        
+        Process(Id(id), name, date).update
         Redirect(routes.Models.read(Process.getModelId(id).toInt))
       }
-      case None => NotFound("This Process doesn't exist. Thrown by: " + getClass.getName + " when updating process.")
+    }.getOrElse {
+      BadRequest("Expecting Json data")
     }
   }
+  
 
   def delete(id: Long) = Action { implicit request =>
     Process.read(id) match {

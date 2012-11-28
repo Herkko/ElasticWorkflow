@@ -60,12 +60,4 @@ object Model extends TableCommon[Model] {
           Model(id, name, dateCreated)
       }
   }
-
-  def update(id: Int, name: String): Boolean = {
-    DB.withConnection { implicit connection =>
-      SQL("""update models 
-          set name = {name} where id = {id}""").
-        on('id -> id, 'name -> name).executeUpdate() == 0
-    }
-  }
 }

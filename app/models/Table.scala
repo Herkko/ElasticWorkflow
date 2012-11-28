@@ -24,7 +24,7 @@ trait TableCommon[T <: Table] {
   val readQuery: String
   val updateQuery: String
   val deleteQuery: String
-  val listQuery: String
+  val listQuery: String// = "select * from %s".format(table)
 
   implicit def toParams[T](params: Seq[(String, T)]) = {
     params.map { param => param._1 -> anorm.toParameterValue(param._2) }
@@ -73,18 +73,18 @@ trait TableCommon[T <: Table] {
       .as(parse(table + '.') *)
   }
 
-  def contains(id: Int): Boolean = DB.withConnection { implicit connection =>
+  def contains(id: Long): Boolean = DB.withConnection { implicit connection =>
     SQL(readQuery)
       .on('id -> id).as(parse(table + '.') *).toList.size == 1
   }
 
-  def existsWithParam(attr: String, value: String): Boolean = DB.withConnection { implicit connection => {
-    
+  def existsWithName(value: String): Boolean = DB.withConnection { implicit connection => {    
       val existsQuery = """
-        select * from %s where {attr} = '{value}'
-      """  
+        select * from %s where name = {value}
+      """
+
       SQL(existsQuery.format(table))
-        .on('attr -> attr, 'value -> value).as(parse(table + '.') *).toList.size == 1
+        .on('value -> value).as(parse(table + '.') *).toList.size >= 1
     }
   }
 }

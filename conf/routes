@@ -1,13 +1,11 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
-
-#	
+	
 #  $.ajax({
 #      url: "/models",
 #      type: "POST"
 #  });
-#
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
@@ -21,25 +19,21 @@ GET     /                   						controllers.Application.index
 GET		/models										controllers.Models.list
 GET		/models/:id									controllers.Models.read(id: Int)
 POST   	/models										controllers.Models.create
-PUT    	/models/id=:id&name=:name					controllers.Models.update(id: Int, name: String)
+PUT    	/models										controllers.Models.update
 #DELETE	/models/:id 								//TODO method not done yet
 
 #Operations on processes
 POST   	/models/:id/processes				    	controllers.Processes.create(id: Int)
-PUT		/processes/id=:id&name=:name				controllers.Processes.update(id: Int, name: String)
+PUT		/processes									controllers.Processes.update
 DELETE 	/processes/:id								controllers.Processes.delete(id: Int)
 
-#Operations on relations 
+#Operations on relations <- fix methods to get rid of unnecessary params and pass JSON instead
 POST   	/models/:id/relations/start=:start&end=:end&value=:value						controllers.Relations.create(id: Int, start: Int, end: Int, value: String)
 PUT		/relations/id=:id&start=:start&end=:end&value=:value 							controllers.Relations.update(id: Int, start: Int, end: Int, value: String)
 DELETE 	/relations/:id																	controllers.Relations.delete(id: Int)
 
-#Operation on elements //TODO setting/updating size param missing
-POST	/models/:id/processes/:pId/elements/elemType=:elemType&value=:value&x=:x&y=:y	controllers.ProcessElements.create(id: Int, pId: Int, elemType: Int, value: String, x: Int, y: Int)
-PUT    	/elements/id=:id&value=:value&size=:size&x=:x&y=:y								controllers.ProcessElements.update(id: Int, value: String, size: Int, x: Int, y: Int)
-
 #JSON methods
-GET   	/element									controllers.ProcessElements.list
+GET   	/element									controllers.elements.Basic.list
 	
 GET   	/start										controllers.elements.Start.list
 GET     /start/:id									controllers.elements.Start.read(id: Int)

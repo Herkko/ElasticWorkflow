@@ -1,5 +1,0 @@
-package json
-
-class ElementSpec {
-
-}
