@@ -5,12 +5,10 @@ workflow.models.activity = Backbone.Model.extend({
 	
 	
     initialize: function(){
-      this.change(_.bind(function() { this.change()}, this));  
+      
     },
             
-    change: function(){
-        console.log("modelin tiedot: "+ JSON.stringify(this));
-    },
+
             
     updateModel: function() {
           console.log("update model activity: "+ JSON.stringify(this));

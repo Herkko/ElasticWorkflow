@@ -4,13 +4,15 @@ workflow.views.AppView = Backbone.View.extend({
 
 workflow.views.ActivityView = Backbone.View.extend({
    
-   
-    
+
 
     initialize: function() {
-              
-        this.render(); 
-    
+        
+         this.raphaelActivity = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 100, 60, 4);
+        this.raphaelText = RaphaelElement.text((this.model.get("cx") + 50), (this.model.get("cy") + 30), this.model.get("value"));
+        this.el = this.raphaelActivity.node;
+         $(this.el).click(_.bind(function() { this.clicked()}, this));
+        
         this.raphaelActivity.pair = this.raphaelText;
         this.raphaelText.pair = this.raphaelActivity;
         this.color = "#000";
@@ -19,27 +21,22 @@ workflow.views.ActivityView = Backbone.View.extend({
         this.raphaelActivity.drag(move, dragger, up);
         this.raphaelText.drag(move, dragger, up);
         this.raphaelText.toBack();
-        this.el = this.raphaelActivity.node;
-        this.delegateEvents();
         
-        //binded event for mouseclick and doubleClick
-        $(this.el).click(_.bind(function() { this.clicked()}, this));
-
-       // $(this.el).dblclick(_.bind(function() { this.editFunc()}, this));
-
-        this.raphaelActivity.attr({data: this.model.get("id")});
-        RaphaelObjects[this.model.get("id")] = this.raphaelActivity;
-
-    },
-            
-    render: function() {
-    	this.raphaelActivity = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 100, 60, 4);
-
-        this.raphaelText = RaphaelElement.text((this.model.get("cx") + 50), (this.model.get("cy") + 30), this.model.get("value"));
         
         //adds id to Raphael Element and stores them to list
         this.raphaelActivity.attr({data: this.model.get("id")});
         RaphaelObjects[this.model.get("id")] = this.raphaelActivity;
+        
+         this.model.bind("change", this.editFunc, this);
+        
+     
+    },
+            
+    render: function() {
+    	this.raphaelActivity.attr({"cx":this.model.get("cx"), "cy":this.model.get("cy") });
+        this.raphaelText.attr({"cx":(this.model.get("cx")+ 50), "cy":(this.model.get("cy")+30),"text":this.model.get("value") });
+      
+       
     },
             
     clicked: function() {
@@ -49,24 +46,37 @@ workflow.views.ActivityView = Backbone.View.extend({
         this.model.set({cx: raphaelActivity.getAttribute("x")});
         this.model.set({cy: raphaelActivity.getAttribute("y")});
         
-        var editointi = new workflow.views.EditElementsView({model: this.model});
+        //editoi modelia
+        
+        
+        $("#editElements").unbind("keyup");
+        $("#editElements").empty();
+        
+        if(workflow.views.editView){
+              //COMPLETELY UNBIND THE VIEW
+                workflow.views.editView.undelegateEvents();
+
+                $("#editElements").removeData().unbind(); 
+
+                //Remove view from DOM
+              //  workflow.views.editView.remove();  
+              //  Backbone.View.prototype.remove.call(workflow.views.editView);
+
+            
+       
+        }
+        workflow.views.editView = null;
+        workflow.views.editView = new workflow.views.EditElementsView({model: this.model});
         
         this.model.updateModel();
         
         
     },
 
-    change: function(){
-        this.render();
-    },
-        
-
     editFunc: function(){
-        console.log("muuttui");
-       this.render;
-      // EditTemplate.startEdit(this.model);
         
-        console.log("hover");
+       
+        this.render();
         
     }        
             
@@ -263,17 +273,17 @@ workflow.views.relationView = Backbone.View.extend({
 workflow.views.EditElementsView = Backbone.View.extend({
    
     el: $("#editElements"),
+    
+    events:  {
+        "keyup #editValue" : "valueEdit",
+        "click #newRelationButton" : "newRelation"
+    },
+    
             
-    initialize: function(modelAttribute){
-        this.model = modelAttribute;
- 
-        for(var i = 2; i <RaphaelObjects.length; i++){
-            var objekti = RaphaelObjects[i];
-            var objektinNode = objekti.node.el;
-            
-            objektinNode.dblclick(_.bind(function() { this.editFunc()}, this));
-        }
-      
+    initialize: function(){
+        
+        this.render();
+     
     },
     
    startEdit: function(modelAttribute){
@@ -281,18 +291,29 @@ workflow.views.EditElementsView = Backbone.View.extend({
         this.render();
     },       
             
-    setModel: function(modelAttribute){
-        this.model = modelAttribute;
-    },        
+    valueEdit: function(){
+        
+        var newValue = $("#editValue").val();
+        this.model.set({value: newValue});
+        
+    },   
  
-    editFunc: function(){
-        console.log("mitä tahansa kliksuteltu");
-    },        
-            
+         
+           
     render: function(){
-       
-        var html = Mustache.render($("#edit-Template").html(), this.model);
-        $.this.el.html(html);
+       var data = {
+          list: this.model,
+          value: this.model.get("value")        
+       };
+        
+        
+        var html = Mustache.render($("#edit-Template").html(), data);
+        $("#editElements").html(html);
+    },
+    
+    
+    newRelation: function(){
+        console.log("relaatio");
     }        
     
 })
