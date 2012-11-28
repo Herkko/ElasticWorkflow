@@ -12,10 +12,6 @@ class ModelSpec extends Specification {
 
   import models.Model
   
-  object ModelTest {
-    def create = println(":)")
-  }
- 
   "Evolutions" should {
     "be applied without errors" in {
       running(FakeApplication(additionalConfiguration = inMemoryDatabase())) {
