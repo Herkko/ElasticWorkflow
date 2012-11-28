@@ -161,7 +161,7 @@ movePath = function(dx, dy) {
 
 	    this.translate(trans_x, trans_y);
 	    this.ox = dx;
-	    this.oy = dy;
+	    this.oy = dy;	     
 	} else {
 		var att = this.type == "rect" ? {cx: this.ox + dx, cy: this.oy + dy} : {x: this.ox + dx, y: this.oy + dy};
 	    this.attr(att);
