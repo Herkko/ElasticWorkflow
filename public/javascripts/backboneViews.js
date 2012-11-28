@@ -100,7 +100,6 @@ workflow.views.StartsView = Backbone.View.extend({
     },
     
     render: function() {
-        // TATA PITAA FIKSAILLA??
         this.raphaelStart.attr({'cx':parseInt(this.model.get("cx")), 'y':this.model.get('cy') });
         this.raphaelText.attr({"cx":(this.model.get("cx")+ 50), "cy":(this.model.get("cy")+30),"text":this.model.get("value") });
     },
@@ -227,34 +226,12 @@ workflow.views.swimlanesView = Backbone.View.extend({
 })
 
 workflow.views.gatewayView = Backbone.View.extend({
-/*
-     initialize: function(){
-         this.render();
-        
-         this.raphaelText.attr({fill: '#383838', "font-size": 16, cursor: "move"});
-        this.Raphaelgateway.attr({data: this.model.get("id")});
-     },
-
-
-    render: function() {
-        this.Raphaelgateway = RaphaelElement.path('M' + this.model.get("cx") + ',' + this.model.get("cy") + 'L' + (this.model.get("cx") - 50) + ',' + (this.model.get("cy") + 50) + 'L' + (this.model.get("cx")) + ',' + (this.model.get("cy") + 100) + 'L' + (this.model.get("cx") + 50) + ',' + (this.model.get("cy") + 50) + 'Z');
-        this.raphaelText = RaphaelElement.text(this.model.get("cx"), (this.model.get("cy") + 50), this.model.get("value"));
-       
-        this.Raphaelgateway.pair = this.raphaelText;
-        this.raphaelText.pair = this.Raphaelgateway;
-        
-        
-        RaphaelObjects[this.model.get("id")] = this.Raphaelgateway;
-
-        var color = Raphael.getColor();
-        this.Raphaelgateway.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-        this.Raphaelgateway.drag(movePath, dragger, up);
-        this.raphaelText.drag(movePath, dragger, up);
-
-    }
-*/    
+ 
     initialize: function() {
-        this.render();
+        
+        this.raphaelGateway = RaphaelElement.path('M ' + this.model.get("cx") + ' ' + this.model.get("cy") + 'L' + (this.model.get("cx") - 50) + ' ' + (this.model.get("cy") + 50) + 'L' + (this.model.get("cx")) + ' ' + (this.model.get("cy") + 100) + 'L' + (this.model.get("cx") + 50) + ' ' + (this.model.get("cy") + 50) + 'Z');
+        this.raphaelText = RaphaelElement.text(this.model.get("cx"), (this.model.get("cy") + 50), this.model.get("value"));
+        
         this.color = Raphael.getColor();
         this.raphaelGateway.attr({data: this.model.get("id"),  fill: this.color, stroke: this.color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
         this.raphaelText.attr({fill: '#383838', "font-size": 16, cursor: "move"});
@@ -266,11 +243,13 @@ workflow.views.gatewayView = Backbone.View.extend({
         this.raphaelText.drag(movePath, dragger, up);
        
         this.el = this.raphaelGateway;
+
         this.raphaelGateway.attr({data: this.model.get("id")});
+
         RaphaelObjects[this.model.get("id")] = this.raphaelGateway;
 
 
-        $(this.el.node).click(_.bind(function() {
+        $(this.el.node).mouseup(_.bind(function() {
             this.clicked()
         }, this));
 
@@ -278,21 +257,51 @@ workflow.views.gatewayView = Backbone.View.extend({
     },
             
     render: function() {
-        this.raphaelGateway = RaphaelElement.path('M ' + this.model.get("cx") + ' ' + this.model.get("cy") + 'L' + (this.model.get("cx") - 50) + ' ' + (this.model.get("cy") + 50) + 'L' + (this.model.get("cx")) + ' ' + (this.model.get("cy") + 100) + 'L' + (this.model.get("cx") + 50) + ' ' + (this.model.get("cy") + 50) + 'Z');
-        this.raphaelText = RaphaelElement.text(this.model.get("cx"), (this.model.get("cy") + 50), this.model.get("value"));
+   
+        
+        
+        var temp = raphaelGateway.clone();
+        temp.translate(this.raphaelGateway.getAttribute("x"),this.raphaelGateway.getAttribute("y"));
+        this.raphaelGateway.animate({path: temp.attr('path')}, 1000);
+        temp.remove();
+        
+        
+       // this.raphaelGateway = RaphaelElement.path('M ' + this.model.get("cx") + ' ' + this.model.get("cy") + 'L' + (this.model.get("cx") - 50) + ' ' + (this.model.get("cy") + 50) + 'L' + (this.model.get("cx")) + ' ' + (this.model.get("cy") + 100) + 'L' + (this.model.get("cx") + 50) + ' ' + (this.model.get("cy") + 50) + 'Z');
+       // this.raphaelText = RaphaelElement.text(this.model.get("cx"), (this.model.get("cy") + 50), this.model.get("value"));
     },
     
     clicked: function() {
+
+            var testPath = Raphael.pathToRelative(this.raphaelGateway.attrs.path);
+        console.log("klikattu " + testPath[0][1] + ", " + testPath[0][2]);
         var raphaelGateway = this.el;
       
-        console.log("gateway x: " +raphaelGateway.getBBox(false).x + " y "+ raphaelGateway.getBBox(false).y)  
         
-        this.model.set({cx: raphaelGateway.getAttribute("ox")});
-        this.model.set({cy: raphaelGateway.getAttribute("oy")});
         
-//        this.model.set({cx: raphaelGateway.getBBox().ox});
-//        this.model.set({cy: raphaelGateway.getBBox().oy});
+        //this.model.set({cx: raphaelGateway.getAttribute("ox")});
+        //this.model.set({cy: raphaelGateway.getAttribute("oy")});
+        
+        
+        
+        if(workflow.views.editView){
+            if (workflow.views.editView.startRelId) {
+                var relId = workflow.views.editView.startRelId;
+                console.log(relId);
+
+            }
+        
+        //COMPLETELY UNBIND THE VIEW
+          workflow.views.editView.undelegateEvents();
+          $("#editElements").removeData().unbind(); 
+
+        }
+        
+        workflow.views.editView = null;
+        workflow.views.editView = new workflow.views.EditElementsView({model: this.model, startRelId: relId});
+        
+        
         this.model.updateModel();
+        
     }
 })
 
@@ -329,9 +338,15 @@ workflow.views.EditElementsView = Backbone.View.extend({
         }
     },       
             
-    editValue: function(){
+    editValue: function(e){
+        console.log("painettu " + e.which);
+        
         var newValue = $("#editValue").val();
         this.model.set({value: newValue});
+        
+        if (e.which == workflow.ENTER){
+            this.model.save();
+        }
         
     },   
        
