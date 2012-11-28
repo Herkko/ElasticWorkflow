@@ -11,7 +11,7 @@ object ProcessElementFormat {
   import format.PkFormat._
 
   implicit object ProcessElementFormat extends Format[ProcessElement] {
-    def reads(json: JsValue) = ProcessElement(
+    def reads(json: JsValue): ProcessElement = ProcessElement(
       (json \ "id").as[Pk[Long]],
       (json \ "modelProcessId").as[Long],
       (json \ "elementTypeId").as[Int],
@@ -20,7 +20,7 @@ object ProcessElementFormat {
       (json \ "cx").as[Int],
       (json \ "cy").as[Int])
 
-    def writes(element: ProcessElement) = JsObject(Seq(
+    def writes(element: ProcessElement): JsObject = JsObject(Seq(
       "id" -> toJson(element.id),
       "modelProcessId" -> toJson(element.modelProcessId),
       "elementTypeId" -> toJson(element.elementTypeId),

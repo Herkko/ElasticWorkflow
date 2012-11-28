@@ -13,12 +13,12 @@ object ModelFormat {
   import format.DateFormat._
 
   implicit object ModelFormat extends Format[Model] {
-    def reads(json: JsValue) = Model(
+    def reads(json: JsValue): Model = Model(
       (json \ "id").as[Pk[Long]],
       (json \ "name").as[String],
       (json \ "dateCreated").as[Date])
 
-    def writes(model: Model) = JsObject(Seq(
+    def writes(model: Model): JsObject = JsObject(Seq(
       "id" -> toJson(model.id),
       "name" -> toJson(model.name),
       "dateCreated" -> toJson(model.dateCreated)))

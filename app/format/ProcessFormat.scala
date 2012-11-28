@@ -13,12 +13,12 @@ object ProcessFormat {
   import format.DateFormat._
 
   implicit object ProcessFormat extends Format[Process] {
-    def reads(json: JsValue) = Process(
+    def reads(json: JsValue): Process = Process(
       (json \ "id").as[Pk[Long]],
       (json \ "name").as[String],
       (json \ "dateCreated").as[Date])
 
-    def writes(Process: Process) = JsObject(Seq(
+    def writes(Process: Process): JsObject = JsObject(Seq(
       "id" -> toJson(Process.id),
       "name" -> toJson(Process.name),
       "dateCreated" -> toJson(Process.dateCreated)))

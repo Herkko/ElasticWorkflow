@@ -88,5 +88,5 @@ class ModelSpec extends Specification {
         }
       }
     }
-  }
+  } 
 }
