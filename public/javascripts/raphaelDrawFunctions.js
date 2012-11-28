@@ -94,27 +94,27 @@ dragger = function() {
 };
 
 move = function(dx, dy) {
-    	// Move main element
+		// Move main element
 	if (this.type != "text") {
-	  var att = this.type == "rect" ? {x: this.ox + dx, y: this.oy + dy} : {cx: this.ox + dx, cy: this.oy + dy};
-	  this.attr(att);
+		var att = this.type == "rect" ? {x: (this.ox + dx), y: this.oy + dy} : {cx: this.ox + dx, cy: this.oy + dy};
+		this.attr(att);
 	} else {
-	  var att = this.type == "rect" ? {cx: this.ox + dx, cy: this.oy + dy} : {x: this.ox + dx, y: this.oy + dy};
-      this.attr(att);
+		var att = this.type == "rect" ? {cx: this.ox + dx, cy: this.oy + dy} : {x: this.ox + dx, y: this.oy + dy};
+		this.attr(att);
 	}
 		// Move paired element
 	if (this.pair.type != "text") {
-	  var att = this.pair.type == "rect" ? {x: this.pair.ox + dx, y: this.pair.oy + dy} : {cx: this.pair.ox + dx, cy: this.pair.oy + dy};
-	  this.pair.attr(att);
+		var att = this.pair.type == "rect" ? {x: this.pair.ox + dx, y: this.pair.oy + dy} : {cx: this.pair.ox + dx, cy: this.pair.oy + dy};
+		this.pair.attr(att);
 	} else {
-	  var att = this.pair.type == "rect" ? {x: this.pair.ox + dx, cy: this.pair.oy + dy} : {x: this.pair.ox + dx, y: this.pair.oy + dy};
-      this.pair.attr(att);
+		var att = this.pair.type == "rect" ? {x: this.pair.ox + dx, cy: this.pair.oy + dy} : {x: this.pair.ox + dx, y: this.pair.oy + dy};
+		this.pair.attr(att);
 	}
-    
-    for (var i = connections.length; i--; ) {
-        RaphaelElement.connection(connections[i]);
-    }
-    RaphaelElement.safari();
+	
+	for (var i = connections.length; i--; ) {
+	    RaphaelElement.connection(connections[i]);
+	}
+	RaphaelElement.safari();
 };
 
 resize_start = function () {
