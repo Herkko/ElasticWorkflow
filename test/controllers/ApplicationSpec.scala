@@ -1,4 +1,5 @@
-package controllers
+package test.controllers
+
 import org.specs2.mutable._
 import play.api.test._
 import play.api.test.Helpers._
@@ -8,6 +9,8 @@ import java.util.Date
 
 class ApplicationSpec extends Specification {
 
+  import controllers.Application 
+  
   "The Application controller" should {
     "respond to the index Action" in {
       val result = Application.index(FakeRequest())

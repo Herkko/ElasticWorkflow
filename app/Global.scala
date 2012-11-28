@@ -12,8 +12,8 @@ object Global extends GlobalSettings {
   override def onStart(app: Application) {
     Logger.info("Application has started")
     Logger.info("Creating new model and process...")
-    val modelId = Model.create(new Model(NotAssigned, "Model", new Date()))
-    Processes.createNewProcess(modelId)
+   // val modelId = Model.create(new Model(NotAssigned, "Model", new Date()))
+   // Processes.createNewProcess(modelId)
   }  
   
   override def onStop(app: Application) {

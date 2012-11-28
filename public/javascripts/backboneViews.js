@@ -247,7 +247,9 @@ workflow.views.gatewayView = Backbone.View.extend({
         this.raphaelText.drag(movePath, dragger, up);
        
         this.el = this.raphaelGateway;
+
         this.raphaelGateway.attr({data: this.model.get("id")});
+
         RaphaelObjects[this.model.get("id")] = this.raphaelGateway;
 
 

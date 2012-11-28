@@ -57,14 +57,6 @@ object Process extends TableCommon[Process] {
       }
   }
 
-  def update(id: Int, name: String): Boolean = {
-    DB.withConnection { implicit connection =>
-      SQL("""update processes 
-          set name = {name} where id = {id}""").
-        on('id -> id, 'name -> name).executeUpdate() == 0
-    }
-  }
-  
   def withElements() = {
     get[Pk[Long]]("processes.id") ~
       get[String]("processes.name") ~
