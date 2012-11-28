@@ -13,20 +13,14 @@
         <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("javascripts/css/bootstrap-responsive.css")">
 
 		<script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
-		<script src="@routes.Assets.at("javascripts/raphael.js")"></script>
 		<script src="@routes.Assets.at("javascripts/underscore.js")"></script>
 		<script src="@routes.Assets.at("javascripts/backbone.js")"></script>
+		<script src="@routes.Assets.at("javascripts/raphael.js")"></script>
 		<script src="@routes.Assets.at("javascripts/mustache.js")"></script>
 		<script src="@routes.Assets.at("javascripts/app.js")"></script>
-		<script src="@routes.Assets.at("javascripts/backbonemodels.js")"></script>
 		<script src="@routes.Assets.at("javascripts/backboneViews.js")"></script>
+		<script src="@routes.Assets.at("javascripts/backbonemodels.js")"></script>
 		<script src="@routes.Assets.at("javascripts/raphaelDrawFunctions.js")"></script>
-<!--
-<script src="backbone.js"></script>
-<script src="underscore.js"></script>
-<script src="raphael.js"></script>
-<script src="jquery-1.7.1.min.js"></script>
-<script src="app.js"></script>-->
 
      <script src="@routes.Assets.at("javascripts/js/jquery.js")"></script>
      <script src="@routes.Assets.at("javascripts/js/bootstrap-transition.js")"></script>
@@ -78,22 +72,15 @@
         <div id="elements">
         </div>
         
-         <section id="editElements">
+         <section id="editElements"> </section> 
 
-        </section> 
-        <br>
-        <form name=text_change>
-                    <input type=button value="Change text of start element"
-                    onClick="changeText();">
-                    <input type=button value="Save all"
-                    onClick="updateall();">
-        </form>
+		<script id="edit-Template" type="text/html">
+        	<input id="editValue" value="{{value}}"></input>
+        	<input id="newRelationButton" value="Uusi relaatio" type="button"  />
+  		</script>
 
     </body>
 </html>
 
 
- <script id="edit-Template" type="text/html">
-        <input id="editValue" value="{{value}}"></input>
-        <input id="newRelationButton" value="Uusi relaatio" type="button"  />
-  </script>
+\\
