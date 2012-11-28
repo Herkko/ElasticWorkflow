@@ -234,8 +234,11 @@ workflow.views.gatewayView = Backbone.View.extend({
       
       console.log("gateway x: " +raphaelGateway.getBBox(false).x + " y "+ raphaelGateway.getBBox(false).y)  
         
-        this.model.set({cx: raphaelGateway.getBBox().x});
-        this.model.set({cy: raphaelGateway.getBBox().y});
+        this.model.set({cx: raphaelGateway.getAttribute("ox")});
+        this.model.set({cy: raphaelGateway.getAttribute("oy")});
+        
+//        this.model.set({cx: raphaelGateway.getBBox().ox});
+//        this.model.set({cy: raphaelGateway.getBBox().oy});
         this.model.updateModel();
     }
 })
