@@ -65,7 +65,7 @@ trait Basic extends Controller {
         val Some(y) = (json \ "cy").asOpt[String]
 
         ProcessElement.update(id, value, size, x.toInt, y.toInt)
-        Ok(views.html.edit())
+        Ok(toJson(ProcessElement.read(id)))
       }
     }.getOrElse {
       BadRequest("Expecting Json data")

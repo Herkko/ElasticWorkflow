@@ -22,7 +22,6 @@ workflow.views.ActivityView = Backbone.View.extend({
         this.el = this.raphaelActivity.node;
         this.delegateEvents();
         
-       	
         //binded event for mouseclick and doubleClick
         $(this.el).click(_.bind(function() { this.clicked()}, this));
 
@@ -202,18 +201,17 @@ workflow.views.gatewayView = Backbone.View.extend({
 */    
     initialize: function() {
         this.render();
+        this.color = Raphael.getColor();
+        this.raphaelGateway.attr({data: this.model.get("id"),  fill: this.color, stroke: this.color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
+        this.raphaelText.attr({fill: '#383838', "font-size": 16, cursor: "move"});
+
         this.raphaelGateway.pair = this.raphaelText;
         this.raphaelText.pair = this.raphaelGateway;
        
-        var color = Raphael.getColor();
-        this.raphaelGateway.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
-        this.raphaelText.attr({fill: '#383838', "font-size": 16, cursor: "move"});
-        
         this.raphaelGateway.drag(movePath, dragger, up);
         this.raphaelText.drag(movePath, dragger, up);
        
         this.el = this.raphaelGateway.node;
-        this.raphaelGateway.attr({data: this.model.get("id")});
         RaphaelObjects[this.model.get("id")] = this.raphaelGateway;
 
 
@@ -225,7 +223,7 @@ workflow.views.gatewayView = Backbone.View.extend({
     },
             
     render: function() {
-        this.raphaelGateway = RaphaelElement.path('M' + this.model.get("cx") + ',' + this.model.get("cy") + 'L' + (this.model.get("cx") - 50) + ',' + (this.model.get("cy") + 50) + 'L' + (this.model.get("cx")) + ',' + (this.model.get("cy") + 100) + 'L' + (this.model.get("cx") + 50) + ',' + (this.model.get("cy") + 50) + 'Z');
+        this.raphaelGateway = RaphaelElement.path('M ' + this.model.get("cx") + ' ' + this.model.get("cy") + 'L' + (this.model.get("cx") - 50) + ' ' + (this.model.get("cy") + 50) + 'L' + (this.model.get("cx")) + ' ' + (this.model.get("cy") + 100) + 'L' + (this.model.get("cx") + 50) + ' ' + (this.model.get("cy") + 50) + 'Z');
         this.raphaelText = RaphaelElement.text(this.model.get("cx"), (this.model.get("cy") + 50), this.model.get("value"));
     },
     
