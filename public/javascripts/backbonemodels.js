@@ -3,12 +3,6 @@ workflow.models.activity = Backbone.Model.extend({
 	
     urlRoot: workflow.domainHost+'/activity',
 	
-	
-    initialize: function(){
-      
-    },
-            
-
             
     updateModel: function() {
           console.log("update model activity: "+ JSON.stringify(this));
@@ -24,7 +18,8 @@ workflow.models.start = Backbone.Model.extend({
     
 	
     updateModel: function() {
-        this.save();
+        console.log("update model start: "+ JSON.stringify(this));
+       this.save();
     }
             
 });
@@ -100,7 +95,7 @@ workflow.collections.ActivityList = Backbone.Collection.extend({
 
 workflow.collections.StartList = Backbone.Collection.extend({
     model: workflow.models.start,
-   url: workflow.domainHost+'/start'
+    url: workflow.domainHost+'/start'
     
 });
 
