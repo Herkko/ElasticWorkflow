@@ -1,8 +1,8 @@
 
 workflow.models.activity = Backbone.Model.extend({
     defaults: {
-        cx: 100,
-        cy: 100,
+        cx: 830,
+        cy: 20,
         value: "Activity"
     },
 
@@ -18,8 +18,8 @@ workflow.models.activity = Backbone.Model.extend({
 
 workflow.models.start = Backbone.Model.extend({
        defaults: {
-        cx: 100,
-        cy: 100,
+        cx: 850,
+        cy: 110,
         value: "Start"
     },
 
@@ -68,8 +68,8 @@ workflow.models.relation = Backbone.Model.extend({
 
 workflow.models.end = Backbone.Model.extend({
     defaults: {
-        cx: 100,
-        cy: 100,
+        cx: 850,
+        cy: 160,
         value: "End"
     },
 
@@ -97,8 +97,8 @@ workflow.models.swimlane = Backbone.Model.extend({
 
 workflow.models.gateway = Backbone.Model.extend({
     defaults: {
-        cx: 100,
-        cy: 100,
+        cx: 880,
+        cy: 195,
         value: "Gateway"
     },
 

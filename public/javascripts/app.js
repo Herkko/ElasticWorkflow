@@ -4,9 +4,9 @@ var workflow = {
     collections: {},
     views: {},
 
-    domainHost: "http://morning-fjord-4117.herokuapp.com",
+ //   domainHost: "http://morning-fjord-4117.herokuapp.com",
 
-//domainHost: "http://localhost:9000",
+domainHost: "http://localhost:9000",
     ENTER: 13,
 
            
@@ -39,7 +39,21 @@ var workflow = {
   
 }
 
-  
+function Colors() {
+    this.colors = new Array();
+    this.colors["start"] = Raphael.getColor();
+    this.colors["end"] = Raphael.getColor();
+    this.colors["activity"] = Raphael.getColor();
+	this.colors["gateway"] = Raphael.getColor();
+	this.colors["swimlane"] = Raphael.getColor();
+}
+
+Colors.prototype.get = function(type) {
+   return this.colors[type];
+}
+
+var colors = new Colors();
+
 $(document).ready(function() {
     workflow.initialize();
    

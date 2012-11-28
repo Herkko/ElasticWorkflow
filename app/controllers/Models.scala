@@ -23,7 +23,7 @@ object Models extends Controller {
   def create = CORSAction { implicit request =>
     val modelId = Model.create(new Model(NotAssigned, "Model", new Date()))
     Processes.createNewProcess(modelId)
-    Redirect(routes.Models.read(modelId.toInt))
+    Redirect(routes.Application.showEditPage())
   }
 
   def read(id: Long) = Action { implicit request =>
