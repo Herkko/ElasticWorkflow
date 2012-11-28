@@ -146,7 +146,7 @@ workflow.views.endsView = Backbone.View.extend({
         this.raphaelText.attr({fill: '#383838', "font-size": 16, cursor: "move"});
         this.raphaelEnd.drag(move, dragger, up);
         this.raphaelText.drag(move, dragger, up);
-        
+        this.raphaelText.toBack();
         this.el = this.raphaelEnd.node;
         this.raphaelEnd.attr({data: this.model.get("id")});
         RaphaelObjects[this.model.get("id")] = this.raphaelEnd;
@@ -243,7 +243,8 @@ workflow.views.gatewayView = Backbone.View.extend({
         this.raphaelText.drag(movePath, dragger, up);
        
         this.el = this.raphaelGateway;
-
+        this.raphaelText.toBack();
+        
         this.raphaelGateway.attr({data: this.model.get("id")});
 
         RaphaelObjects[this.model.get("id")] = this.raphaelGateway;
@@ -272,14 +273,16 @@ workflow.views.gatewayView = Backbone.View.extend({
     
     clicked: function() {
 
-            var testPath = Raphael.pathToRelative(this.raphaelGateway.attrs.path);
-        console.log("klikattu " + testPath[0][1] + ", " + testPath[0][2]);
+         //   var testPath = Raphael.pathToRelative(this.raphaelGateway.attrs.path);
+       // console.log("klikattu " + testPath[0][1] + ", " + testPath[0][2]);
         var raphaelGateway = this.el;
       
         
+        var newX = this.model.get("cx") + raphaelGateway.ox;
+        var newY = this.model.get("cy") + raphaelGateway.oy;
         
-        //this.model.set({cx: raphaelGateway.getAttribute("ox")});
-        //this.model.set({cy: raphaelGateway.getAttribute("oy")});
+        this.model.set({cx: newX});
+        this.model.set({cy: newY});
         
         
         

@@ -1,9 +1,9 @@
 
 workflow.models.activity = Backbone.Model.extend({
 	
+
     urlRoot: workflow.domainHost+'/activity',
-	
-            
+       
     updateModel: function() {
           console.log("update model activity: "+ JSON.stringify(this));
         this.save();
@@ -14,20 +14,25 @@ workflow.models.activity = Backbone.Model.extend({
 
 workflow.models.start = Backbone.Model.extend({
 
+
     urlRoot: workflow.domainHost+'/start',
     
 	
     updateModel: function() {
-        console.log("update model start: "+ JSON.stringify(this));
-       this.save();
+
+        this.save();
+
+
     }
             
 });
 
 workflow.models.relation = Backbone.Model.extend({
 
+
     urlRoot: workflow.domainHost+'/relation',
     
+
     
     initialize: function() {
 
@@ -55,8 +60,10 @@ workflow.models.relation = Backbone.Model.extend({
 
 workflow.models.end = Backbone.Model.extend({
 	
+
 	urlRoot: workflow.domainHost+'/end',
    
+
     
     updateModel: function() {
         this.save();
@@ -65,8 +72,10 @@ workflow.models.end = Backbone.Model.extend({
 
 workflow.models.swimlane = Backbone.Model.extend({
 	
+
 	urlRoot: workflow.domainHost+'/swimlane',
  
+
   
     updateModel: function() {
         this.save();
@@ -76,7 +85,9 @@ workflow.models.swimlane = Backbone.Model.extend({
 
 workflow.models.gateway = Backbone.Model.extend({
 	
+
     urlRoot: workflow.domainHost+'/gateway',
+
 	
 	
     updateModel: function() {
@@ -89,38 +100,58 @@ workflow.models.gateway = Backbone.Model.extend({
 
 workflow.collections.ActivityList = Backbone.Collection.extend({
     model: workflow.models.activity,
+
     url: workflow.domainHost+'/activity'
+
 	
 });
 
 workflow.collections.StartList = Backbone.Collection.extend({
     model: workflow.models.start,
-    url: workflow.domainHost+'/start'
+
+   url: workflow.domainHost+'/start'
+
     
+
 });
 
 workflow.collections.EndList = Backbone.Collection.extend({
     model: workflow.models.end,
+
     url: workflow.domainHost+'/end'
+
     
 });
 
 workflow.collections.SwimlaneList = Backbone.Collection.extend({
     model: workflow.models.swimlane,
+
     url: workflow.domainHost+'/swimlane'
     
+
 });
 
 workflow.collections.GatewayList = Backbone.Collection.extend({
     model: workflow.models.gateway,
+
    url: workflow.domainHost+'/gateway'
   
+
 });
 
 workflow.collections.RelationList = Backbone.Collection.extend({
     model: workflow.models.relation,
-   url: workflow.domainHost+'/relation',
-     
+    url: workflow.domainHost+'/relation',
+    
+    render: function() {
+        for (var i = 0; i < this.length; i++) {
+            var relation = this.get(i);
+
+            connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
+        }
+    }
+
+  
 
 });
 
