@@ -13,7 +13,10 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 OPTIONS /*url                          controllers.Application.options(url: String)
 
 # Home page
-GET     /                   						controllers.Application.index
+GET     /                   						controllers.Application.showNewIndex
+
+# About page
+GET		/about										controllers.Application.showAboutPage
 
 #Operations on models
 GET		/models										controllers.Models.list

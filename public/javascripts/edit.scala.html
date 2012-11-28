@@ -34,12 +34,12 @@
                                     <li><a href="#" onclick="uusiActivity();return false;">Activity</a></li>
                                     <li><a href="#" onclick="uusiStart();return false;">Start</a></li>
                                     <li><a href="#" onclick="uusiEndt();return false;">End</a></li>
-                                    <li><a href="#" onclick="newGateway(');return false;">Gateway</a></li>
+                                    <li><a href="#" onclick="newGateway();return false;">Gateway</a></li>
                                     <li><a href="#" onclick="newRelation();return false;">Relation</a></li>
 
                                 </ul>
                             </li>                            
-                            <li><a href="#a" onclick="post_to_url(/models);return false;">New Model</a></li>
+                            <li><a href="#a" onclick="post_to_url('/models');return false;">New Model</a></li>
                             <li><a href="#edit">Muokkaa tekstiä</a></li>
                         </ul>
                     </div><!--/.nav-collapse -->
@@ -50,8 +50,8 @@
            
             </div>
                  <section id="editElements">
-            
-            </section> 
+                     
+                </section> 
 
             <script src="jquery-1.7.1.min.js"></script>
             <script src="underscore.js"></script>
@@ -88,7 +88,8 @@
     </body>
     
     <script id="edit-Template" type="text/html">
-        <input id="edit">{{value}}</input>
+        <input id="editValue" value="{{value}}"></input>
+        <input id="newRelationButton" value="Uusi relaatio" type="button"  />
         <!-- other values can be added here also! -->
     </script>
     

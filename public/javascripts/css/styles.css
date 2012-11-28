@@ -1,12 +1,34 @@
 #editElements {
     float: right;
     width: 200px;
-    height: 200px;
+    height: 300px;
     background-color: #655454;  
     border:appworkspace;
     border: 1px;
-    
+    font-family: Tahoma, sans-serif;
+    color: white;
+    margin: 5px;
 }
+
+#editElements textArea {
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 175px;
+    height: 20px;
+    border: 3px solid #cccccc;
+    padding: 5px;
+    font-family: Tahoma, sans-serif;
+}
+
+#editElements label {
+    margin-left: 4px;
+}
+
+#editElements input {
+    margin-left: 5px;
+    margin-top: 10px;
+}
+
 #elements {
     background-color: #655454;
     width: 700px;

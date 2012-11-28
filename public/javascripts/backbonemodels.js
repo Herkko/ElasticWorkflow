@@ -1,16 +1,8 @@
 
 workflow.models.activity = Backbone.Model.extend({
 	
-	urlRoot: workflow.domainHost+'/activity',
+    urlRoot: workflow.domainHost+'/activity',
 	
-	
-    initialize: function(){
-      this.change(_.bind(function() { this.change()}, this));  
-    },
-            
-    change: function(){
-        console.log("modelin tiedot: "+ JSON.stringify(this));
-    },
             
     updateModel: function() {
           console.log("update model activity: "+ JSON.stringify(this));
@@ -26,15 +18,15 @@ workflow.models.start = Backbone.Model.extend({
     
 	
     updateModel: function() {
-       // console.log("update model start: "+ JSON.stringify(this));
-        this.save();
+        console.log("update model start: "+ JSON.stringify(this));
+       this.save();
     }
             
 });
 
 workflow.models.relation = Backbone.Model.extend({
 
-	urlRoot: workflow.domainHost+'/relation',
+    urlRoot: workflow.domainHost+'/relation',
     
     
     initialize: function() {
@@ -103,7 +95,7 @@ workflow.collections.ActivityList = Backbone.Collection.extend({
 
 workflow.collections.StartList = Backbone.Collection.extend({
     model: workflow.models.start,
-   url: workflow.domainHost+'/start'
+    url: workflow.domainHost+'/start'
     
 });
 
@@ -129,14 +121,6 @@ workflow.collections.RelationList = Backbone.Collection.extend({
     model: workflow.models.relation,
    url: workflow.domainHost+'/relation',
      
-    
-    render: function() {
-        for (var i = 0; i < this.length; i++) {
-            var relation = this.get(i);
-
-            connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
-        }
-    }
 
 });
 
@@ -162,8 +146,8 @@ function post_to_url(path, params, method) {
 
     document.body.appendChild(form);
     form.submit();
-}
-;
+};
+
 
 function uusiActivity() {
     var activityModel = new workflow.models.activity();
