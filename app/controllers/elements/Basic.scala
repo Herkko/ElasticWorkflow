@@ -52,10 +52,10 @@ trait Basic extends Controller {
         //  val Some(elementTypeId) = (json \ "elementTypeId").asOpt[Int]
         val Some(value) = (json \ "value").asOpt[String]
         val Some(size) = (json \ "size").asOpt[Int]
-        val Some(x) = (json \ "cx").asOpt[String]
-        val Some(y) = (json \ "cy").asOpt[String]
+        val Some(x) = (json \ "cx").asOpt[Int]
+        val Some(y) = (json \ "cy").asOpt[Int]
 
-        ProcessElement.update(id, value, size, x.toInt, y.toInt)
+        ProcessElement.update(id, value, size, x, y)
         Ok(toJson(ProcessElement.read(id)))
       }
     }.getOrElse {
