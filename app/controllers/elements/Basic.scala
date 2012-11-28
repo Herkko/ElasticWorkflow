@@ -25,10 +25,10 @@ trait Basic extends Controller {
         val elementTypeId = (json \ "elementTypeId").asOpt[Int].getOrElse(elementType)
         val value = (json \ "value").asOpt[String].getOrElse(typeName)
         val size = (json \ "size").asOpt[Int].getOrElse(0)
-        val x = (json \ "cx").asOpt[String].getOrElse("100")
-        val y = (json \ "cy").asOpt[String].getOrElse("100")
+        val x = (json \ "cx").asOpt[Int].get
+        val y = (json \ "cy").asOpt[Int].get
 
-        val newId = ProcessElement(NotAssigned, modelProcessId, elementTypeId, value, size, x.toInt, y.toInt).create
+        val newId = ProcessElement(NotAssigned, modelProcessId, elementTypeId, value, size, x, y).create
 
         Ok(toJson(ProcessElement.read(newId)))
       }
