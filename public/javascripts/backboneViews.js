@@ -4,8 +4,6 @@ workflow.views.AppView = Backbone.View.extend({
 
 workflow.views.ActivityView = Backbone.View.extend({
    
-
-
     initialize: function() {
           //creates new Raphael elements  
          this.raphaelActivity = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 100, 60, 4);
@@ -25,7 +23,6 @@ workflow.views.ActivityView = Backbone.View.extend({
         this.raphaelText.drag(move, dragger, up);
         this.raphaelText.toBack();
         
-        
         //adds id to Raphael Element and stores them to list
         this.raphaelActivity.attr({data: this.model.get("id")});
         RaphaelObjects[this.model.get("id")] = this.raphaelActivity;
@@ -40,7 +37,6 @@ workflow.views.ActivityView = Backbone.View.extend({
         
     	this.raphaelActivity.attr({"cx":this.model.get("cx"), "cy":this.model.get("cy") });
         this.raphaelText.attr({"cx":(this.model.get("cx")+ 50), "cy":(this.model.get("cy")+30),"text":this.model.get("value") });
-    
     },
             
     clicked: function() {
@@ -76,44 +72,47 @@ workflow.views.ActivityView = Backbone.View.extend({
 workflow.views.StartsView = Backbone.View.extend({
 
     initialize: function() {
+    	//creates new Raphael elements
         this.raphaelStart = RaphaelElement.circle(this.model.get("cx"), this.model.get("cy"), 20);
         this.raphaelText = RaphaelElement.text(this.model.get("cx"), this.model.get("cy"), this.model.get("value"));
         
+        //binds Raphael to EL
+        this.el = this.raphaelStart.node;
         
+        //creates pair fomr element to text
         this.raphaelStart.pair = this.raphaelText;
         this.raphaelText.pair = this.raphaelStart;
+        
         var color = "red";
         this.raphaelText.attr({fill: '#383838', "font-size": 16, cursor: "move"});
         this.raphaelStart.attr({fill: color, stroke: color, "fill-opacity": 0, "stroke-width": 2, cursor: "move"});
         this.raphaelStart.drag(move, dragger, up);
         this.raphaelText.drag(move, dragger, up);
-        this.el = this.raphaelStart.node;
-
+        this.raphaelText.toBack();
+        
+        //adds id to Raphael Element and stores to list
         this.raphaelStart.attr({data: this.model.get("id")});
         RaphaelObjects[this.model.get("id")] = this.raphaelStart;
 		
-        $(this.el).mouseup(_.bind(function() {
-            this.clicked()
-        }, this));
-        
         this.model.bind("change", this.render, this);
+        $(this.el).mouseup(_.bind(function() { this.clicked()}, this));
+        
     },
     
     render: function() {
-        
+        // TATA PITAA FIKSAILLA??
+    	console.log("rendissa nahty cx: " + this.model.get("cx"));
+    	console.log("rendissa nahty cy: " + this.model.get("cy"));
         this.raphaelStart.attr({"x":this.model.get("cx"), "y":this.model.get("cy") });
         this.raphaelText.attr({"cx":(this.model.get("cx")+ 50), "cy":(this.model.get("cy")+30),"text":this.model.get("value") });
-    
     },
-    
-  
     
     clicked: function() {
         console.log("starttia siirretty");
        var raphaelStart = this.el;
 
-        this.model.set({cx: raphaelStart.getAttribute("x")});
-        this.model.set({cy: raphaelStart.getAttribute("y")});
+        this.model.set({cx: raphaelStart.getAttribute("cx")});
+        this.model.set({cy: raphaelStart.getAttribute("cy")});
    
         if(workflow.views.editView){
             if (workflow.views.editView.startRelId) {
