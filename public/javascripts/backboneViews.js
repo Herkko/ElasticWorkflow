@@ -5,6 +5,7 @@ workflow.views.AppView = Backbone.View.extend({
 workflow.views.ActivityView = Backbone.View.extend({
    
     initialize: function() {
+         console.log(this.model);
           //creates new Raphael elements  
          this.raphaelActivity = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 100, 60, 4);
          this.raphaelText = RaphaelElement.text((this.model.get("cx") + 50), (this.model.get("cy") + 30), this.model.get("value"));
@@ -34,7 +35,7 @@ workflow.views.ActivityView = Backbone.View.extend({
     },
             
     render: function() {
-        
+      
     	this.raphaelActivity.attr({"cx":this.model.get("cx"), "cy":this.model.get("cy") });
         this.raphaelText.attr({"cx":(this.model.get("cx")+ 50), "cy":(this.model.get("cy")+30),"text":this.model.get("value") });
     },
@@ -42,10 +43,10 @@ workflow.views.ActivityView = Backbone.View.extend({
     clicked: function() {
         
         var raphaelActivity = this.el;
-
-        this.model.set({cx: raphaelActivity.getAttribute("x")});
-        this.model.set({cy: raphaelActivity.getAttribute("y")});
-   
+    
+        this.model.set({cx: parseInt(raphaelActivity.getAttribute("x"))});
+        this.model.set({cy: parseInt(raphaelActivity.getAttribute("y"))});
+       
         if(workflow.views.editView){
             if (workflow.views.editView.startRelId) {
                 var relId = workflow.views.editView.startRelId;
@@ -100,7 +101,7 @@ workflow.views.StartsView = Backbone.View.extend({
     },
     
     render: function() {
-        this.raphaelStart.attr({'cx':parseInt(this.model.get("cx")), 'y':this.model.get('cy') });
+        this.raphaelStart.attr({'x':this.model.get("cx"), 'y':this.model.get('cy') });
         this.raphaelText.attr({"cx":(this.model.get("cx")+ 50), "cy":(this.model.get("cy")+30),"text":this.model.get("value") });
     },
     
@@ -108,8 +109,8 @@ workflow.views.StartsView = Backbone.View.extend({
         console.log("starttia siirretty");
        var raphaelStart = this.el;
 
-        this.model.set({cx: raphaelStart.getAttribute("cx")});
-        this.model.set({cy: raphaelStart.getAttribute("cy")});
+        this.model.set({cx: parseInt(raphaelStart.getAttribute("cx"))});
+        this.model.set({cy: parseInt(raphaelStart.getAttribute("cy"))});
    
         if(workflow.views.editView){
             if (workflow.views.editView.startRelId) {
@@ -165,10 +166,10 @@ workflow.views.endsView = Backbone.View.extend({
     
     clicked: function() {
         var raphaelEnd = this.el;
-
-        this.model.set({cx: raphaelEnd.getAttribute("x")});
-        this.model.set({cy: raphaelEnd.getAttribute("y")});
-        
+       
+        this.model.set({cx: parseInt(raphaelEnd.getAttribute("cx"))});
+        this.model.set({cy: parseInt(raphaelEnd.getAttribute("cy"))});
+      
       
         if(workflow.views.editView){
             if (workflow.views.editView.startRelId) {
@@ -342,7 +343,7 @@ workflow.views.EditElementsView = Backbone.View.extend({
     },       
             
     editValue: function(e){
-        console.log("painettu " + e.which);
+        
         
         var newValue = $("#editValue").val();
         this.model.set({value: newValue});

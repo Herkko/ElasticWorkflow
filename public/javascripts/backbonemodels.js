@@ -1,6 +1,10 @@
 
 workflow.models.activity = Backbone.Model.extend({
-	
+    defaults: {
+        cx: 100,
+        cy: 100,
+        value: "Activity"
+    },
 
     urlRoot: workflow.domainHost+'/activity',
        
@@ -13,7 +17,11 @@ workflow.models.activity = Backbone.Model.extend({
 });
 
 workflow.models.start = Backbone.Model.extend({
-
+       defaults: {
+        cx: 100,
+        cy: 100,
+        value: "Start"
+    },
 
     urlRoot: workflow.domainHost+'/start',
     
@@ -59,7 +67,11 @@ workflow.models.relation = Backbone.Model.extend({
 });
 
 workflow.models.end = Backbone.Model.extend({
-	
+    defaults: {
+        cx: 100,
+        cy: 100,
+        value: "End"
+    },
 
 	urlRoot: workflow.domainHost+'/end',
    
@@ -84,7 +96,11 @@ workflow.models.swimlane = Backbone.Model.extend({
 });
 
 workflow.models.gateway = Backbone.Model.extend({
-	
+    defaults: {
+        cx: 100,
+        cy: 100,
+        value: "Gateway"
+    },
 
     urlRoot: workflow.domainHost+'/gateway',
 
@@ -182,42 +198,39 @@ function post_to_url(path, params, method) {
 
 function uusiActivity() {
     var activityModel = new workflow.models.activity();
-	$.when(activityModel.save()).then(function() {
-	    ActivityElements.add(activityModel);
-		new workflow.views.ActivityView({model: activityModel})
-	});
+    ActivityElements.add(activityModel);
+    new workflow.views.ActivityView({model: activityModel});
+
+
 };
 
 function uusiStart() {
-	var startModel = new workflow.models.start();
-	$.when(startModel.save()).then(function() {
-	    StartElements.add(startModel);
-		new workflow.views.StartsView({model: startModel})
-	});
+    var startModel = new workflow.models.start();
+    StartElements.add(startModel);
+    new workflow.views.StartsView({model: startModel});
+
 };
 
 function uusiEnd() {
-	var endModel = new workflow.models.end();
-	$.when(endModel.save()).then(function() {
-	    EndElements.add(endModel);
-		new workflow.views.endsView({model: endModel})
-	});
+    var endModel = new workflow.models.end();
+    EndElements.add(endModel);
+    new workflow.views.endsView({model: endModel});
+
 };
 
 //add to raphaelobjects
 function uusiGateway() {
-	var gatewayModel = new workflow.models.gateway();
-	$.when(gatewayModel.save()).then(function() {
-	    GatewayElements.add(gatewayModel);
-		new workflow.views.gatewayView({model: gatewayModel})
-	});
+    var gatewayModel = new workflow.models.gateway();
+    GatewayElements.add(gatewayModel);
+    new workflow.views.gatewayView({model: gatewayModel});
+
+
 };
 
 function uusiRelation() {
-	var relationModel = new workflow.models.relation();
-	$.when(relationModel.save()).then(function() {
-	    RelationElements.add(relationModel);
-		new workflow.views.relationView({model: relationModel})
-	});
-}
+    var relationModel = new workflow.models.relation();
+    RelationElements.add(relationModel);
+    new workflow.views.relationView({model: relationModel})
+
+};
 
