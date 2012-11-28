@@ -49,7 +49,11 @@ workflow.views.ActivityView = Backbone.View.extend({
         this.model.set({cx: raphaelActivity.getAttribute("x")});
         this.model.set({cy: raphaelActivity.getAttribute("y")});
         
+        var editointi = new workflow.views.EditElementsView({model: this.model});
+        
         this.model.updateModel();
+        
+        
     },
 
     change: function(){
