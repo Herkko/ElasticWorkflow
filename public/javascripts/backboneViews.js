@@ -101,9 +101,7 @@ workflow.views.StartsView = Backbone.View.extend({
     
     render: function() {
         // TATA PITAA FIKSAILLA??
-    	console.log("rendissa nahty cx: " + this.model.get("cx"));
-    	console.log("rendissa nahty cy: " + this.model.get("cy"));
-        this.raphaelStart.attr({"x":this.model.get("cx"), "y":this.model.get("cy") });
+        this.raphaelStart.attr({'cx':parseInt(this.model.get("cx")), 'y':this.model.get('cy') });
         this.raphaelText.attr({"cx":(this.model.get("cx")+ 50), "cy":(this.model.get("cy")+30),"text":this.model.get("value") });
     },
     
