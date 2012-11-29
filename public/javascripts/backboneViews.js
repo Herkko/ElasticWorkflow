@@ -338,6 +338,7 @@ workflow.views.relationView = Backbone.View.extend({
     render: function() {
         var startPoint = RaphaelObjects[this.model.get("startId")];
         var endPoint = RaphaelObjects[this.model.get("endId")];
+			
         this.raphaelRelation = RaphaelElement.connection(startPoint, endPoint, "#000")
         connections.push(this.raphaelRelation);
     },

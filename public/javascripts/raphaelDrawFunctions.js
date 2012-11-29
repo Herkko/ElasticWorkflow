@@ -65,8 +65,39 @@ Raphael.fn.connection = function(obj1, obj2, line, bg) {
             to: obj2
         };
     }
+/*
+	handle = RaphaelElement.circle(x4,y4,5).attr({
+    	fill: "black",
+    	cursor: "pointer",
+    	"fill-opacity": 0,
+    	"stroke-width": 10,
+    	stroke: "transparent"
+	});
+    $(handle.node).mouseup(_.bind(function() { 
+    	console.log(":)");
+    
+	}, this));
+	var startRelation = function () {
+  		this.cx = this.attr("cx"),
+ 		this.cy = this.attr("cy");
+	},
 
-            
+	moveRelation = function (dx, dy) {
+   		var X = this.cx + dx,
+    	Y = this.cy + dy;
+   		this.attr({cx: X, cy: Y});
+  		// pathArray[1][1] = X;
+  		// pathArray[1][2] = Y;
+   		var pathArray = ["M", x1.toFixed(3), y1.toFixed(3), "C", x2, y2, x3, y3, X, Y].join(",");
+   		line.line.attr({path: pathArray});
+	},
+
+	upRelation = function () {
+   		this.dx = this.dy = 0;
+	};
+
+	handle.drag(moveRelation, startRelation, upRelation);
+    */        
  	
 };
 

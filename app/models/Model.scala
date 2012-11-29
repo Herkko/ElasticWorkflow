@@ -7,22 +7,20 @@ import anorm.SqlParser._
 import anorm._
 
 case class Model(
-    val id: Pk[Long] = NotAssigned, 
-    val name: String = "Unknown Model", 
-    val dateCreated: Date = new Date()
-) extends Table {
-  
-  def create(): Long 			= Model.create(this)
-  def read(): Option[Model] 	= Model.read(id)
-  def update(): Int 			= Model.update(this)
-  def delete(): Int 			= Model.delete(id)
-  def list: List[Model] 		= Model.list()
+  val id: Pk[Long] = NotAssigned,
+  val name: String = "Unknown Model",
+  val dateCreated: Date = new Date()) extends Table {
+
+  def create(): Long = Model.create(this)
+  def read(): Option[Model] = Model.read(id)
+  def update(): Int = Model.update(this)
+  def delete(): Int = Model.delete(id)
+  def list: List[Model] = Model.list()
 
   def toSeq(): Seq[(String, Any)] = Seq(
     "id" -> id.map(id => id).getOrElse(0L),
     "name" -> name,
-    "dateCreated" -> dateCreated  
-  )
+    "dateCreated" -> dateCreated)
 }
 
 /**
@@ -51,7 +49,7 @@ object Model extends TableCommon[Model] {
   val listQuery = """
     select * from models
   """
-  
+
   def parse(as: String = "models.") = {
     get[Pk[Long]]("id") ~
       get[String]("name") ~

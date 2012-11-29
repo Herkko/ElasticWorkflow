@@ -11,7 +11,7 @@ object PkFormat {
     def writes(pk: Pk[Long]): JsValue = toJson( pk.map(id => id).getOrElse(0L) )
     
     def reads(pk: JsValue): Pk[Long] = {
-      pk.as[Long] match {
+      pk.as[Int] match {
         case 0 => NotAssigned
         case key => Id[Long](key)
       }
