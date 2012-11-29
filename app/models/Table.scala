@@ -56,10 +56,11 @@ trait TableCommon[T <: Table] {
     read(id.toString.toLong)
   }
 
-  def update(table: T): Int = DB.withConnection { implicit connection =>
+  def update(model: T): Int = DB.withConnection { implicit connection => {
+    println(updateQuery)
     SQL(updateQuery)
-      .on(toParams(table.toSeq): _*).executeUpdate()
-  }
+      .on(toParams(model.toSeq): _*).executeUpdate()
+  }}
 
   def delete(id: Long): Int = DB.withConnection { implicit connection =>
     SQL(deleteQuery)

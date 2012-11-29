@@ -66,7 +66,8 @@ Raphael.fn.connection = function(obj1, obj2, line, bg) {
         };
     }
 
-
+            
+ 	
 };
 
 

@@ -16,7 +16,8 @@ object ProcessElementFormat {
       (json \ "modelProcessId").as[Long],
       (json \ "elementTypeId").as[Int],
       (json \ "value").as[String],
-      (json \ "size").as[Int],
+      (json \ "width").as[Int],
+      (json \ "height").as[Int],
       (json \ "cx").as[Int],
       (json \ "cy").as[Int])
 
@@ -25,7 +26,8 @@ object ProcessElementFormat {
       "modelProcessId" -> toJson(element.modelProcessId),
       "elementTypeId" -> toJson(element.elementTypeId),
       "value" -> toJson(element.value),
-      "size" -> toJson(element.size),
+      "width" -> toJson(element.width),
+      "height" -> toJson(element.height),
       "cx" -> toJson(element.x),
       "cy" -> toJson(element.y)))
   }

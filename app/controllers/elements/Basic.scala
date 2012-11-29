@@ -4,7 +4,7 @@ import play.api._
 import play.api.mvc._
 import play.api.libs.json.Json.toJson
 import play.api.libs.json._
-import anorm.NotAssigned
+import anorm.{ NotAssigned, Id, Pk}
 
 import format.ProcessElementFormat
 
@@ -24,11 +24,12 @@ trait Basic extends Controller {
         val modelProcessId = (json \ "modelProcessId").asOpt[Int].getOrElse(1)
         val elementTypeId = (json \ "elementTypeId").asOpt[Int].getOrElse(elementType)
         val value = (json \ "value").asOpt[String].getOrElse(typeName)
-        val size = (json \ "size").asOpt[Int].getOrElse(0)
+        val width = (json \ "width").asOpt[Int].getOrElse(0)
+        val height = (json \ "height").asOpt[Int].getOrElse(0)
         val x = (json \ "cx").asOpt[Int].get
         val y = (json \ "cy").asOpt[Int].get
 
-        val newId = ProcessElement(NotAssigned, modelProcessId, elementTypeId, value, size, x, y).create
+        val newId = ProcessElement(NotAssigned, modelProcessId, elementTypeId, value, width, height, x, y).create
 
         Ok(toJson(ProcessElement.read(newId)))
       }
@@ -47,15 +48,17 @@ trait Basic extends Controller {
   def update(id: Int) = CORSAction { implicit request =>
     request.body.asJson.map { json =>
       {
-        val Some(id) = (json \ "id").asOpt[Int]
-        //  val Some(modelProcessId) = (json \ "modelProcessId").asOpt[Int]
-        //  val Some(elementTypeId) = (json \ "elementTypeId").asOpt[Int]
-        val Some(value) = (json \ "value").asOpt[String]
-        val Some(size) = (json \ "size").asOpt[Int]
-        val Some(x) = (json \ "cx").asOpt[Int]
-        val Some(y) = (json \ "cy").asOpt[Int]
+        import format.PkFormat._
+        val id: Pk[Long] = (json \ "id").asOpt[Pk[Long]].get
+        val modelProcessId: Int = (json \ "modelProcessId").asOpt[Int].get
+        val elementTypeId: Int = (json \ "elementTypeId").asOpt[Int].get
+        val value: String = (json \ "value").asOpt[String].get
+        val width: Int = (json \ "width").asOpt[Int].get
+        val height: Int = (json \ "height").asOpt[Int].get
+        val x: Int = (json \ "cx").asOpt[Int].get
+        val y: Int = (json \ "cy").asOpt[Int].get
 
-        ProcessElement.update(id, value, size, x, y)
+        ProcessElement(id, modelProcessId, elementTypeId, value, width, height, x, y).update
         Ok(toJson(ProcessElement.read(id)))
       }
     }.getOrElse {
