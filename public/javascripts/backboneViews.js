@@ -6,7 +6,7 @@ workflow.views.ActivityView = Backbone.View.extend({
    
     initialize: function() {
          console.log(this.model);
-          //creates new Raphael elements  
+
          this.raphaelActivity = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 100, 60, 4);
          this.raphaelText = RaphaelElement.text((this.model.get("cx") + 50), (this.model.get("cy") + 30), this.model.get("value"));
         
@@ -60,7 +60,7 @@ workflow.views.ActivityView = Backbone.View.extend({
         workflow.views.editView = null;
         workflow.views.editView = new workflow.views.EditElementsView({model: this.model, startRelId: relId});
         
-        this.model.updateModel();
+        this.model.save();
         
         
     },
@@ -68,7 +68,7 @@ workflow.views.ActivityView = Backbone.View.extend({
 
 });
     
-workflow.views.StartsView = Backbone.View.extend({
+workflow.views.StartView = Backbone.View.extend({
 
     initialize: function() {
     	//creates new Raphael elements
@@ -123,12 +123,12 @@ workflow.views.StartsView = Backbone.View.extend({
         workflow.views.editView = null;
         workflow.views.editView = new workflow.views.EditElementsView({model: this.model, startRelId: relId});
         
-        this.model.updateModel();
+        this.model.save();
     },
 
 });
 
-workflow.views.endsView = Backbone.View.extend({
+workflow.views.EndView = Backbone.View.extend({
 
 
     initialize: function() {
@@ -185,12 +185,12 @@ workflow.views.endsView = Backbone.View.extend({
         workflow.views.editView = null;
         workflow.views.editView = new workflow.views.EditElementsView({model: this.model, startRelId: relId});
         
-        this.model.updateModel();
+        this.model.save();
     }
 
 })
 
-workflow.views.swimlanesView = Backbone.View.extend({
+workflow.views.SwimlaneView = Backbone.View.extend({
 
     initialize: function(){
         this.swimlane = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), this.model.get("width"), this.model.get("height"), 1);
@@ -239,14 +239,14 @@ workflow.views.swimlanesView = Backbone.View.extend({
    
       
         workflow.views.editView = new workflow.views.EditElementsView({model: this.model});
-        this.model.updateModel();
+        this.model.save();
     },
     
     
     
 })
 
-workflow.views.gatewayView = Backbone.View.extend({
+workflow.views.GatewayView = Backbone.View.extend({
  
     initialize: function() {
         
@@ -284,11 +284,7 @@ workflow.views.gatewayView = Backbone.View.extend({
         temp.translate(this.raphaelGateway.getAttribute("x"),this.raphaelGateway.getAttribute("y"));
         this.raphaelGateway.animate({path: temp.attr('path')}, 1000);
         temp.remove();
-        
-        
-       // this.raphaelGateway = RaphaelElement.path('M ' + this.model.get("cx") + ' ' + this.model.get("cy") + 'L' + (this.model.get("cx") - 50) + ' ' + (this.model.get("cy") + 50) + 'L' + (this.model.get("cx")) + ' ' + (this.model.get("cy") + 100) + 'L' + (this.model.get("cx") + 50) + ' ' + (this.model.get("cy") + 50) + 'Z');
-       // this.raphaelText = RaphaelElement.text(this.model.get("cx"), (this.model.get("cy") + 50), this.model.get("value"));
-    },
+      },
     
     clicked: function() {
 
@@ -322,13 +318,13 @@ workflow.views.gatewayView = Backbone.View.extend({
         workflow.views.editView = new workflow.views.EditElementsView({model: this.model, startRelId: relId});
         
         
-        this.model.updateModel();
+        this.model.save();
         
     }
 })
 
 
-workflow.views.relationView = Backbone.View.extend({
+workflow.views.RelationView = Backbone.View.extend({
     
     initialize: function(){
         this.render();

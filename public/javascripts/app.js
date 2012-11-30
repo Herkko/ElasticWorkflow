@@ -79,7 +79,7 @@ function setUpApplication(){
     
   function renderStarts(){
         for(var i=0; i<StartElements.length; i++){
-        startsViewElement = new workflow.views.StartsView({model: StartElements.models[i]});
+        startsViewElement = new workflow.views.StartView({model: StartElements.models[i]});
        
         };  
       
@@ -87,14 +87,14 @@ function setUpApplication(){
   
   function renderEnds(){
         for(var i=0; i<EndElements.length; i++){
-        endsViewElement = new workflow.views.endsView({model: EndElements.models[i]});
+        endsViewElement = new workflow.views.EndView({model: EndElements.models[i]});
         
         };  
   }
   
   function renderSwimlanes(){
        for(var i=0; i<SwimlaneElements.length; i++){
-        swimlanesElement = new workflow.views.swimlanesView({model: SwimlaneElements.models[i]});
+        swimlanesElement = new workflow.views.SwimlaneView({model: SwimlaneElements.models[i]});
         
         };  
   }
@@ -102,7 +102,7 @@ function setUpApplication(){
   
   function renderGateways(){
        for(var i=0; i<GatewayElements.length; i++){
-        gatewayElement = new workflow.views.gatewayView({model: GatewayElements.models[i]});
+        gatewayElement = new workflow.views.GatewayView({model: GatewayElements.models[i]});
       
         };  
   }
@@ -111,7 +111,7 @@ function setUpApplication(){
       
       
       for(var i=0; i<RelationElements.length; i++){
-        relationViewElement = new workflow.views.relationView({model: RelationElements.models[i]});
+        relationViewElement = new workflow.views.RelationView({model: RelationElements.models[i]});
 
         
         }; 

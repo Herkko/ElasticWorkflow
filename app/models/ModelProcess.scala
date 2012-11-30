@@ -13,7 +13,7 @@ case class ModelProcess(
 
   def create(): Long 				= ModelProcess.create(this)
   def read(): Option[ModelProcess]  = ModelProcess.read(id)
-  def update(): Int					= ModelProcess.update(this)
+  def update(): Long				= ModelProcess.update(this)
   def delete(): Int 				= ModelProcess.delete(id)
   def list: List[ModelProcess] 		= ModelProcess.list()
 

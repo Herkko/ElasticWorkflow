@@ -13,7 +13,7 @@ case class Model(
 
   def create(): Long = Model.create(this)
   def read(): Option[Model] = Model.read(id)
-  def update(): Int = Model.update(this)
+  def update(): Long = Model.update(this)
   def delete(): Int = Model.delete(id)
   def list: List[Model] = Model.list()
 

@@ -78,17 +78,7 @@ object ProcessElement extends TableCommon[ProcessElement] {
         case id ~ modelProcessId ~ elementTypeId ~ value ~ width ~ height ~ x ~ y =>
           ProcessElement(id, modelProcessId, elementTypeId, value, width, height,  x, y)
       }
-  }
-  
-  /*def update(id: Long, value: String, size: Int, x: Int, y: Int): Boolean = {
-    DB.withConnection { implicit connection =>
-      SQL("""update processElements 
-          set value = {value}, size = {size}, x = {x}, y = {y}
-          where id = {id}""").
-        on('id -> id,
-          'value -> value, 'size -> size, 'x -> x, 'y -> y).executeUpdate() == 0
-    }
-  }*/
+  } 
 
   def getModelProcessId(modelId: Long, processId: Long): Long = DB.withConnection { 
     implicit connection => {
@@ -168,4 +158,5 @@ object ProcessElement extends TableCommon[ProcessElement] {
   	    and elementTypes.name = {elementType}
   	    """).on('id -> id, 'elementType -> elementType).as(parser *)
   }
+ 
 }

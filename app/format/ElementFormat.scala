@@ -12,8 +12,8 @@ object ProcessElementFormat {
 
   implicit object ProcessElementFormat extends Format[ProcessElement] {
     def reads(json: JsValue): ProcessElement = ProcessElement(
-      (json \ "id").as[Pk[Long]],
-      (json \ "modelProcessId").as[Long],
+      (json \ "id").as[Option[Pk[Long]]].getOrElse(NotAssigned),
+      (json \ "modelProcessId").as[Option[Long]].getOrElse(1L),
       (json \ "elementTypeId").as[Int],
       (json \ "value").as[String],
       (json \ "width").as[Int],
