@@ -14,7 +14,7 @@ case class Process(
 
   def create(): Long 			= Process.create(this)
   def read(): Option[Process] 	= Process.read(id)
-  def update() 					= Process.update(this)
+  def update(): Long			= Process.update(this)
   def delete() 					= Process.delete(id)
   def list: List[Process] 		= Process.list()
 

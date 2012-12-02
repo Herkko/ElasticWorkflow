@@ -11,21 +11,23 @@ object ProcessElementFormat {
   import format.PkFormat._
 
   implicit object ProcessElementFormat extends Format[ProcessElement] {
-    def reads(json: JsValue) = ProcessElement(
-      (json \ "id").as[Pk[Long]],
-      (json \ "modelProcessId").as[Long],
+    def reads(json: JsValue): ProcessElement = ProcessElement(
+      (json \ "id").as[Option[Pk[Long]]].getOrElse(NotAssigned),
+      (json \ "modelProcessId").as[Option[Long]].getOrElse(1L),
       (json \ "elementTypeId").as[Int],
       (json \ "value").as[String],
-      (json \ "size").as[Int],
+      (json \ "width").as[Int],
+      (json \ "height").as[Int],
       (json \ "cx").as[Int],
       (json \ "cy").as[Int])
 
-    def writes(element: ProcessElement) = JsObject(Seq(
+    def writes(element: ProcessElement): JsObject = JsObject(Seq(
       "id" -> toJson(element.id),
       "modelProcessId" -> toJson(element.modelProcessId),
       "elementTypeId" -> toJson(element.elementTypeId),
       "value" -> toJson(element.value),
-      "size" -> toJson(element.size),
+      "width" -> toJson(element.width),
+      "height" -> toJson(element.height),
       "cx" -> toJson(element.x),
       "cy" -> toJson(element.y)))
   }

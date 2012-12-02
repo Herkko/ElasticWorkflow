@@ -1,127 +1,131 @@
-
-workflow.models.activity = Backbone.Model.extend({
+workflow.models.swimlane = Backbone.Model.extend({
+     
+	urlRoot: workflow.domainHost+'/swimlane',
 	
-    urlRoot: workflow.domainHost+'/activity',
-	
-            
-    updateModel: function() {
-          console.log("update model activity: "+ JSON.stringify(this));
-        this.save();
-    
+	defaults: {
+        'id': null,
+        'modelProcessId': null,
+        'elementTypeId': 1,
+        'value': 'Swimlane',
+        'width': 800,
+        'height': 600,
     }
-
 });
 
 workflow.models.start = Backbone.Model.extend({
-
+    
     urlRoot: workflow.domainHost+'/start',
-    
-	
-    updateModel: function() {
-        console.log("update model start: "+ JSON.stringify(this));
-       this.save();
-    }
-            
-});
 
-workflow.models.relation = Backbone.Model.extend({
-
-    urlRoot: workflow.domainHost+'/relation',
-    
-    
-    initialize: function() {
-
-        function getBackboneModelById(id) {
-                    if (ActivityElements.get(id) != null)
-                        return ActivityElements.get(id);
-                    else if (StartElements.get(id) != null)
-                        return StartElements.get(id);
-                    else if (EndElements.get(id) != null)
-                        return EndElements.get(id);
-                    else if (SwimlaneElements.get(id) != null)
-                        return SwimlaneElements.get(id);
-                    else if (GatewayElements.get(id) != null)
-                        return GatewayElements.get(id);
-                }
-        ;
-        this.set({ startPointModel:  getBackboneModelById(this.get("startId")).get("element")}),   
-        this.set({endPointModel:  getBackboneModelById(this.get("endId")).get("element")});
-    }
-
-
-
-
+    defaults: {
+        'id': null,
+        'modelProcessId': null,
+        'elementTypeId': 2,
+        'value': 'Start',
+        'width': 20,
+        'height': 20,
+        'cx': 850,
+        'cy': 110
+    }    
 });
 
 workflow.models.end = Backbone.Model.extend({
-	
-	urlRoot: workflow.domainHost+'/end',
-   
+ 
+    urlRoot: workflow.domainHost+'/end',
     
-    updateModel: function() {
-        this.save();
+    defaults: {
+        'id': null,
+        'modelProcessId': null,
+        'elementTypeId': 3,
+        'value': 'End',
+        'width': 20,
+        'height': 20,
+        'cx': 850,
+        'cy': 160
     }
 });
 
-workflow.models.swimlane = Backbone.Model.extend({
-	
-	urlRoot: workflow.domainHost+'/swimlane',
- 
-  
-    updateModel: function() {
-        this.save();
-    }
+workflow.models.activity = Backbone.Model.extend({
 
+    urlRoot: workflow.domainHost+'/activity',
+     
+    defaults: {
+        'id': null,
+        'modelProcessId': null,
+        'elementTypeId': 4,
+        'value': 'Activity',
+        'width': 100,
+        'height': 60,
+        'cx': 830,
+        'cy': 20
+    }
 });
 
 workflow.models.gateway = Backbone.Model.extend({
-	
-    urlRoot: workflow.domainHost+'/gateway',
-	
-	
-    updateModel: function() {
-        this.save();
-    }
 
+    urlRoot: workflow.domainHost+'/gateway',
+    
+    defaults: {
+        'id': null,
+        'modelProcessId': null,
+        'elementTypeId': 5,
+        'value': 'Gateway',
+        'width': 0,
+        'height': 0,
+        'cx': 880,
+        'cy': 195
+    }
 });
 
-
+workflow.models.relation = Backbone.Model.extend({
+    
+    urlRoot: workflow.domainHost+'/relation',
+  
+    defaults: {
+        'from': null,
+        'to': null
+    },
+    
+    initialize: function() {
+        this.set({ from:  getBackboneModelById(this.get("startId")).get("element")});  
+        this.set({ to:  getBackboneModelById(this.get("endId")).get("element")});
+    }
+});
 
 workflow.collections.ActivityList = Backbone.Collection.extend({
-    model: workflow.models.activity,
-    url: workflow.domainHost+'/activity'
-	
+	url: workflow.domainHost+'/activity', 
+    model: workflow.models.activity
 });
 
 workflow.collections.StartList = Backbone.Collection.extend({
-    model: workflow.models.start,
-    url: workflow.domainHost+'/start'
-    
+    url: workflow.domainHost+'/start',
+    model: workflow.models.start
 });
 
 workflow.collections.EndList = Backbone.Collection.extend({
-    model: workflow.models.end,
-    url: workflow.domainHost+'/end'
-    
+	url: workflow.domainHost+'/end',
+    model: workflow.models.end
 });
 
 workflow.collections.SwimlaneList = Backbone.Collection.extend({
-    model: workflow.models.swimlane,
-    url: workflow.domainHost+'/swimlane'
-    
+    url: workflow.domainHost+'/swimlane',
+    model: workflow.models.swimlane
 });
 
 workflow.collections.GatewayList = Backbone.Collection.extend({
-    model: workflow.models.gateway,
-   url: workflow.domainHost+'/gateway'
-  
+	url: workflow.domainHost+'/gateway',
+    model: workflow.models.gateway 
 });
 
 workflow.collections.RelationList = Backbone.Collection.extend({
     model: workflow.models.relation,
-   url: workflow.domainHost+'/relation',
-     
-
+    url: workflow.domainHost+'/relation',
+    
+    render: function() {
+        for (var i = 0; i < this.length; i++) {
+            var relation = this.get(i);
+            connections.push(RaphaelElement.connection(StartElements.at(0).get("element"), ActivityElements.at(0).get("element"), "#000"));
+        }
+    }
 });
 
 function post_to_url(path, params, method) {
@@ -151,42 +155,31 @@ function post_to_url(path, params, method) {
 
 function uusiActivity() {
     var activityModel = new workflow.models.activity();
-	$.when(activityModel.save()).then(function() {
-	    ActivityElements.add(activityModel);
-		new workflow.views.ActivityView({model: activityModel})
-	});
+    ActivityElements.add(activityModel);
+    new workflow.views.ActivityView({model: activityModel});
 };
 
 function uusiStart() {
-	var startModel = new workflow.models.start();
-	$.when(startModel.save()).then(function() {
-	    StartElements.add(startModel);
-		new workflow.views.StartsView({model: startModel})
-	});
+    var startModel = new workflow.models.start();
+    StartElements.add(startModel);
+    new workflow.views.StartView({model: startModel});
 };
 
 function uusiEnd() {
-	var endModel = new workflow.models.end();
-	$.when(endModel.save()).then(function() {
-	    EndElements.add(endModel);
-		new workflow.views.endsView({model: endModel})
-	});
+    var endModel = new workflow.models.end();
+    EndElements.add(endModel);
+    new workflow.views.EndView({model: endModel});
 };
 
-//add to raphaelobjects
 function uusiGateway() {
-	var gatewayModel = new workflow.models.gateway();
-	$.when(gatewayModel.save()).then(function() {
-	    GatewayElements.add(gatewayModel);
-		new workflow.views.gatewayView({model: gatewayModel})
-	});
+    var gatewayModel = new workflow.models.gateway();
+    GatewayElements.add(gatewayModel);
+    new workflow.views.GatewayView({model: gatewayModel});
 };
 
 function uusiRelation() {
-	var relationModel = new workflow.models.relation();
-	$.when(relationModel.save()).then(function() {
-	    RelationElements.add(relationModel);
-		new workflow.views.relationView({model: relationModel})
-	});
-}
+    var relationModel = new workflow.models.relation();
+    RelationElements.add(relationModel);
+    new workflow.views.RelationView({model: relationModel})
+};
 

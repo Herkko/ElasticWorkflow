@@ -10,7 +10,7 @@ trait Table {
 
   def create(): Long
   def read(): Option[Table]
-  def update(): Int
+  def update(): Long
   def delete(): Int
   def list(): List[Table]
 
@@ -56,10 +56,11 @@ trait TableCommon[T <: Table] {
     read(id.toString.toLong)
   }
 
-  def update(table: T): Int = DB.withConnection { implicit connection =>
+  def update(model: T): Long = DB.withConnection { implicit connection => {
     SQL(updateQuery)
-      .on(toParams(table.toSeq): _*).executeUpdate()
-  }
+      .on(toParams(model.toSeq): _*).executeUpdate()
+    model.id.get
+  }}
 
   def delete(id: Long): Int = DB.withConnection { implicit connection =>
     SQL(deleteQuery)

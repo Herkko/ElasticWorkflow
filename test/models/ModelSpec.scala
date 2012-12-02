@@ -41,6 +41,9 @@ class ModelSpec extends Specification {
 
         result.id.toString().toInt must equalTo(id)
         result.name must equalTo("Name1")
+        
+        val noneModel: Option[Model] = Model.read(1000)
+        noneModel must be none
       }
     }
 
@@ -88,5 +91,5 @@ class ModelSpec extends Specification {
         }
       }
     }
-  }
+  } 
 }

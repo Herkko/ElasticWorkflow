@@ -4,7 +4,7 @@ import play.api._
 import play.api.mvc._
 import play.api.libs.json.Json.toJson
 import play.api.libs.json._
-import anorm.NotAssigned
+import anorm.{ NotAssigned, Id, Pk}
 
 import format.ProcessElementFormat
 
@@ -19,19 +19,12 @@ trait Basic extends Controller {
   val elementType: Int = 0
 
   def create() = CORSAction { implicit request =>
-    request.body.asJson.map { json =>
-      {
-        val modelProcessId = (json \ "modelProcessId").asOpt[Int].getOrElse(1)
-        val elementTypeId = (json \ "elementTypeId").asOpt[Int].getOrElse(elementType)
-        val value = (json \ "value").asOpt[String].getOrElse(typeName)
-        val size = (json \ "size").asOpt[Int].getOrElse(0)
-        val x = (json \ "cx").asOpt[String].getOrElse("100")
-        val y = (json \ "cy").asOpt[String].getOrElse("100")
-
-        val newId = ProcessElement(NotAssigned, modelProcessId, elementTypeId, value, size, x.toInt, y.toInt).create
-
-        Ok(toJson(ProcessElement.read(newId)))
-      }
+    request.body.asJson.map { json =>  
+        val id = Json.fromJson(json) match {
+          case e: ProcessElement => e.create
+          case _ => throw new Exception("Reading ProcessElement from Json failed.")
+        }
+        Ok(toJson(ProcessElement.read(id)))
     }.getOrElse {
       BadRequest("Expecting Json data")
     }
@@ -47,15 +40,10 @@ trait Basic extends Controller {
   def update(id: Int) = CORSAction { implicit request =>
     request.body.asJson.map { json =>
       {
-        val Some(id) = (json \ "id").asOpt[Int]
-        //  val Some(modelProcessId) = (json \ "modelProcessId").asOpt[Int]
-        //  val Some(elementTypeId) = (json \ "elementTypeId").asOpt[Int]
-        val Some(value) = (json \ "value").asOpt[String]
-        val Some(size) = (json \ "size").asOpt[Int]
-        val Some(x) = (json \ "cx").asOpt[String]
-        val Some(y) = (json \ "cy").asOpt[String]
-
-        ProcessElement.update(id, value, size, x.toInt, y.toInt)
+        val id = Json.fromJson(json) match {
+          case e: ProcessElement => e.update
+          case _ => throw new Exception("Updating ProcessElement from Json failed.")
+        }
         Ok(toJson(ProcessElement.read(id)))
       }
     }.getOrElse {
@@ -66,12 +54,11 @@ trait Basic extends Controller {
   //add a check here that process element has a correct type!also delete its relations
   def delete(id: Long) = CORSAction { implicit request =>
     ProcessElement.delete(id)
-    // Ok(views.html.edit())
     Ok(toJson(""))
   }
 
   def list = CORSAction { implicit request =>
-    Ok(toJson(ProcessElement.list())) //findType(typeName)))
+    Ok(toJson(ProcessElement.list())) 
   }
 }
 
@@ -79,6 +66,6 @@ object Basic extends Controller {
   import ProcessElementFormat._
 
   def list = CORSAction { implicit request =>
-    Ok(toJson(ProcessElement.list())) //findType(typeName)))
+    Ok(toJson(ProcessElement.list())) 
   }
 }
