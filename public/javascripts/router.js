@@ -1,4 +1,4 @@
-/*Copyright 2012 University of Helsinki, Panu Klemola, Herkko Virolainen, Daria Antonova
+/**Copyright 2012 University of Helsinki, Daria Antonova, Herkko Virolainen, Panu Klemola
 *
 *Licensed under the Apache License, Version 2.0 (the "License");
 *you may not use this file except in compliance with the License.
