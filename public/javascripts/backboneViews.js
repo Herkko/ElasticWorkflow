@@ -365,7 +365,8 @@ workflow.views.EditElementsView = Backbone.View.extend({
     
     events:  {
         "keyup #editValue" : "editValue",
-        "click #newRelationButton" : "newRelation"
+        "click #newRelationButton" : "newRelation",
+        "focusout #editValue" : "outOfFocus"
     },
              
     initialize: function(){
@@ -407,6 +408,10 @@ workflow.views.EditElementsView = Backbone.View.extend({
     createRelation: function(){
        var relationModel = new workflow.models.relation({"startId": this.options.startRelId ,"endId": this.model.get("id")});
        new workflow.views.relationView({model: relationModel}); 
-    }        
+    },
+    
+    outOfFocus: function(){
+    	this.model.save();
+    }
     
 })
