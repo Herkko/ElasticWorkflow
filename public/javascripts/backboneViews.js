@@ -19,6 +19,10 @@ workflow.views.AppView = Backbone.View.extend({
 workflow.views.ActivityView = Backbone.View.extend({
    
     initialize: function() {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 42c3e60fa5f198e74b7b3a845486209e2c149b6a
 
          this.raphaelActivity = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 100, 60, 4);
          this.raphaelText = RaphaelElement.text((this.model.get("cx")+20), (this.model.get("cy") + 30), this.model.get("value"));
@@ -218,8 +222,10 @@ workflow.views.SwimlaneView = Backbone.View.extend({
          this.swimlaneNameText.toBack();
         this.swimlane.toBack();
         this.el = this.swimlane.node;
+        var color = "#66FFFF";
         this.swimlane.namebox = this.swimlaneNameBox;
         this.swimlane.nametext = this.swimlaneNameText;
+
         
         var color = Raphael.getColor();
         this.swimlane.attr({fill: color, "fill-opacity": 0.05, stroke: "#000", "stroke-width": 2});
@@ -233,6 +239,7 @@ workflow.views.SwimlaneView = Backbone.View.extend({
    //     $(this.el).mouseup(_.bind(function() { this.clicked()}, this));
         $(this.swimlaneNameBox.node).mouseup(_.bind(function() { this.clicked()}, this));
         $(this.swimlaneDragBox.node).mouseup(_.bind(function() { this.clicked()}, this));
+
         this.model.bind("change", this.render, this);
     },
 
@@ -254,7 +261,22 @@ workflow.views.SwimlaneView = Backbone.View.extend({
         this.model.set({width: parseInt(raphaelSwimlane.getAttribute("width"))});
         this.model.set({height: parseInt(raphaelSwimlane.getAttribute("height"))});
    
-      
+        if(workflow.views.editView){
+            if (workflow.views.editView.startRelId) {
+                var relId = workflow.views.editView.startRelId;
+                console.log(relId);
+
+            }
+        
+        //COMPLETELY UNBIND THE VIEW
+          workflow.views.editView.undelegateEvents();
+          $("#editElements").removeData().unbind(); 
+
+        }
+         
+         
+         
+         
         workflow.views.editView = new workflow.views.EditElementsView({model: this.model});
         this.model.save();
     },
@@ -285,7 +307,7 @@ workflow.views.GatewayView = Backbone.View.extend({
 
         RaphaelObjects[this.model.get("id")] = this.raphaelGateway;
 
-
+        this.model.bind("change", this.render, this);
         $(this.el.node).mouseup(_.bind(function() {
             this.clicked()
         }, this));
@@ -294,11 +316,9 @@ workflow.views.GatewayView = Backbone.View.extend({
     },
             
     render: function() {
-   
-        
-        
-        var temp = raphaelGateway.clone();
-        temp.translate(this.raphaelGateway.getAttribute("x"),this.raphaelGateway.getAttribute("y"));
+    	var temp = this.raphaelGateway.clone();
+        temp.translate(this.raphaelGateway.x,this.raphaelGateway.y);
+        this.raphaelText.attr({"cx":(this.model.get("cx")+ 50), "cy":(this.model.get("cy")+30),"text":this.model.get("value") });
         this.raphaelGateway.animate({path: temp.attr('path')}, 1000);
         temp.remove();
       },
@@ -366,10 +386,12 @@ workflow.views.EditElementsView = Backbone.View.extend({
    
     el: $("#editElements"),
     
-    events:  {
+    events: {
         "keyup #editValue" : "editValue",
         "click #newRelationButton" : "newRelation",
+
         "focusout #editValue" : "outOfFocus"
+
     },
              
     initialize: function(){
@@ -382,8 +404,6 @@ workflow.views.EditElementsView = Backbone.View.extend({
     },       
             
     editValue: function(e){
-        
-        
         var newValue = $("#editValue").val();
         this.model.set({value: newValue});
         
@@ -391,8 +411,15 @@ workflow.views.EditElementsView = Backbone.View.extend({
             this.model.save();
             $("#editElements").addClass("hidden");
         }
-        
     },   
+            
+    focusOut: function(){
+       
+        var newValue = $("#editValue").val();
+        this.model.set({value: newValue});
+        this.model.save();
+    },          
+            
        
     render: function(){
     	$("#editElements").removeClass("hidden");
@@ -406,17 +433,23 @@ workflow.views.EditElementsView = Backbone.View.extend({
     },
     
     //Makes new relation startpoint
+
     newRelation: function(){    
+
         this.startRelId= this.model.get("id");
     },
     //Creates new relation from preDefined startPoint         
     createRelation: function(){
-       var relationModel = new workflow.models.relation({"startId": this.options.startRelId ,"endId": this.model.get("id")});
+        //console.log("startRelId " + this.options.startRelId + " this.model.get " + this.model.get("id"));
+        var to = this.model.get("id");
+        
+       var relationModel = new workflow.models.relation({"startId": this.options.startRelId ,"endId": this.to});
        new workflow.views.relationView({model: relationModel}); 
     },
     
     outOfFocus: function(){
     	this.model.save();
+    	$("#editElements").addClass("hidden");
     }
     
 })

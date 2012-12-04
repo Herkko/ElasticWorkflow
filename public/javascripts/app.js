@@ -37,7 +37,7 @@ var workflow = {
         RaphaelObjects= []; 
         connections = [];
         workflow.views.editView;
-        RaphaelElement = Raphael(10, 120, "70%", "100%");
+        RaphaelElement = Raphael("mainArea", "100%", "100%");
         App = new workflow.views.AppView;
         setUpApplication();
     },
