@@ -18,9 +18,9 @@ var workflow = {
     collections: {},
     views: {},
 
-    domainHost: "http://morning-fjord-4117.herokuapp.com",
+  //  domainHost: "http://morning-fjord-4117.herokuapp.com",
 
-    //domainHost: "http://localhost:9000",
+    domainHost: "http://localhost:9000",
     ENTER: 13,
 
            
@@ -142,6 +142,12 @@ function setUpApplication(){
         RelationElements.fetch({success: renderRelations}); 
         //var EditTemplate = new EditElementsView();
     });
+    
+    jQuery('ul.nav li.dropdown').hover(function() {
+  		jQuery(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn();
+	}, function() {
+  		jQuery(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut();
+	});
  
 }
 
