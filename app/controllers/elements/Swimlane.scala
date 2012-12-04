@@ -33,4 +33,9 @@ object Swimlane extends Controller with Basic {
   override def list = CORSAction { implicit request =>
     Ok(toJson(ProcessElement.findType(typeName)))
   }
+  
+  //swimlane cannot be deleted
+  override def delete(id: Long) = CORSAction { implicit request =>
+    Ok(toJson(""))
+  }
 }

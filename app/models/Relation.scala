@@ -107,6 +107,17 @@ object Relation extends TableCommon[Relation] {
     }
   }
   
+  def findByElement(id: Long): List[Relation] = DB.withConnection { 
+    implicit connection => {
+      val query = """
+        select relations.* from relations
+        where relations.startId = {id}
+        or relations.endId = {id}
+        """      
+      SQL(query).on('id -> id).as(parse *)
+    }
+  }
+  
   def deleteByProcess(id: Long): Boolean = DB.withConnection { 
     implicit connection => {
       val query = """

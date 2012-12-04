@@ -19,10 +19,6 @@ workflow.views.AppView = Backbone.View.extend({
 workflow.views.ActivityView = Backbone.View.extend({
    
     initialize: function() {
-<<<<<<< HEAD
-=======
-
->>>>>>> 42c3e60fa5f198e74b7b3a845486209e2c149b6a
 
          this.raphaelActivity = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 100, 60, 4);
          this.raphaelText = RaphaelElement.text((this.model.get("cx")+20), (this.model.get("cy") + 30), this.model.get("value"));
@@ -46,7 +42,9 @@ workflow.views.ActivityView = Backbone.View.extend({
         RaphaelObjects[this.model.get("id")] = this.raphaelActivity;
         
         
-         this.model.bind("change", this.render, this);
+        this.model.bind("change", this.render(), this);
+        //this.model.bind("destroy", function() { workflow.refresh() }, this);
+        
         $(this.el).mouseup(_.bind(function() { this.clicked()}, this));
         $(this.raphaelText.node).mouseup(_.bind(function() { this.clicked()}, this));
         
@@ -84,9 +82,7 @@ workflow.views.ActivityView = Backbone.View.extend({
         this.model.save();
         
         
-    },
-
-
+    }
 });
     
 workflow.views.StartView = Backbone.View.extend({
@@ -389,13 +385,13 @@ workflow.views.EditElementsView = Backbone.View.extend({
     events: {
         "keyup #editValue" : "editValue",
         "click #newRelationButton" : "newRelation",
-
+		"click #deleteElementButton": "deleteElement",
         "focusout #editValue" : "outOfFocus"
 
     },
              
     initialize: function(){
-        console.log(this.options.startRelId);
+     //   console.log(this.options.startRelId);
         if (this.options.startRelId){
             this.createRelation(); 
         }else {
@@ -450,6 +446,10 @@ workflow.views.EditElementsView = Backbone.View.extend({
     outOfFocus: function(){
     	this.model.save();
     	$("#editElements").addClass("hidden");
+    },
+    
+    deleteElement: function() {
+    	this.model.destroy();  	
     }
     
 })
