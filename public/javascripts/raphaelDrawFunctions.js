@@ -65,8 +65,40 @@ Raphael.fn.connection = function(obj1, obj2, line, bg) {
             to: obj2
         };
     }
+/*
+	handle = RaphaelElement.circle(x4,y4,5).attr({
+    	fill: "black",
+    	cursor: "pointer",
+    	"fill-opacity": 0,
+    	"stroke-width": 10,
+    	stroke: "transparent"
+	});
+    $(handle.node).mouseup(_.bind(function() { 
+    	console.log(":)");
+    
+	}, this));
+	var startRelation = function () {
+  		this.cx = this.attr("cx"),
+ 		this.cy = this.attr("cy");
+	},
 
+	moveRelation = function (dx, dy) {
+   		var X = this.cx + dx,
+    	Y = this.cy + dy;
+   		this.attr({cx: X, cy: Y});
+  		// pathArray[1][1] = X;
+  		// pathArray[1][2] = Y;
+   		var pathArray = ["M", x1.toFixed(3), y1.toFixed(3), "C", x2, y2, x3, y3, X, Y].join(",");
+   		line.line.attr({path: pathArray});
+	},
 
+	upRelation = function () {
+   		this.dx = this.dy = 0;
+	};
+
+	handle.drag(moveRelation, startRelation, upRelation);
+    */        
+ 	
 };
 
 
@@ -75,7 +107,7 @@ dragger = function() {
 	if (this.type != "text") {
 		this.ox = this.type == "rect" ? this.attr("x") : this.attr("cx");
 		this.oy = this.type == "rect" ? this.attr("y") : this.attr("cy");
-		this.animate({"fill-opacity": .3}, 500);
+		//this.animate({"fill-opacity": .3}, 500);
 	} else {
 		this.ox = this.type == "ellipse" ? this.attr("cx") : this.attr("x");
         this.oy = this.type == "ellipse" ? this.attr("cy") : this.attr("y");
@@ -86,7 +118,7 @@ dragger = function() {
 	if (this.pair.type != "text") {
 		this.pair.ox = this.pair.type == "rect" ? this.pair.attr("x") : this.pair.attr("cx");
 		this.pair.oy = this.pair.type == "rect" ? this.pair.attr("y") : this.pair.attr("cy");
-		this.pair.animate({"fill-opacity": .3}, 500); 
+	//	this.pair.animate({"fill-opacity": .3}, 500); 
 	} else {
 		this.pair.ox = this.pair.type == "ellipse" ? this.pair.attr("cx") : this.pair.attr("x");
         this.pair.oy = this.pair.type == "ellipse" ? this.pair.attr("cy") : this.pair.attr("y");
@@ -107,7 +139,7 @@ move = function(dx, dy) {
 		var att = this.pair.type == "rect" ? {x: this.pair.ox + dx, y: this.pair.oy + dy} : {cx: this.pair.ox + dx, cy: this.pair.oy + dy};
 		this.pair.attr(att);
 	} else {
-		var att = this.pair.type == "rect" ? {x: this.pair.ox + dx, cy: this.pair.oy + dy} : {x: this.pair.ox + dx, y: this.pair.oy + dy};
+		var att = this.pair.type == "rect" ? {cx: this.pair.ox + dx, cy: this.pair.oy + dy} : {x: this.pair.ox + dx, y: this.pair.oy + dy};
 		this.pair.attr(att);
 	}
 	
@@ -117,30 +149,40 @@ move = function(dx, dy) {
 	RaphaelElement.safari();
 };
 
-resize_start = function () {
-    // this.ox = this.attr("x");
-    // this.oy = this.attr("y");
-    // this.box.ow = this.box.attr("width");
-    // this.box.oh = this.box.attr("height");  
-    this.ow = this.attr("width");  
-    this.oh = this.attr("height");      
-},
+rstart = function () {
+   
+        this.ox = this.attr("x");
+        this.oy = this.attr("y");        
+        
+        this.box.ow = this.box.attr("width");
+        this.box.oh = this.box.attr("height");
+        
+        this.nameBox.oh = this.nameBox.attr("height");     
+      
+};
 
-resize_move = function (dx, dy) {
-    // move will be called with dx and dy
-    // this.attr({x: this.ox + dx, y: this.oy + dy});
-    // this.box.attr({width: this.box.ow + dx, height: this.box.oh + dy});
-    this.attr({width: this.ow + dx, height: this.oh + dy});
-    this.namebox.attr({height: this.oh + dy});
-    this.nametext.transform('t12,' + ((this.oh + dy) / 2) + 'r270')
+rmove = function (dx, dy) {
+    var min_height = 280;
+    var max_height = 310;
+
+    this.attr({x: this.ox + dx});
+    this.box.attr({width: this.box.ow + dx});
+        
+    if((this.box.attr("height") > min_height || (this.oy + dy) >= this.attr("y")) && 
+       (this.box.attr("height") < max_height || (this.oy + dy) <= this.attr("y"))) {
+        this.attr({y: this.oy + dy});
+        this.box.attr({ height: this.box.oh + dy});
+        this.nameBox.attr({height: this.box.oh + dy});
+    } 
 };   
+
     
 up = function() {
     	// Fade original element on mouse up
-    if (this.type != "text") this.animate({"fill-opacity": 0}, 500);
+   // if (this.type != "text") this.animate({"fill-opacity": 0}, 500);
 
     	// Fade paired element on mouse up
-    if (this.pair.type != "text") this.pair.animate({"fill-opacity": 0}, 500); 
+    //if (this.pair.type != "text") this.pair.animate({"fill-opacity": 0}, 500); 
 };
 
 upStart = function() {

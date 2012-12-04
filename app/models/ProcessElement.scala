@@ -1,3 +1,17 @@
+/**Copyright 2012 University of Helsinki, Daria Antonova, Herkko Virolainen, Panu Klemola
+*
+*Licensed under the Apache License, Version 2.0 (the "License");
+*you may not use this file except in compliance with the License.
+*You may obtain a copy of the License at
+*
+*http://www.apache.org/licenses/LICENSE-2.0
+*
+*Unless required by applicable law or agreed to in writing, software
+*distributed under the License is distributed on an "AS IS" BASIS,
+*WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*See the License for the specific language governing permissions and
+*limitations under the License.*/
+
 package models
 
 import play.api.Play.current
@@ -7,13 +21,14 @@ import anorm._
 import anorm.SqlParser._
 
 case class ProcessElement(
-  id: Pk[Long] = NotAssigned,
-  modelProcessId: Long,
-  elementTypeId: Int,
-  value: String,
-  size: Int,
-  x: Int,
-  y: Int
+  id: 				Pk[Long] = NotAssigned,
+  modelProcessId: 	Long = 0L,
+  elementTypeId: 	Int = 2,
+  value: 			String = "Unknown ProcessElement",
+  width: 			Int = 0,
+  height: 			Int = 0, 
+  x: 				Int = 0,
+  y: 				Int = 0
 ) extends Table {
 
   def create(): Long = ProcessElement.create(this)
@@ -23,11 +38,12 @@ case class ProcessElement(
   def list: List[ProcessElement] = ProcessElement.list()
 
   def toSeq(): Seq[(String, Any)] = Seq(
-    "id" -> id,
+    "id" -> id.getOrElse(0L),
     "modelProcessId" -> modelProcessId,
     "elementTypeId" -> elementTypeId,
     "value" -> value,
-    "size" -> size,
+    "width" -> width,
+    "height" -> height,
     "x" -> x,
     "y" -> y)
 }
@@ -37,8 +53,8 @@ object ProcessElement extends TableCommon[ProcessElement] {
   val table = "processElements"
 
   val createQuery = """
-    insert into processElements(modelProcessId, elementTypeId, value, size, x, y) 
-    values ({modelProcessId}, {elementTypeId}, {value}, {size}, {x}, {y})
+    insert into processElements(modelProcessId, elementTypeId, value, width, height, x, y) 
+    values ({modelProcessId}, {elementTypeId}, {value}, {width}, {height}, {x}, {y})
   """
 
   val readQuery = """
@@ -49,7 +65,8 @@ object ProcessElement extends TableCommon[ProcessElement] {
     update processElements set modelProcessId = {modelProcessId}, 
     					 elementTypeId = {elementTypeId},
     					 value = {value},
-    					 size = {size},
+    					 width = {width},
+     					 height = {height},
     					 x = {x},
     					 y = {y}
     where id = {id}
@@ -68,23 +85,14 @@ object ProcessElement extends TableCommon[ProcessElement] {
       get[Long]("modelProcessId") ~
       get[Int]("elementTypeId") ~
       get[String]("value") ~
-      get[Int]("size") ~
+      get[Int]("width") ~
+      get[Int]("height") ~
       get[Int]("x") ~
       get[Int]("y") map {
-        case id ~ modelProcessId ~ elementTypeId ~ value ~ size ~ x ~ y =>
-          ProcessElement(id, modelProcessId, elementTypeId, value, size, x, y)
+        case id ~ modelProcessId ~ elementTypeId ~ value ~ width ~ height ~ x ~ y =>
+          ProcessElement(id, modelProcessId, elementTypeId, value, width, height,  x, y)
       }
-  }
-  
-  def update(id: Long, value: String, size: Int, x: Int, y: Int): Boolean = {
-    DB.withConnection { implicit connection =>
-      SQL("""update processElements 
-          set value = {value}, size = {size}, x = {x}, y = {y}
-          where id = {id}""").
-        on('id -> id,
-          'value -> value, 'size -> size, 'x -> x, 'y -> y).executeUpdate() == 0
-    }
-  }
+  } 
 
   def getModelProcessId(modelId: Long, processId: Long): Long = DB.withConnection { 
     implicit connection => {
@@ -129,11 +137,12 @@ object ProcessElement extends TableCommon[ProcessElement] {
       get[Long]("modelProcessId") ~
       get[Int]("elementTypeId") ~
       get[String]("value") ~
-      get[Int]("size") ~
+      get[Int]("width") ~
+      get[Int]("height") ~
       get[Int]("x") ~
       get[Int]("y") map {
-        case id ~ modelProcessId ~ elementTypeId ~ value ~ size ~ x ~ y =>
-          ProcessElement(id, modelProcessId, elementTypeId, value, size, x, y)
+        case id ~ modelProcessId ~ elementTypeId ~ width ~ height ~ size ~ x ~ y =>
+          ProcessElement(id, modelProcessId, elementTypeId, width, height, size, x, y)
       }
   }
   
@@ -163,4 +172,5 @@ object ProcessElement extends TableCommon[ProcessElement] {
   	    and elementTypes.name = {elementType}
   	    """).on('id -> id, 'elementType -> elementType).as(parser *)
   }
+ 
 }
