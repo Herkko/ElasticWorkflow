@@ -13,75 +13,18 @@
 *limitations under the License.*/
 
 #editElements {
+	border-radius: 3px;
+	padding: 10px;
     float: right;
-    width: 200px;
-    height: 300px;
-    background-color: #655454;  
+    width: 164px;
+    height: 200px;  
     border:appworkspace;
-    border: 1px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
     font-family: Tahoma, sans-serif;
     color: white;
-    margin: 5px;
-}
-
-#editElements input[type="text"] {
-	margin-top: 5px;
-    margin-left: 5px;
-    margin-right: 5px;
-    width: 175px;
-    height: 20px;
-    border: 3px solid #cccccc;
-    padding: 5px;
-    font-family: Tahoma, sans-serif;
-}
-
-#editElements label {
-    margin-left: 4px;
-}
-
-#editElements input[type="button"] {
-    margin-left: 5px;
-}
-
-#elements {
-    background-color: #655454;
-    width: 700px;
-    float: left;
-}
-
-#edit-Template {
-    float: right;
-    width: 200px;
-    height: 300px;
-    background-color: #655454;  
-    border:appworkspace;
-    border: 1px;
-    font-family: Tahoma, sans-serif;
-    color: white;
-    margin: 5px;
-}
-
-#edit-Template input {
-    margin-left: 5px;
-    margin-right: 5px;
-    width: 175px;
-    height: 20px;
-    border: 3px solid #cccccc;
-    padding: 5px;
-    font-family: Tahoma, sans-serif;
-}
-
-#edit-Template label {
-    margin-left: 4px;
-}
-
-#edit-Template input {
-    margin-left: 5px;
-    margin-top: 10px;
-}
-
-#elements {
-    background-color: #655454;
-    width: 700px;
-    float: left;
+    margin: 8px;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    
 }
