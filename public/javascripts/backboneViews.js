@@ -391,6 +391,7 @@ workflow.views.EditElementsView = Backbone.View.extend({
     },   
        
     render: function(){
+    	$("#editElements").removeClass("hidden");
        var data = {
           list: this.model,
           value: this.model.get("value")        
