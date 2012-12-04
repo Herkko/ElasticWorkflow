@@ -404,6 +404,7 @@ workflow.views.EditElementsView = Backbone.View.extend({
         
         if (e.which == workflow.ENTER){
             this.model.save();
+            $("#editElements").addClass("hidden");
         }
     },   
             
@@ -416,6 +417,7 @@ workflow.views.EditElementsView = Backbone.View.extend({
             
        
     render: function(){
+    	$("#editElements").removeClass("hidden");
        var data = {
           list: this.model,
           value: this.model.get("value")        
