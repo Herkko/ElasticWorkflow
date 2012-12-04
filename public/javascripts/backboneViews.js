@@ -386,6 +386,7 @@ workflow.views.EditElementsView = Backbone.View.extend({
         
         if (e.which == workflow.ENTER){
             this.model.save();
+            $("#editElements").addClass("hidden");
         }
         
     },   
