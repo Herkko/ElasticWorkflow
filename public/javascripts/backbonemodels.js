@@ -100,6 +100,12 @@ workflow.models.relation = Backbone.Model.extend({
     },
     
     initialize: function() {
+        var startId = this.get("startId");
+        var startObject = getBackboneModelById(startId);
+        
+        
+        console.log("startId"  +startId);
+        console.log("startModel " + startObject.get("element"));
         this.set({ from:  getBackboneModelById(this.get("startId")).get("element")});  
         this.set({ to:  getBackboneModelById(this.get("endId")).get("element")});
     }
