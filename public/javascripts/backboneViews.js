@@ -201,8 +201,10 @@ workflow.views.swimlanesView = Backbone.View.extend({
 
         this.swimlane.toBack();
         this.el = this.swimlane.node;
+        var color = "#66FFFF";
         this.swimlane.namebox = this.swimlaneNameBox;
         this.swimlane.nametext = this.swimlaneNameText;
+        this.swimlane.attr({fill: color, "fill-opacity": 0.1});
         this.swimlane.attr({stroke: "#000", "stroke-width": 2});
         this.swimlane.drag(resize_move, resize_start);
    
