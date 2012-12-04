@@ -62,7 +62,7 @@ workflow.views.ActivityView = Backbone.View.extend({
         if(workflow.views.editView){
             if (workflow.views.editView.startRelId) {
                 var relId = workflow.views.editView.startRelId;
-                console.log(relId);
+                console.log(relId + "rel");
 
             }
         
@@ -370,7 +370,7 @@ workflow.views.EditElementsView = Backbone.View.extend({
     },
              
     initialize: function(){
-        
+        console.log(this.options.startRelId);
         if (this.options.startRelId){
             this.createRelation(); 
         }else {
@@ -401,9 +401,8 @@ workflow.views.EditElementsView = Backbone.View.extend({
     },
     
     //Makes new relation startpoint
-    newRelation: function(){
+    newRelation: function(){    
         this.startRelId= this.model.get("id");
-       
     },
     //Creates new relation from preDefined startPoint         
     createRelation: function(){
