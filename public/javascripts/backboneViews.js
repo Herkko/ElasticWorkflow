@@ -254,7 +254,22 @@ workflow.views.SwimlaneView = Backbone.View.extend({
         this.model.set({width: parseInt(raphaelSwimlane.getAttribute("width"))});
         this.model.set({height: parseInt(raphaelSwimlane.getAttribute("height"))});
    
-      
+        if(workflow.views.editView){
+            if (workflow.views.editView.startRelId) {
+                var relId = workflow.views.editView.startRelId;
+                console.log(relId);
+
+            }
+        
+        //COMPLETELY UNBIND THE VIEW
+          workflow.views.editView.undelegateEvents();
+          $("#editElements").removeData().unbind(); 
+
+        }
+         
+         
+         
+         
         workflow.views.editView = new workflow.views.EditElementsView({model: this.model});
         this.model.save();
     },
@@ -366,9 +381,10 @@ workflow.views.EditElementsView = Backbone.View.extend({
    
     el: $("#editElements"),
     
-    events:  {
+    events: {
         "keyup #editValue" : "editValue",
-        "click #newRelationButton" : "newRelation"
+        "click #newRelationButton" : "newRelation",
+        "focusout #editValue" : "focusOut"
     },
              
     initialize: function(){
@@ -381,16 +397,21 @@ workflow.views.EditElementsView = Backbone.View.extend({
     },       
             
     editValue: function(e){
-        
-        
         var newValue = $("#editValue").val();
         this.model.set({value: newValue});
         
         if (e.which == workflow.ENTER){
             this.model.save();
         }
-        
     },   
+            
+    focusOut: function(){
+       
+        var newValue = $("#editValue").val();
+        this.model.set({value: newValue});
+        this.model.save();
+    },          
+            
        
     render: function(){
        var data = {
@@ -404,12 +425,16 @@ workflow.views.EditElementsView = Backbone.View.extend({
     
     //Makes new relation startpoint
     newRelation: function(){
+        
         this.startRelId= this.model.get("id");
        
     },
     //Creates new relation from preDefined startPoint         
     createRelation: function(){
-       var relationModel = new workflow.models.relation({"startId": this.options.startRelId ,"endId": this.model.get("id")});
+        //console.log("startRelId " + this.options.startRelId + " this.model.get " + this.model.get("id"));
+        var to = this.model.get("id");
+        
+       var relationModel = new workflow.models.relation({"startId": this.options.startRelId ,"endId": this.to});
        new workflow.views.relationView({model: relationModel}); 
     }        
     
