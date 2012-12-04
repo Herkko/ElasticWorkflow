@@ -19,10 +19,11 @@ workflow.views.AppView = Backbone.View.extend({
 workflow.views.ActivityView = Backbone.View.extend({
    
     initialize: function() {
-         console.log(this.model);
 
          this.raphaelActivity = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 100, 60, 4);
-         this.raphaelText = RaphaelElement.text((this.model.get("cx") + 50), (this.model.get("cy") + 30), this.model.get("value"));
+         this.raphaelText = RaphaelElement.text((this.model.get("cx")+20), (this.model.get("cy") + 30), this.model.get("value"));
+         this.raphaelActivity.attr({width: Math.max(100, 40 + this.raphaelText.getBBox().width)})
+         
         
         //binds Raphael to EL
          this.el = this.raphaelActivity.node;
@@ -31,7 +32,7 @@ workflow.views.ActivityView = Backbone.View.extend({
         this.raphaelActivity.pair = this.raphaelText;
         this.raphaelText.pair = this.raphaelActivity;
         
-        this.raphaelText.attr({"font-size": 16, cursor: "move"});
+        this.raphaelText.attr({"font-size": 16, cursor: "move", 'text-anchor': 'start'});
         this.raphaelActivity.attr({fill: "#FFFFFF", stroke: colors.get("activity"), "stroke-width": 2, cursor: "move"});
         this.raphaelActivity.drag(move, dragger, up);
         this.raphaelText.drag(move, dragger, up);
@@ -44,12 +45,14 @@ workflow.views.ActivityView = Backbone.View.extend({
          this.model.bind("change", this.render, this);
         $(this.el).mouseup(_.bind(function() { this.clicked()}, this));
         $(this.raphaelText.node).mouseup(_.bind(function() { this.clicked()}, this));
+        
+        this.render();
     },
             
     render: function() {
-      
-    	this.raphaelActivity.attr({"cx":this.model.get("cx"), "cy":this.model.get("cy") });
-        this.raphaelText.attr({"cx":(this.model.get("cx")+ 50), "cy":(this.model.get("cy")+30),"text":this.model.get("value") });
+        this.raphaelText.attr({"cx": this.model.get("cx"), "cy": this.model.get("cy")+this.raphaelActivity.getBBox().height/2,"text":this.model.get("value") });
+    	this.raphaelActivity.attr({"cx":this.model.get("cx"), "cy":this.model.get("cy"), "width": Math.max(100, 40 + this.raphaelText.getBBox().width)});
+        
     },
             
     clicked: function() {
@@ -111,7 +114,7 @@ workflow.views.StartView = Backbone.View.extend({
     },
     
     render: function() {
-        this.raphaelStart.attr({'x':this.model.get("cx"), 'y':this.model.get('cy') });
+        this.raphaelStart.attr({'x':this.model.get("cx"), 'y':this.model.get('cy')});
         this.raphaelText.attr({"cx":(this.model.get("cx")+ 50), "cy":(this.model.get("cy")+30),"text":this.model.get("value") });
     },
     
