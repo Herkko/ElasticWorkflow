@@ -57,8 +57,10 @@ class ActivitySpec extends Specification {
           routeAndCall(FakeRequest(POST, "/activity").withJsonBody(Json.toJson(ProcessElement(NotAssigned, 1L, 4, "New Activity", 0, 99, 99))))
          
           val Some(result) = routeAndCall(FakeRequest(GET, "/activity/1"))
-          contentAsString(result) must be equalTo """{"id":1,"modelProcessId":1,"elementTypeId":4,"value":"New Activity","size":0,"cx":99,"cy":99}"""
-        }
+          contentAsString(result) must be equalTo (Json.stringify(Json.toJson(
+              ProcessElement(Id(1), 1L, 4, "New Activity", 0, 99, 99
+          ))))
+       }
     }
     
     "create activites when one other activity exists" in {
@@ -68,7 +70,10 @@ class ActivitySpec extends Specification {
           routeAndCall(FakeRequest(POST, "/activity").withJsonBody(Json.toJson(ProcessElement(NotAssigned, 1L, 4, "New Activity", 0, 99, 99))))
          
           val Some(result) = routeAndCall(FakeRequest(GET, "/activity"))
-          contentAsString(result) must be equalTo """[{"id":1,"modelProcessId":1,"elementTypeId":4,"value":"Old Activity","size":0,"cx":199,"cy":199},{"id":2,"modelProcessId":1,"elementTypeId":4,"value":"New Activity","size":0,"cx":99,"cy":99}]"""
+          contentAsString(result) must be equalTo (Json.stringify(Json.toJson(List(
+          ProcessElement(Id(1), 1L, 4, "Old Activity", 0, 199, 199),
+          ProcessElement(Id(2), 1L, 4, "New Activity", 0, 99, 99)
+        ))))
         }
     }
   }
@@ -90,10 +95,11 @@ class ActivitySpec extends Specification {
         Process(NotAssigned, "ProcessName1", new Date()).create
         ModelProcess(Id(1), 1L, 1L).create
 
-        ProcessElement(NotAssigned, 1L, 4, "Activity", 0, 0, 0).create()
+        ProcessElement(NotAssigned, 1L, 4, "Activity", 0, 0, 0, 0).create()
 
         val Some(result) = routeAndCall(FakeRequest(GET, "/activity"))
-        contentAsString(result) must be equalTo ("""[{"id":1,"modelProcessId":1,"elementTypeId":4,"value":"Activity","size":0,"cx":0,"cy":0}]""")
+        contentAsString(result) must be equalTo (Json.stringify(Json.toJson(List(
+            ProcessElement(Id(1), 1L, 4, "Activity", 0, 0, 0, 0)))))
       }
     }
 
@@ -108,7 +114,11 @@ class ActivitySpec extends Specification {
         ProcessElement(NotAssigned, 1L, 4, "Activity3", 0, 0, 0).create()
 
         val Some(result) = routeAndCall(FakeRequest(GET, "/activity"))
-        contentAsString(result) must be equalTo ("""[{"id":1,"modelProcessId":1,"elementTypeId":4,"value":"Activity1","size":0,"cx":0,"cy":0},{"id":2,"modelProcessId":1,"elementTypeId":4,"value":"Activity2","size":0,"cx":0,"cy":0},{"id":3,"modelProcessId":1,"elementTypeId":4,"value":"Activity3","size":0,"cx":0,"cy":0}]""")
+        contentAsString(result) must be equalTo (Json.stringify(Json.toJson(List(
+          ProcessElement(Id(1), 1L, 4, "Activity1", 0, 0, 0),
+          ProcessElement(Id(2), 1L, 4, "Activity2", 0, 0, 0),
+          ProcessElement(Id(3), 1L, 4, "Activity3", 0, 0, 0)
+        ))))
       }
     }
   }
@@ -119,7 +129,7 @@ class ActivitySpec extends Specification {
         createModel();
         ProcessElement(NotAssigned, 1L, 4, "Activity", 0, 99, 99).create
         val Some(before) = routeAndCall(FakeRequest(GET, "/activity/1"))
-        contentAsString(before) must be equalTo """{"id":1,"modelProcessId":1,"elementTypeId":4,"value":"Activity","size":0,"cx":99,"cy":99}"""
+        contentAsString(before) must be equalTo (Json.stringify(Json.toJson(ProcessElement(Id(1), 1L, 4, "Activity", 0, 99, 99))))
         
         routeAndCall(FakeRequest(DELETE, "/activity/1"))        
         val Some(result) = routeAndCall(FakeRequest(GET, "/activity/1"))
