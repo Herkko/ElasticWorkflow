@@ -100,12 +100,7 @@ workflow.models.relation = Backbone.Model.extend({
     },
     
     initialize: function() {
-        var startId = this.get("startId");
-        var startObject = getBackboneModelById(startId);
-        
-        
-        console.log("startId"  +startId);
-        console.log("startModel " + startObject.get("element"));
+     
         this.set({ from:  getBackboneModelById(this.get("startId")).get("element")});  
         this.set({ to:  getBackboneModelById(this.get("endId")).get("element")});
     }
@@ -177,12 +172,14 @@ function uusiActivity() {
     var activityModel = new workflow.models.activity();
     ActivityElements.add(activityModel);
     new workflow.views.ActivityView({model: activityModel});
+    activityModel.save();
 };
 
 function uusiStart() {
     var startModel = new workflow.models.start();
     StartElements.add(startModel);
     new workflow.views.StartView({model: startModel});
+    startModel.save();
 };
 
 function uusiEnd() {
