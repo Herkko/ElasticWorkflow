@@ -3,41 +3,18 @@
     <head>
         <meta charset="utf-8">
         <title>Elastic workflow</title>
-        <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("javascripts/css/bootstrap.css")">
-        <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("javascripts/css/styles.css")">
-		<style>
+        <!-- Le styles -->
+        <link href="@routes.Assets.at("javascripts/css/bootstrap.css")" rel="stylesheet">
+        <link href="@routes.Assets.at("javascripts/css/styles.css")" rel="stylesheet">
+        <style>
             body {
                 padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
             }
         </style>
-        <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("javascripts/css/bootstrap-responsive.css")">
-
-		<script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
-		<script src="@routes.Assets.at("javascripts/underscore.js")"></script>
-		<script src="@routes.Assets.at("javascripts/backbone.js")"></script>
-		<script src="@routes.Assets.at("javascripts/raphael.js")"></script>
-		<script src="@routes.Assets.at("javascripts/mustache.js")"></script>
-		<script src="@routes.Assets.at("javascripts/app.js")"></script>
-		<script src="@routes.Assets.at("javascripts/backboneViews.js")"></script>
-		<script src="@routes.Assets.at("javascripts/backbonemodels.js")"></script>
-		<script src="@routes.Assets.at("javascripts/raphaelDrawFunctions.js")"></script>
-
-     <script src="@routes.Assets.at("javascripts/js/jquery.js")"></script>
-     <script src="@routes.Assets.at("javascripts/js/bootstrap-transition.js")"></script>
-     <script src="@routes.Assets.at("javascripts/js/bootstrap-alert.js")"></script>
-     <script src="@routes.Assets.at("javascripts/js/bootstrap-modal.js")"></script>
-     <script src="@routes.Assets.at("javascripts/js/bootstrap-dropdown.js")"></script>
-     <script src="@routes.Assets.at("javascripts/js/bootstrap-scrollspy.js")"></script>
-     <script src="@routes.Assets.at("javascripts/js/bootstrap-tab.js")"></script>
-     <script src="@routes.Assets.at("javascripts/js/bootstrap-tooltip.js")"></script>
-     <script src="@routes.Assets.at("javascripts/js/bootstrap-popover.js")"></script>
-     <script src="@routes.Assets.at("javascripts/js/bootstrap-button.js")"></script>
-     <script src="@routes.Assets.at("javascripts/js/bootstrap-collapse.js")"></script>
-     <script src="@routes.Assets.at("javascripts/js/bootstrap-carousel.js")"></script>
-     <script src="@routes.Assets.at("javascripts/js/bootstrap-typeahead.js")"></script>
+        <link href="@routes.Assets.at("javascripts/css/bootstrap-responsive.css")" rel="stylesheet">
     </head>
     <body>
-      <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">
                     <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -49,35 +26,66 @@
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             <li class="dropdown">
-                 			<a href="#" class="dropdown-toggle" data-toggle="dropdown">New <b class="caret"></b></a>
-                 			<ul class="dropdown-menu">
-                    			<li><a href="#" onclick="uusiActivity();return false;">Activity</a></li>
-                   				<li><a href="#" onclick="uusiStart();return false;">Start</a></li>
-                   				<li><a href="#" onclick="uusiEnd();return false;">End</a></li>
-                   				<li><a href="#" onclick="uusiGateway();return false;">Gateway</a></li>
-                 			</ul>
-               				</li>
-               			<li><a href="#a" onclick="post_to_url('/models');return false;">Add Model</a></li>
-               			<li><a href="#a" onclick="post_to_url('/models/1/processes');return false;">Add Process</a></li>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">New <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#" onclick="uusiActivity();return false;">Activity</a></li>
+                                    <li><a href="#" onclick="uusiStart();return false;">Start</a></li>
+                                    <li><a href="#" onclick="uusiEnd();return false;">End</a></li>
+                                    <li><a href="#" onclick="newGateway();return false;">Gateway</a></li>
+                                </ul>
+                            </li>                            
+                            <li><a href="#a" onclick="post_to_url('/models');return false;">New Model</a></li>
+                            <li><a href="#a" onclick="post_to_url('/models/1/processes');return false;">New Process</a></li>
                         </ul>
                     </div><!--/.nav-collapse -->
                 </div>
             </div>
-		</div>
-        <div id="mainArea">
-
-        </div>
-
-        <div id="elements">
         </div>
         
-         <section id="editElements"> </section>
+              <div id="mainArea"></div>
+            <div id="elements"> </div>
+            <section id="editElements"></section> 
+			
+			<script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
+            <script src="@routes.Assets.at("javascripts/underscore.js")"></script>
+            <script src="@routes.Assets.at("javascripts/backbone.js")"></script>
+            <script src="@routes.Assets.at("javascripts/raphael.js")"></script>
+            <script src="@routes.Assets.at("javascripts/mustache.js")"></script>
+            <script src="@routes.Assets.at("javascripts/app.js")"></script>
+            <script src="@routes.Assets.at("javascripts/backboneViews.js")"></script>
+          
+            <script src="@routes.Assets.at("javascripts/backbonemodels.js")"></script>
+            <script src="@routes.Assets.at("javascripts/raphaelDrawFunctions.js")"></script>
+            <script src="@routes.Assets.at("javascripts/router.js")"></script>
+          
+                
+            
 
-		<script id="edit-Template" type="text/html">
-        	<input class="input-medium" id="editValue" type="text" value="{{value}}"></input>
-        	<input class="btn btn-primary" id="newRelationButton" value="Uusi relaatio" type="button"  />
-        	<!-- other values can be added here also! -->
-    	</script>
+            <!-- Le javascript
+            ================================================== -->
+            <!-- Placed at the end of the document so the pages load faster -->
+            <script src="@routes.Assets.at("javascript/js/jquery.js")"></script>
+            <script src="@routes.Assets.at("javascript/js/bootstrap-transition.js")"></script>
+            <script src="@routes.Assets.at("javascript/js/bootstrap-alert.js")"></script>
+            <script src="@routes.Assets.at("javascript/js/bootstrap-modal.js")"></script>
+            <script src="@routes.Assets.at("javascript/js/bootstrap-dropdown.js")"></script>
+            <script src="@routes.Assets.at("javascript/js/bootstrap-scrollspy.js")"></script>
+            <script src="@routes.Assets.at("javascript/js/bootstrap-tab.js")"></script>
+            <script src="@routes.Assets.at("javascript/js/bootstrap-tooltip.js")"></script>
+            <script src="@routes.Assets.at("javascript/js/bootstrap-popover.js")"></script>
+            <script src="@routes.Assets.at("javascript/js/bootstrap-button.js")"></script>
+            <script src="@routes.Assets.at("javascript/js/bootstrap-collapse.js")"></script>
+            <script src="@routes.Assets.at("javascript/js/bootstrap-carousel.js")"></script>
+            <script src="@routes.Assets.at("javascript/js/bootstrap-typeahead.js")"></script>
 
-</body>
+    </body>
+
+    
+    <script id="edit-Template" type="text/html">
+        <input class="input-medium" id="editValue" type="text" value="{{value}}"></input>
+        <input class="btn btn-primary" id="newRelationButton" value="Uusi relaatio" type="button"  />
+        <!-- other values can be added here also! -->
+    </script>
+    
 </html>
+
