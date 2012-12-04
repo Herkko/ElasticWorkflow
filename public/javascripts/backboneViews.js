@@ -19,7 +19,7 @@ workflow.views.AppView = Backbone.View.extend({
 workflow.views.ActivityView = Backbone.View.extend({
    
     initialize: function() {
-         console.log(this.model);
+
 
          this.raphaelActivity = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 100, 60, 4);
          this.raphaelText = RaphaelElement.text((this.model.get("cx") + 50), (this.model.get("cy") + 30), this.model.get("value"));
@@ -282,7 +282,7 @@ workflow.views.GatewayView = Backbone.View.extend({
 
         RaphaelObjects[this.model.get("id")] = this.raphaelGateway;
 
-
+        this.model.bind("change", this.render, this);
         $(this.el.node).mouseup(_.bind(function() {
             this.clicked()
         }, this));
@@ -291,11 +291,9 @@ workflow.views.GatewayView = Backbone.View.extend({
     },
             
     render: function() {
-   
-        
-        
-        var temp = raphaelGateway.clone();
-        temp.translate(this.raphaelGateway.getAttribute("x"),this.raphaelGateway.getAttribute("y"));
+    	var temp = this.raphaelGateway.clone();
+        temp.translate(this.raphaelGateway.x,this.raphaelGateway.y);
+        this.raphaelText.attr({"cx":(this.model.get("cx")+ 50), "cy":(this.model.get("cy")+30),"text":this.model.get("value") });
         this.raphaelGateway.animate({path: temp.attr('path')}, 1000);
         temp.remove();
       },
@@ -414,6 +412,7 @@ workflow.views.EditElementsView = Backbone.View.extend({
     
     outOfFocus: function(){
     	this.model.save();
+    	$("#editElements").addClass("hidden");
     }
     
 })
