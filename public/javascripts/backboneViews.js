@@ -46,15 +46,12 @@ workflow.views.ActivityView = Backbone.View.extend({
             this.addToRaphaelObjects();
         }
           
-        
-        
         this.model.bind("change", this.render(), this);
         this.model.bind("sync", function() { this.addToRaphaelObjects() }, this);
         this.model.bind("destroy", function() { this.delete() }, this);
 
         $(this.el).mouseup(_.bind(function() { this.clicked()}, this));
         $(this.raphaelText.node).mouseup(_.bind(function() { this.clicked()}, this));
-        
         this.render();
     },
             
@@ -507,7 +504,6 @@ workflow.views.EditElementsView = Backbone.View.extend({
          }
        }
        RelationElements.remove(removed)
-       
        console.log(RelationElements);
        RaphaelObjects[this.model.get("id")] = null;
        this.model.destroy();
