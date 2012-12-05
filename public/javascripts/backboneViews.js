@@ -24,7 +24,6 @@ workflow.views.ActivityView = Backbone.View.extend({
          this.raphaelText = RaphaelElement.text((this.model.get("cx")+20), (this.model.get("cy") + 30), this.model.get("value"));
          this.raphaelActivity.attr({width: Math.max(100, 40 + this.raphaelText.getBBox().width)})
          
-        
         //binds Raphael to EL
          this.el = this.raphaelActivity.node;
          
@@ -39,61 +38,50 @@ workflow.views.ActivityView = Backbone.View.extend({
         
         //adds id to Raphael Element and stores them to list
         this.raphaelActivity.attr({data: this.model.get("id")});
-       
-        
+  
         //if model has already id, add to list
         if (this.model.get("id")){
             this.addToRaphaelObjects();
         }
-          
-        
-        
+
         this.model.bind("change", this.render, this);
         this.model.bind("sync", function() { this.addToRaphaelObjects() }, this);
         this.model.bind("destroy", function() { this.delete() }, this);
 
         $(this.el).mouseup(_.bind(function() { this.clicked()}, this));
         $(this.raphaelText.node).mouseup(_.bind(function() { this.clicked()}, this));
-        
         this.render();
     },
             
     render: function() {
         this.raphaelText.attr({"cx": this.model.get("cx"), "cy": this.model.get("cy")+this.raphaelActivity.getBBox().height/2,"text":this.model.get("value") });
     	this.raphaelActivity.attr({"cx":this.model.get("cx"), "cy":this.model.get("cy"), "width": Math.max(100, 40 + this.raphaelText.getBBox().width)});
+
+    	for (var i = connections.length; i--; ) {
+    		RaphaelElement.connection(connections[i]);
+    	}
         
     },
             
     addToRaphaelObjects: function(){
         RaphaelObjects[this.model.get("id")] = this.raphaelActivity;  
-    }, 
-          
-            
+    },       
     clicked: function() {
         
         var raphaelActivity = this.el;
-    
         this.model.set({cx: parseInt(raphaelActivity.getAttribute("x"))});
         this.model.set({cy: parseInt(raphaelActivity.getAttribute("y"))});
        
         if(workflow.views.editView){
             if (workflow.views.editView.startRelId) {
                 var relId = workflow.views.editView.startRelId;
-                console.log(relId + "rel");
-
             }
-        
-        //COMPLETELY UNBIND THE VIEW
-          workflow.views.editView.undelegateEvents();
-          $("#editElements").removeData().unbind(); 
-
+            workflow.views.editView.undelegateEvents();
+            $("#editElements").removeData().unbind(); 
         }
         workflow.views.editView = null;
         workflow.views.editView = new workflow.views.EditElementsView({model: this.model, startRelId: relId});
-        
-        this.model.save();
-        
-        
+        this.model.save();  
     },
     
     delete: function() {
@@ -196,10 +184,9 @@ workflow.views.EndView = Backbone.View.extend({
             this.addToRaphaelList();
         }
         
-
-        $(this.el).mouseup(_.bind(function() { this.clicked()}, this));
          this.model.bind("change", this.render, this);
-         
+         this.model.bind("sync", this.addToRaphaelList, this);
+         $(this.el).mouseup(_.bind(function() { this.clicked()}, this));
          $(this.raphaelText.node).mouseup(_.bind(function() { this.clicked()}, this));
     },
             
@@ -260,9 +247,9 @@ workflow.views.SwimlaneView = Backbone.View.extend({
         
         var color = Raphael.getColor();
         this.swimlane.attr({fill: color, "fill-opacity": 0.05, stroke: "#000", "stroke-width": 2});
-        this.swimlaneNameBox.attr({fill: color, "fill-opacity": 0.1});
+        this.swimlaneNameBox.attr({fill: color, "fill-opacity": 0.05});
         
-        this.swimlaneDragBox.attr({fill: color, "fill-opacity": 0.1});
+        this.swimlaneDragBox.attr({fill: color, "fill-opacity": 0.05});
         this.swimlaneDragBox.drag(rmove, rstart);
     	this.swimlaneDragBox.box = this.swimlane;
         this.swimlaneDragBox.nameBox = this.swimlaneNameBox;
@@ -511,7 +498,7 @@ workflow.views.EditElementsView = Backbone.View.extend({
            console.log(connections);
          }
        }
-       
+
        RelationElements.remove(removed);
        var model = this.model;
        setTimeout(
@@ -519,7 +506,7 @@ workflow.views.EditElementsView = Backbone.View.extend({
            //  console.log(RelationElements);
              model.destroy();
        }, 100);
-       */
+      */
       	
     }
     

@@ -101,30 +101,8 @@ workflow.models.relation = Backbone.Model.extend({
     },
     
     initialize: function() {
-     
-        
-        
         this.set({ from:  getBackboneModelById(this.get("startId"))});  
         this.set({ to:  getBackboneModelById(this.get("endId"))});
-        
-//        var startId = this.get("startId");
-//        var endId = this.get("endId");
-//        
-//        console.log("startId " + startId);
-//        console.log("ENDiD " + endId);
-//        console.log("bbmodel start " +  JSON.stringify(getBackboneModelById(startId)));
-//        console.log("bbmodel end " +  JSON.stringify(getBackboneModelById(endId)));
-//        
-//        var startElement =getBackboneModelById(startId).get("element");
-//        var endElement = getBackboneModelById(endId).get("element");
-//        
-//        console.log("start element " + JSON.stringify(startElement));
-//         console.log("end element " + JSON.stringify(endElement));
-//         
-//        
-//        console.log("uusi relaatio alkuid  " + getBackboneModelById(this.get("startId")).get("element") );
-//        console.log("uusi relaatio loppuid  " + getBackboneModelById(this.get("endId")).get("element") );
-        
     }
 });
 
@@ -164,6 +142,9 @@ workflow.collections.RelationList = Backbone.Collection.extend({
         }
     }
 });
+
+
+
 
 function post_to_url(path, params, method) {
     method = method || "post"; // Set method to post by default, if not specified.

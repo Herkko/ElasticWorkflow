@@ -43,8 +43,8 @@ object Application extends Controller {
     Ok(views.html.edit())
   }
   
-  def showNewIndex = Action { implicit request =>
-    Ok(views.html.newindex())
+  def showIndex = Action { implicit request =>
+    Ok(views.html.index())
   }
   
   def showAboutPage = Action { implicit request =>

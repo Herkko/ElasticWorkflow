@@ -17,12 +17,12 @@ var workflow = {
     models: {},
     collections: {},
     views: {},
-  
-    //domainHost: "http://morning-fjord-4117.herokuapp.com",
-   domainHost: "http://localhost:9000",
+
+    domainHost: "http://morning-fjord-4117.herokuapp.com",
+   //domainHost: "http://localhost:9000",
+
     ENTER: 13,
-     
-        
+      
     initialize: function(){
         //all collections
         ActivityElements = new workflow.collections.ActivityList();
