@@ -20,9 +20,10 @@ workflow.views.ActivityView = Backbone.View.extend({
    
     initialize: function() {
 
-
          this.raphaelActivity = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 100, 60, 4);
-         this.raphaelText = RaphaelElement.text((this.model.get("cx") + 50), (this.model.get("cy") + 30), this.model.get("value"));
+         this.raphaelText = RaphaelElement.text((this.model.get("cx")+20), (this.model.get("cy") + 30), this.model.get("value"));
+         this.raphaelActivity.attr({width: Math.max(100, 40 + this.raphaelText.getBBox().width)})
+         
         
         //binds Raphael to EL
          this.el = this.raphaelActivity.node;
@@ -31,7 +32,7 @@ workflow.views.ActivityView = Backbone.View.extend({
         this.raphaelActivity.pair = this.raphaelText;
         this.raphaelText.pair = this.raphaelActivity;
         
-        this.raphaelText.attr({"font-size": 16, cursor: "move"});
+        this.raphaelText.attr({"font-size": 16, cursor: "move", 'text-anchor': 'start'});
         this.raphaelActivity.attr({fill: "#FFFFFF", stroke: colors.get("activity"), "stroke-width": 2, cursor: "move"});
         this.raphaelActivity.drag(move, dragger, up);
         this.raphaelText.drag(move, dragger, up);
@@ -41,15 +42,19 @@ workflow.views.ActivityView = Backbone.View.extend({
         RaphaelObjects[this.model.get("id")] = this.raphaelActivity;
         
         
-         this.model.bind("change", this.render, this);
+        this.model.bind("change", this.render(), this);
+        this.model.bind("remove", function() { this.delete() }, this);
+        
         $(this.el).mouseup(_.bind(function() { this.clicked()}, this));
         $(this.raphaelText.node).mouseup(_.bind(function() { this.clicked()}, this));
+        
+        this.render();
     },
             
     render: function() {
-      
-    	this.raphaelActivity.attr({"cx":this.model.get("cx"), "cy":this.model.get("cy") });
-        this.raphaelText.attr({"cx":(this.model.get("cx")+ 50), "cy":(this.model.get("cy")+30),"text":this.model.get("value") });
+        this.raphaelText.attr({"cx": this.model.get("cx"), "cy": this.model.get("cy")+this.raphaelActivity.getBBox().height/2,"text":this.model.get("value") });
+    	this.raphaelActivity.attr({"cx":this.model.get("cx"), "cy":this.model.get("cy"), "width": Math.max(100, 40 + this.raphaelText.getBBox().width)});
+        
     },
             
     clicked: function() {
@@ -78,8 +83,13 @@ workflow.views.ActivityView = Backbone.View.extend({
         
         
     },
-
-
+    
+    delete: function() {
+        console.log("deleting activity...");
+    	this.raphaelActivity.remove();
+    	this.raphaelText.remove();
+    	this.model.destroy();
+    }
 });
     
 workflow.views.StartView = Backbone.View.extend({
@@ -111,7 +121,7 @@ workflow.views.StartView = Backbone.View.extend({
     },
     
     render: function() {
-        this.raphaelStart.attr({'x':this.model.get("cx"), 'y':this.model.get('cy') });
+        this.raphaelStart.attr({'x':this.model.get("cx"), 'y':this.model.get('cy')});
         this.raphaelText.attr({"cx":(this.model.get("cx")+ 50), "cy":(this.model.get("cy")+30),"text":this.model.get("value") });
     },
     
@@ -212,7 +222,7 @@ workflow.views.SwimlaneView = Backbone.View.extend({
         this.swimlaneNameBox = RaphaelElement.rect(this.model.get("cx"), this.model.get("cy"), 25, this.model.get("height"), 1)
         this.swimlaneNameText = RaphaelElement.text(this.model.get("cx"), this.model.get("cy"), this.model.get("value")).attr({fill: "#000000", "font-size": 18}).transform('t12,' + 300 / 2 + 'r270');
 
-         this.swimlaneNameText.toBack();
+        this.swimlaneNameText.toBack();
         this.swimlane.toBack();
         this.el = this.swimlane.node;
         var color = "#66FFFF";
@@ -229,7 +239,6 @@ workflow.views.SwimlaneView = Backbone.View.extend({
     	this.swimlaneDragBox.box = this.swimlane;
         this.swimlaneDragBox.nameBox = this.swimlaneNameBox;
         
-   //     $(this.el).mouseup(_.bind(function() { this.clicked()}, this));
         $(this.swimlaneNameBox.node).mouseup(_.bind(function() { this.clicked()}, this));
         $(this.swimlaneDragBox.node).mouseup(_.bind(function() { this.clicked()}, this));
 
@@ -358,6 +367,8 @@ workflow.views.RelationView = Backbone.View.extend({
     
     initialize: function(){
         this.render();
+        
+        //this.raphaelRelation.attr({startId: this.model.get("startId"), endId: this.model.get("endId")});
        // $(this.raphaelRelation.handle.node).mouseup(_.bind(function() { this.clicked()}, this));
     },
 
@@ -365,12 +376,23 @@ workflow.views.RelationView = Backbone.View.extend({
         var startPoint = RaphaelObjects[this.model.get("startId")];
         var endPoint = RaphaelObjects[this.model.get("endId")];
 			
-        this.raphaelRelation = RaphaelElement.connection(startPoint, endPoint, "#000")
+	   
+	    
+        this.raphaelRelation = RaphaelElement.connection(startPoint, endPoint, "#000");
+     //   this.raphaelRelation.attr({startId: this.model.get("startId"), endId: this.model.get("endId")});
+        this.model.bind("remove", function() { this.delete() }, this);
+       
         connections.push(this.raphaelRelation);
     },
     
      clicked: function() {
 		console.log("Mouse up relation");
+    },
+    
+    delete: function() {
+     console.log("deleting relation...");
+    	this.raphaelRelation.line.remove();
+    	this.model.destroy();
     }
 })
 
@@ -382,13 +404,13 @@ workflow.views.EditElementsView = Backbone.View.extend({
     events: {
         "keyup #editValue" : "editValue",
         "click #newRelationButton" : "newRelation",
-
+		"click #deleteElementButton": "deleteElement",
         "focusout #editValue" : "outOfFocus"
 
     },
              
     initialize: function(){
-        console.log(this.options.startRelId);
+     //   console.log(this.options.startRelId);
         if (this.options.startRelId){
             this.createRelation(); 
         }else {
@@ -443,6 +465,19 @@ workflow.views.EditElementsView = Backbone.View.extend({
     outOfFocus: function(){
     	this.model.save();
     	$("#editElements").addClass("hidden");
+    },
+    
+    deleteElement: function() {
+       var removed = [];
+       for(var i = 0; i < RelationElements.models.length; i++) {
+         if(RelationElements.models[i].get("startId") === this.model.get("id") || RelationElements.models[i].get("endId") === this.model.get("id")) {
+          console.log(RelationElements.models[i].get("startId") +"->"+RelationElements.models[i].get("endId")+ " " + this.model.get("id"));
+          removed.push(RelationElements.models[i]);
+         }
+       }
+       RelationElements.remove(removed);
+       console.log(RelationElements);
+       this.model.destroy()	
     }
     
 })

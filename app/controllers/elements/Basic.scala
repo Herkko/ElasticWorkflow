@@ -23,7 +23,7 @@ import anorm.{ NotAssigned, Id, Pk}
 import format.ProcessElementFormat
 
 import app.actions.CORSAction
-import models.ProcessElement
+import models.{ ProcessElement, Relation }
 
 trait Basic extends Controller {
 
@@ -67,6 +67,7 @@ trait Basic extends Controller {
 
   //add a check here that process element has a correct type!also delete its relations
   def delete(id: Long) = CORSAction { implicit request =>
+   // Relation.findByElement(id) map { rel => rel.delete }  
     ProcessElement.delete(id)
     Ok(toJson(""))
   }
