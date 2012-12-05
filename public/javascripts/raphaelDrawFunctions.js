@@ -102,6 +102,23 @@ Raphael.fn.connection = function(obj1, obj2, line, bg) {
 };
 
 
+Raphael.fn.removeConnection = function (firstObjectId) {
+
+    for (var i = 0; i < connections.length; i++) {
+    console.log(connections[i].from.modelId +":" +connections[i].to.modelId + "  "+ connections[i].line+" "+firstObjectId);
+    
+    
+        if (connections[i].from.id == firstObjectId || connections[i].to.id == firstObjectId) {
+                connections[i].line.remove();
+                connections.splice(i, 1);            
+        }
+    }
+};
+
+
+
+
+
 dragger = function() {
         // Original coords for main element
 	if (this.type != "text") {

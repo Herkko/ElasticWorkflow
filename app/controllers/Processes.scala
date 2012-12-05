@@ -93,16 +93,16 @@ object Processes extends Controller {
     val elem1 = ProcessElement(NotAssigned, modelProcessId, 1, "Swimlane", 800, 300, 20, y).create
     val elem2 = ProcessElement(NotAssigned, modelProcessId, 2, "Start", 0, 0, 90, y + 150).create
     val elem3 = ProcessElement(NotAssigned, modelProcessId, 3, "End", 0, 0, 740, y + 150).create
-    val elem4 = ProcessElement(NotAssigned, modelProcessId, 4, "Activity 1", 0, 0, 170, y + 125).create
+   /* val elem4 = ProcessElement(NotAssigned, modelProcessId, 4, "Activity 1", 0, 0, 170, y + 125).create
     val elem5 = ProcessElement(NotAssigned, modelProcessId, 4, "Activity 2", 0, 0, 520, y + 50).create
     val elem6 = ProcessElement(NotAssigned, modelProcessId, 4, "Activity 3", 0, 0, 520, y + 200).create
-    val elem7 = ProcessElement(NotAssigned, modelProcessId, 5, "Gateway", 0, 0, 400, y + 110).create
+    val elem7 = ProcessElement(NotAssigned, modelProcessId, 5, "Gateway", 0, 0, 400, y + 110).create*/
 
-    val rel = Relation(NotAssigned, elem2, elem4, 1, "First Relation").create
+  /*  val rel = Relation(NotAssigned, elem2, elem4, 1, "First Relation").create
     val rel1 = Relation(NotAssigned, elem4, elem7, 1, "Second Relation").create
     val rel2 = Relation(NotAssigned, elem7, elem5, 1, "Third Relation").create
     val rel3 = Relation(NotAssigned, elem7, elem6, 1, "Fourth Relation").create
-    val rel4 = Relation(NotAssigned, elem5, elem3, 1, "Fifth Relation").create
+    val rel4 = Relation(NotAssigned, elem5, elem3, 1, "Fifth Relation").create*/
   }
 
 }
