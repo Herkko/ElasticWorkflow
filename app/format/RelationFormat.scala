@@ -27,10 +27,10 @@ object RelationFormat {
     import PkFormat._
 
     def reads(json: JsValue): Relation = Relation(
-      (json \ "id").as[Pk[Long]],
-      (json \ "startId").as[Int],
-      (json \ "endId").as[Int],
-      (json \ "relationTypeId").as[Int],
+      (json \ "id").as[Option[Pk[Long]]].getOrElse(NotAssigned),
+      (json \ "startId").as[Long],
+      (json \ "endId").as[Long],
+      (json \ "relationTypeId").as[Long],
       (json \ "value").as[String])
 
     def writes(relation: Relation): JsObject = JsObject(Seq(

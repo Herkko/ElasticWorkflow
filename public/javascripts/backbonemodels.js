@@ -95,8 +95,9 @@ workflow.models.relation = Backbone.Model.extend({
     urlRoot: workflow.domainHost+'/relation',
   
     defaults: {
-        'from': null,
-        'to': null
+       id: null,
+       relationTypeId: 1,
+       value: "Relation"
     },
     
     initialize: function() {
