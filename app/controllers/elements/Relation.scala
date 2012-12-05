@@ -38,8 +38,15 @@ object RelationElement extends Controller {
   }
 
   def create() = CORSAction { request =>
-    println("lol. not going to happen");
-    Ok(views.html.edit())
+    request.body.asJson.map { json =>  
+        val id = Json.fromJson(json) match {
+          case e: Relation => e.create
+          case _ => throw new Exception("Reading Relation from Json failed.")
+        }
+        Ok(toJson(Relation.read(id)))
+    }.getOrElse {
+      BadRequest("Expecting Json data")
+    }
   }
   
   def delete(id: Long) = CORSAction { implicit request =>

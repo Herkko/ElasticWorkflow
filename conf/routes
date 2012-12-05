@@ -31,9 +31,9 @@ PUT		/processes									controllers.Processes.update
 DELETE 	/processes/:id								controllers.Processes.delete(id: Int)
 
 #Operations on relations <- fix methods to get rid of unnecessary params and pass JSON instead
-POST   	/models/:id/relations/start=:start&end=:end&value=:value						controllers.Relations.create(id: Int, start: Int, end: Int, value: String)
+#POST   	/models/:id/relations/start=:start&end=:end&value=:value						controllers.Relations.create(id: Int, start: Int, end: Int, value: String)
 PUT		/relations/id=:id&start=:start&end=:end&value=:value 							controllers.Relations.update(id: Int, start: Int, end: Int, value: String)
-DELETE 	/relations/:id																	controllers.Relations.delete(id: Int)
+#DELETE 	/relations/:id																	controllers.Relations.delete(id: Int)
 
 #JSON methods
 GET   	/element									controllers.elements.Basic.list
