@@ -17,14 +17,11 @@ var workflow = {
     models: {},
     collections: {},
     views: {},
-
+  
     domainHost: "http://morning-fjord-4117.herokuapp.com",
-
    // domainHost: "http://localhost:9000",
     ENTER: 13,
-
-           
-            
+     
         
     initialize: function(){
         //all collections
@@ -58,8 +55,8 @@ function Colors() {
     this.colors["start"] = Raphael.getColor();
     this.colors["end"] = Raphael.getColor();
     this.colors["activity"] = Raphael.getColor();
-	this.colors["gateway"] = Raphael.getColor();
-	this.colors["swimlane"] = Raphael.getColor();
+    this.colors["gateway"] = Raphael.getColor();
+    this.colors["swimlane"] = Raphael.getColor();
 }
 
 Colors.prototype.get = function(type) {
@@ -72,9 +69,9 @@ $(document).ready(function() {
     workflow.initialize();
    
     
-     setInterval(function() {
-         workflow.refresh(); 
-     }, 3000);
+//     setInterval(function() {
+//         workflow.refresh(); 
+//     }, 3000);
    
     
 });
