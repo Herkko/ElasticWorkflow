@@ -57,7 +57,7 @@ workflow.views.ActivityView = Backbone.View.extend({
         this.raphaelText.attr({"cx": this.model.get("cx"), "cy": this.model.get("cy")+this.raphaelActivity.getBBox().height/2,"text":this.model.get("value") });
     	this.raphaelActivity.attr({"cx":this.model.get("cx"), "cy":this.model.get("cy"), "width": Math.max(100, 40 + this.raphaelText.getBBox().width)});
 
-    	for (var i = connections.length; i--; ) {
+    	for (var i = connections.length-1; i >= 0; i--) {
     		RaphaelElement.connection(connections[i]);
     	}
         
@@ -396,10 +396,9 @@ workflow.views.RelationView = Backbone.View.extend({
 	    
         this.raphaelRelation = RaphaelElement.connection(startPoint, endPoint, "#000");
      //   this.raphaelRelation.attr({startId: this.model.get("startId"), endId: this.model.get("endId")});
-        this.model.bind("remove", function() { this.delete() }, this);
+      //  this.model.bind("remove", function() { this.delete() }, this);
        
-
-        connections[this.model.get("id")] = this.raphaelRelation;
+        connections.push(this.raphaelRelation);
     },
     
      clicked: function() {
@@ -410,7 +409,6 @@ workflow.views.RelationView = Backbone.View.extend({
     delete: function() {
        console.log("deleting relation...");
      	this.raphaelRelation.line.remove();
-   //     this.raphaelRelation.removeConnection();
     	this.model.destroy();
 
     }
