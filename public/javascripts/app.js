@@ -20,9 +20,8 @@ var workflow = {
 
     domainHost: "http://morning-fjord-4117.herokuapp.com",
    //domainHost: "http://localhost:9000",
-
-    ENTER: 13,
-      
+     ENTER: 13,
+   
     initialize: function(){
         //all collections
         ActivityElements = new workflow.collections.ActivityList();
@@ -38,15 +37,11 @@ var workflow = {
         App = new workflow.views.AppView;
         setUpApplication();
     },
-            
-      refresh: function(){
-        ActivityElements.fetch({error: function() { console.log(arguments); }});
-        
-       // StartElements.fetch();
-       // EndElements.fetch();
-    
-        }      
-            
+      //Not yet in use      
+//      refresh: function(){
+//        ActivityElements.fetch({error: function() { console.log(arguments); }});
+//        
+//        }      
   
 }
 
@@ -62,18 +57,16 @@ function Colors() {
 Colors.prototype.get = function(type) {
    return this.colors[type];
 }
-
 var colors = new Colors();
 
 $(document).ready(function() {
     workflow.initialize();
    
-    
+    //not yet in use
 //     setInterval(function() {
 //         workflow.refresh(); 
 //     }, 3000);
    
-    
 });
 
 
@@ -83,30 +76,24 @@ function setUpApplication(){
      
        for(var i=0; i<ActivityElements.length; i++){
         activityViwElement = new workflow.views.ActivityView({model: ActivityElements.models[i]});
-      
-        };     
-        
+        };         
    }
     
   function renderStarts(){
         for(var i=0; i<StartElements.length; i++){
         startsViewElement = new workflow.views.StartView({model: StartElements.models[i]});
-       
-        };  
-      
+        };    
   }  
   
   function renderEnds(){
         for(var i=0; i<EndElements.length; i++){
         endsViewElement = new workflow.views.EndView({model: EndElements.models[i]});
-        
         };  
   }
   
   function renderSwimlanes(){
        for(var i=0; i<SwimlaneElements.length; i++){
         swimlanesElement = new workflow.views.SwimlaneView({model: SwimlaneElements.models[i]});
-        
         };  
   }
   
@@ -114,17 +101,12 @@ function setUpApplication(){
   function renderGateways(){
        for(var i=0; i<GatewayElements.length; i++){
         gatewayElement = new workflow.views.GatewayView({model: GatewayElements.models[i]});
-      
         };  
   }
   
   function renderRelations(){
-      
-      
       for(var i=0; i<RelationElements.length; i++){
         relationViewElement = new workflow.views.RelationView({model: RelationElements.models[i]});
-
-        
         }; 
       
       
@@ -137,7 +119,7 @@ function setUpApplication(){
     GatewayElements.fetch({success: renderGateways}))
     .then(function() {
         RelationElements.fetch({success: renderRelations}); 
-        //var EditTemplate = new EditElementsView();
+       
     });
     
     jQuery('ul.nav li.dropdown').hover(function() {
@@ -148,35 +130,6 @@ function setUpApplication(){
  
 }
 
-
-
-
-
-function updateall(){
-
-	for (var i=0; i<ActivityElements.length; i++) {
-		ActivityElements.at(i).save();
-
-	}
-	for (var i=0; i<StartElements.length; i++) {
-		StartElements.at(i).save();
-	}
-	for (var i=0; i<EndElements.length; i++) {
-		EndElements.at(i).save();
-	}
-	for (var i=0; i<GatewayElements.length; i++) {
-		GatewayElements.at(i).save();
-	}
-	
-    console.log("Elements hopefully saved, now refresh page.");
-} 
-
-function changeText(id, text) {
-	var elem = getBackboneModelById(2);
-	elem.set({value: "Rawr2"});
-	elem.save();
-}
-
 function getBackboneModelById(id) {
 	    if(ActivityElements.get(id) != null) return ActivityElements.get(id);
 	    else if(StartElements.get(id) != null) return StartElements.get(id);
@@ -185,9 +138,17 @@ function getBackboneModelById(id) {
 	    else if(GatewayElements.get(id) != null) return GatewayElements.get(id);
 }
 
-function newActivity() {
-    activity = new activity();
-    view = new ActivityView({model: activity});
-    activity.save();
-    activityElements.push(activity);
-};
+//function changeText(id, text) {
+//	var elem = getBackboneModelById(2);
+//	elem.set({value: "Rawr2"});
+//	elem.save();
+//}
+
+
+
+//function newActivity() {
+//    activity = new activity();
+//    view = new ActivityView({model: activity});
+//    activity.save();
+//    activityElements.push(activity);
+//};
