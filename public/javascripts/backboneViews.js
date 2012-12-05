@@ -48,7 +48,7 @@ workflow.views.ActivityView = Backbone.View.extend({
           
         
         
-        this.model.bind("change", this.render(), this);
+        this.model.bind("change", this.render, this);
         this.model.bind("sync", function() { this.addToRaphaelObjects() }, this);
         this.model.bind("destroy", function() { this.delete() }, this);
 
@@ -412,7 +412,7 @@ workflow.views.RelationView = Backbone.View.extend({
         this.model.bind("remove", function() { this.delete() }, this);
        
 
-        connections.push(this.raphaelRelation);
+        connections[this.model.get("id")] = this.raphaelRelation;
     },
     
      clicked: function() {
@@ -499,23 +499,27 @@ workflow.views.EditElementsView = Backbone.View.extend({
     },
     
     deleteElement: function() {
-       var removed = [];
+      /* var removed = [];
        for(var i = 0; i < RelationElements.models.length; i++) {
          if(RelationElements.models[i].get("startId") === this.model.get("id") || RelationElements.models[i].get("endId") === this.model.get("id")) {
           console.log(RelationElements.models[i].get("startId") +"->"+RelationElements.models[i].get("endId")+ " " + this.model.get("id"));
           removed.push(RelationElements.models[i]);
+       //   RaphaelElement.removeConnection(this.model.get("id"));
+          connections[RelationElements.models[i].get("id")].line.remove();
+          console.log(connections);
+          connections.splice(RelationElements.models[i].get("id"), 1); 
+           console.log(connections);
          }
        }
+       
        RelationElements.remove(removed);
        var model = this.model;
        setTimeout(
           function () { 
-             console.log(RelationElements);
-             RaphaelObjects[model.get("id")] = null;
+           //  console.log(RelationElements);
              model.destroy();
-          
        }, 100);
-       
+       */
       	
     }
     
