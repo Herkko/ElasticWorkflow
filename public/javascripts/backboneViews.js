@@ -61,6 +61,9 @@ workflow.views.ActivityView = Backbone.View.extend({
     render: function() {
         this.raphaelText.attr({"cx": this.model.get("cx"), "cy": this.model.get("cy")+this.raphaelActivity.getBBox().height/2,"text":this.model.get("value") });
     	this.raphaelActivity.attr({"cx":this.model.get("cx"), "cy":this.model.get("cy"), "width": Math.max(100, 40 + this.raphaelText.getBBox().width)});
+    	for (var i = connections.length; i--; ) {
+    		RaphaelElement.connection(connections[i]);
+    	}
         
     },
             
