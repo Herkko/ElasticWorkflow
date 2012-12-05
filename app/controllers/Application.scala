@@ -23,7 +23,7 @@ object Application extends Controller {
    * Show default start page.
    * @return
    */
-  def index = Action {
+ def index = Action {
     Ok(views.html.index())
   }
 

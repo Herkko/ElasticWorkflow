@@ -56,7 +56,10 @@ workflow.views.ActivityView = Backbone.View.extend({
     render: function() {
         this.raphaelText.attr({"cx": this.model.get("cx"), "cy": this.model.get("cy")+this.raphaelActivity.getBBox().height/2,"text":this.model.get("value") });
     	this.raphaelActivity.attr({"cx":this.model.get("cx"), "cy":this.model.get("cy"), "width": Math.max(100, 40 + this.raphaelText.getBBox().width)});
-        
+
+    	for (var i = connections.length-1; i >= 0; i--) {
+    		RaphaelElement.connection(connections[i]);
+    	}
     },
             
     addToRaphaelObjects: function(){
@@ -168,7 +171,7 @@ workflow.views.EndView = Backbone.View.extend({
         this.raphaelText.pair = this.raphaelEnd;
         
         var color = "red";
-        this.raphaelEnd.attr({fill: "#FFFFFF", stroke: "red", "stroke-width": 2, cursor: "move"});
+        this.raphaelEnd.attr({fill: "#FFFFFF", stroke: "red", "stroke-width": 3.5, cursor: "move"});
         this.raphaelText.attr({fill: '#383838', "font-size": 16, cursor: "move"});
         this.raphaelEnd.drag(move, dragger, up);
         this.raphaelText.drag(move, dragger, up);
@@ -383,10 +386,14 @@ workflow.views.RelationView = Backbone.View.extend({
 	   
 	    
         this.raphaelRelation = RaphaelElement.connection(startPoint, endPoint, "#000");
+<<<<<<< HEAD
         this.model.bind("remove", function() { this.delete() }, this);
+=======
+     //   this.raphaelRelation.attr({startId: this.model.get("startId"), endId: this.model.get("endId")});
+      //  this.model.bind("remove", function() { this.delete() }, this);
+>>>>>>> 440627781401585f7750aeae2f7e3861df648116
        
-
-        connections[this.model.get("id")] = this.raphaelRelation;
+        connections.push(this.raphaelRelation);
     },
     
     clicked: function() {
