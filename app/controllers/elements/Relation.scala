@@ -42,4 +42,9 @@ object RelationElement extends Controller {
     Ok(views.html.edit())
   }
   
+  def delete(id: Long) = CORSAction { implicit request =>
+    Relation.delete(id)  
+    Ok(toJson(""))
+  }
+  
 }
