@@ -268,7 +268,6 @@ workflow.views.SwimlaneView = Backbone.View.extend({
     },
             
      clicked: function() {
-        console.log("starttia siirretty");
         var raphaelSwimlane = this.el;
 
         this.model.set({width: parseInt(raphaelSwimlane.getAttribute("width"))});
@@ -341,29 +340,20 @@ workflow.views.GatewayView = Backbone.View.extend({
     clicked: function() {
 
     	var raphaelGateway = this.el;
-      
-        
         var newX = this.model.get("cx") + raphaelGateway.ox;
         var newY = this.model.get("cy") + raphaelGateway.oy;
-        
         this.model.set({cx: newX});
         this.model.set({cy: newY});
-        
-        
         
         if(workflow.views.editView){
             if (workflow.views.editView.startRelId) {
                 var relId = workflow.views.editView.startRelId;
-               
-
             }
-        
         //COMPLETELY UNBIND THE VIEW
         workflow.views.editView.undelegateEvents();
         $("#editElements").removeData().unbind(); 
 
         }
-        
         workflow.views.editView = null;
         workflow.views.editView = new workflow.views.EditElementsView({model: this.model, startRelId: relId});
         this.model.save();
@@ -376,9 +366,8 @@ workflow.views.RelationView = Backbone.View.extend({
     
     initialize: function(){
         this.render();
-        
     },
-
+            
     render: function() {
         var startPoint = RaphaelObjects[this.model.get("startId")];
         var endPoint = RaphaelObjects[this.model.get("endId")]
@@ -386,16 +375,10 @@ workflow.views.RelationView = Backbone.View.extend({
         this.model.bind("remove", function() { this.delete() }, this);
         connections.push(this.raphaelRelation);
     },
-    
-    clicked: function() {
-    	
-    },
-    
+  
     delete: function() {
-       console.log("deleting relation...");
      	this.raphaelRelation.line.remove();
     	this.model.destroy();
-
     }
 })
 
@@ -412,7 +395,6 @@ workflow.views.EditElementsView = Backbone.View.extend({
     },
              
     initialize: function(){
-
         if (this.options.startRelId){
             this.createRelation(); 
         }else {
@@ -423,7 +405,6 @@ workflow.views.EditElementsView = Backbone.View.extend({
     editValue: function(e){
         var newValue = $("#editValue").val();
         this.model.set({value: newValue});
-        
         if (e.which == workflow.ENTER){
             this.model.save();
             $("#editElements").addClass("hidden");
@@ -436,28 +417,23 @@ workflow.views.EditElementsView = Backbone.View.extend({
         this.model.save();
     },          
             
-       
     render: function(){
     	$("#editElements").removeClass("hidden");
        var data = {
           list: this.model,
           value: this.model.get("value")        
        };
-      
         var html = Mustache.render($("#edit-Template").html(), data);
         $("#editElements").html(html);
     },
     
     //Makes new relation startpoint
-
     newRelation: function(){    
-
         this.startRelId= this.model.get("id");
     },
+            
     //Creates new relation from preDefined startPoint         
     createRelation: function(){
-        console.log("startRelId " + this.options.startRelId + " this.model.get " + this.model.get("id"));
-        
        var relationModel = new workflow.models.relation({"startId": this.options.startRelId ,"endId": this.model.get("id")});
        new workflow.views.RelationView({model: relationModel}); 
        relationModel.save();

@@ -15,8 +15,7 @@
 workflow.models.swimlane = Backbone.Model.extend({
      
 	urlRoot: workflow.domainHost+'/swimlane',
-	
-	defaults: {
+    defaults: {
         'id': null,
         'modelProcessId': null,
         'elementTypeId': 1,
@@ -29,8 +28,7 @@ workflow.models.swimlane = Backbone.Model.extend({
 workflow.models.start = Backbone.Model.extend({
     
     urlRoot: workflow.domainHost+'/start',
-
-    defaults: {
+     defaults: {
         'id': null,
         'modelProcessId': null,
         'elementTypeId': 2,
@@ -45,8 +43,7 @@ workflow.models.start = Backbone.Model.extend({
 workflow.models.end = Backbone.Model.extend({
  
     urlRoot: workflow.domainHost+'/end',
-    
-    defaults: {
+     defaults: {
         'id': null,
         'modelProcessId': null,
         'elementTypeId': 3,
@@ -61,7 +58,6 @@ workflow.models.end = Backbone.Model.extend({
 workflow.models.activity = Backbone.Model.extend({
 
     urlRoot: workflow.domainHost+'/activity',
-     
     defaults: {
         'id': null,
         'modelProcessId': null,
@@ -77,7 +73,6 @@ workflow.models.activity = Backbone.Model.extend({
 workflow.models.gateway = Backbone.Model.extend({
 
     urlRoot: workflow.domainHost+'/gateway',
-    
     defaults: {
         'id': null,
         'modelProcessId': null,
@@ -93,8 +88,7 @@ workflow.models.gateway = Backbone.Model.extend({
 workflow.models.relation = Backbone.Model.extend({
     
     urlRoot: workflow.domainHost+'/relation',
-  
-    defaults: {
+   defaults: {
        id: null,
        relationTypeId: 1,
        value: "Relation"
@@ -107,7 +101,7 @@ workflow.models.relation = Backbone.Model.extend({
 });
 
 workflow.collections.ActivityList = Backbone.Collection.extend({
-	url: workflow.domainHost+'/activity', 
+    url: workflow.domainHost+'/activity', 
     model: workflow.models.activity
 });
 
@@ -117,7 +111,7 @@ workflow.collections.StartList = Backbone.Collection.extend({
 });
 
 workflow.collections.EndList = Backbone.Collection.extend({
-	url: workflow.domainHost+'/end',
+    url: workflow.domainHost+'/end',
     model: workflow.models.end
 });
 
@@ -127,7 +121,7 @@ workflow.collections.SwimlaneList = Backbone.Collection.extend({
 });
 
 workflow.collections.GatewayList = Backbone.Collection.extend({
-	url: workflow.domainHost+'/gateway',
+    url: workflow.domainHost+'/gateway',
     model: workflow.models.gateway 
 });
 
@@ -147,8 +141,6 @@ workflow.collections.RelationList = Backbone.Collection.extend({
 function post_to_url(path, params, method) {
     method = method || "post";
 
-    // The rest of this code assumes you are not using a library.
-    // It can be made less wordy if you use one.
     var form = document.createElement("form");
     form.setAttribute("method", method);
     form.setAttribute("action", path);
@@ -159,23 +151,18 @@ function post_to_url(path, params, method) {
             hiddenField.setAttribute("type", "hidden");
             hiddenField.setAttribute("name", key);
             hiddenField.setAttribute("value", params[key]);
-
             form.appendChild(hiddenField);
         }
     }
-
     document.body.appendChild(form);
     form.submit();
 };
-
 
 function uusiActivity() {
     var activityModel = new workflow.models.activity();
     ActivityElements.add(activityModel);
      new workflow.views.ActivityView({model: activityModel});
     activityModel.save();
-   
-   
 };
 
 function uusiStart() {
