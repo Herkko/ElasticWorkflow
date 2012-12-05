@@ -506,12 +506,16 @@ workflow.views.EditElementsView = Backbone.View.extend({
           removed.push(RelationElements.models[i]);
          }
        }
-       RelationElements.remove(removed)
+       RelationElements.remove(removed);
+       var model = this.model;
+       setTimeout(
+          function () { 
+             console.log(RelationElements);
+             RaphaelObjects[model.get("id")] = null;
+             model.destroy();
+          
+       }, 100);
        
-       console.log(RelationElements);
-       RaphaelObjects[this.model.get("id")] = null;
-       this.model.destroy();
-           
       	
     }
     
