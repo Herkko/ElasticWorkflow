@@ -44,7 +44,7 @@ workflow.views.ActivityView = Backbone.View.extend({
             this.addToRaphaelObjects();
         }
 
-        this.model.bind("change", this.render, this);
+        this.model.bind("change", function() {this.render() }, this);
         this.model.bind("sync", function() { this.addToRaphaelObjects() }, this);
         this.model.bind("destroy", function() { this.delete() }, this);
 
@@ -56,10 +56,10 @@ workflow.views.ActivityView = Backbone.View.extend({
     render: function() {
         this.raphaelText.attr({"cx": this.model.get("cx"), "cy": this.model.get("cy")+this.raphaelActivity.getBBox().height/2,"text":this.model.get("value") });
     	this.raphaelActivity.attr({"cx":this.model.get("cx"), "cy":this.model.get("cy"), "width": Math.max(100, 40 + this.raphaelText.getBBox().width)});
-
-    	for (var i = connections.length; i--; ) {
-    		RaphaelElement.connection(connections[i]);
-    	}
+            
+//    	for (var i = connections.length; i--; ) {
+//    		RaphaelElement.connection(connections[i]);
+//    	}
         
     },
             
@@ -88,7 +88,7 @@ workflow.views.ActivityView = Backbone.View.extend({
         console.log("deleting activity...");
     	this.raphaelActivity.remove();
     	this.raphaelText.remove();
-    //	this.model.destroy();
+   
     }
 });
     
@@ -107,7 +107,7 @@ workflow.views.StartView = Backbone.View.extend({
         this.raphaelText.pair = this.raphaelStart;
         
         this.raphaelText.attr({fill: '#383838', "font-size": 16, cursor: "move"});
-        this.raphaelStart.attr({fill: "#FFFFFF", stroke: "red", "stroke-width": 2, cursor: "move"});
+        this.raphaelStart.attr({fill: "#FFFFFF", stroke: colors.get("start"), "stroke-width": 2, cursor: "move"});
         this.raphaelStart.drag(move, dragger, up);
         this.raphaelText.drag(move, dragger, up);
         
@@ -127,15 +127,13 @@ workflow.views.StartView = Backbone.View.extend({
     addToRaphaelList: function(){
         RaphaelObjects[this.model.get("id")] = this.raphaelStart;
     },        
-            
-    
+       
     render: function() {
         this.raphaelStart.attr({'x':this.model.get("cx"), 'y':this.model.get('cy')});
         this.raphaelText.attr({"cx":(this.model.get("cx")+ 50), "cy":(this.model.get("cy")+30),"text":this.model.get("value") });
     },
     
     clicked: function() {
-        console.log("starttia siirretty");
        var raphaelStart = this.el;
 
         this.model.set({cx: parseInt(raphaelStart.getAttribute("cx"))});
