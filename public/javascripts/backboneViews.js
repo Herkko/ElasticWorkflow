@@ -263,9 +263,9 @@ workflow.views.SwimlaneView = Backbone.View.extend({
         
         var color = Raphael.getColor();
         this.swimlane.attr({fill: color, "fill-opacity": 0.05, stroke: "#000", "stroke-width": 2});
-        this.swimlaneNameBox.attr({fill: color, "fill-opacity": 0.1});
+        this.swimlaneNameBox.attr({fill: color, "fill-opacity": 0.05});
         
-        this.swimlaneDragBox.attr({fill: color, "fill-opacity": 0.1});
+        this.swimlaneDragBox.attr({fill: color, "fill-opacity": 0.05});
         this.swimlaneDragBox.drag(rmove, rstart);
     	this.swimlaneDragBox.box = this.swimlane;
         this.swimlaneDragBox.nameBox = this.swimlaneNameBox;
