@@ -42,6 +42,7 @@ workflow.views.ActivityView = Backbone.View.extend({
         
         
          this.model.bind("change", this.render, this);
+         
         $(this.el).mouseup(_.bind(function() { this.clicked()}, this));
         $(this.raphaelText.node).mouseup(_.bind(function() { this.clicked()}, this));
     },

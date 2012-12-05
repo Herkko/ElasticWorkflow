@@ -72,9 +72,9 @@ $(document).ready(function() {
     workflow.initialize();
    
     
-//     setInterval(function() {
-//         workflow.refresh(); 
-//     }, 7000);
+     setInterval(function() {
+         workflow.refresh(); 
+     }, 3000);
    
     
 });
