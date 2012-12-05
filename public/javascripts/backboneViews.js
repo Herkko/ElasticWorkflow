@@ -172,7 +172,7 @@ workflow.views.EndView = Backbone.View.extend({
         this.raphaelText.pair = this.raphaelEnd;
         
         var color = "red";
-        this.raphaelEnd.attr({fill: "#FFFFFF", stroke: "red", "stroke-width": 2, cursor: "move"});
+        this.raphaelEnd.attr({fill: "#FFFFFF", stroke: "red", "stroke-width": 3.5, cursor: "move"});
         this.raphaelText.attr({fill: '#383838', "font-size": 16, cursor: "move"});
         this.raphaelEnd.drag(move, dragger, up);
         this.raphaelText.drag(move, dragger, up);
