@@ -72,6 +72,7 @@ DELETE	/gateway/:id								controllers.elements.Gateway.delete(id: Int)
 GET   	/relation									controllers.elements.RelationElement.list
 POST    /relation									controllers.elements.RelationElement.create	
 GET   	/relation/:id								controllers.elements.RelationElement.getRelationByModel(id: Int)	
+DELETE  /relation/:id								controllers.elements.RelationElement.delete(id: Int)
 
 #Pages which show javascript
 GET		/edit										controllers.Application.showEditPage									

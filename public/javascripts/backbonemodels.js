@@ -192,11 +192,10 @@ function post_to_url(path, params, method) {
 function uusiActivity() {
     var activityModel = new workflow.models.activity();
     ActivityElements.add(activityModel);
-    activityModel.save({success: function(){
-         new workflow.views.ActivityView({model: activityModel});
-    }});
-   
+     new workflow.views.ActivityView({model: activityModel});
     activityModel.save();
+   
+   
 };
 
 function uusiStart() {
@@ -210,17 +209,20 @@ function uusiEnd() {
     var endModel = new workflow.models.end();
     EndElements.add(endModel);
     new workflow.views.EndView({model: endModel});
+    endModel.save();
 };
 
 function uusiGateway() {
     var gatewayModel = new workflow.models.gateway();
     GatewayElements.add(gatewayModel);
     new workflow.views.GatewayView({model: gatewayModel});
+    gatewayModel.save();
 };
 
 function uusiRelation() {
     var relationModel = new workflow.models.relation();
     RelationElements.add(relationModel);
     new workflow.views.RelationView({model: relationModel})
+    relationModel.save();
 };
 
