@@ -101,7 +101,7 @@ Raphael.fn.connection = function(obj1, obj2, line, bg) {
  	
 };
 
-
+/*
 Raphael.fn.removeConnection = function (firstObjectId) {
 
     for (var i = 0; i < connections.length; i++) {
@@ -114,7 +114,7 @@ Raphael.fn.removeConnection = function (firstObjectId) {
         }
     }
 };
-
+*/
 
 
 
