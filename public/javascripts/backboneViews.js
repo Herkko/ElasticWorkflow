@@ -39,12 +39,19 @@ workflow.views.ActivityView = Backbone.View.extend({
         
         //adds id to Raphael Element and stores them to list
         this.raphaelActivity.attr({data: this.model.get("id")});
-        RaphaelObjects[this.model.get("id")] = this.raphaelActivity;
+       
+        
+        //if model has already id, add to list
+        if (this.model.get("id")){
+            this.addToRaphaelObjects();
+        }
+          
         
         
         this.model.bind("change", this.render(), this);
-        this.model.bind("remove", function() { this.delete() }, this);
-        
+        this.model.bind("sync", function() { this.addToRaphaelObjects() }, this);
+        this.model.bind("destroy", function() { this.delete() }, this);
+
         $(this.el).mouseup(_.bind(function() { this.clicked()}, this));
         $(this.raphaelText.node).mouseup(_.bind(function() { this.clicked()}, this));
         
@@ -56,6 +63,11 @@ workflow.views.ActivityView = Backbone.View.extend({
     	this.raphaelActivity.attr({"cx":this.model.get("cx"), "cy":this.model.get("cy"), "width": Math.max(100, 40 + this.raphaelText.getBBox().width)});
         
     },
+            
+    addToRaphaelObjects: function(){
+        RaphaelObjects[this.model.get("id")] = this.raphaelActivity;  
+    }, 
+          
             
     clicked: function() {
         
@@ -88,7 +100,7 @@ workflow.views.ActivityView = Backbone.View.extend({
         console.log("deleting activity...");
     	this.raphaelActivity.remove();
     	this.raphaelText.remove();
-    	this.model.destroy();
+    //	this.model.destroy();
     }
 });
     
@@ -113,12 +125,21 @@ workflow.views.StartView = Backbone.View.extend({
         
         //adds id to Raphael Element and stores to list
         this.raphaelStart.attr({data: this.model.get("id")});
-        RaphaelObjects[this.model.get("id")] = this.raphaelStart;
-		
+        
+        if (this.model.get("id")){
+            this.addToRaphaelList();
+        }
+        
         this.model.bind("change", this.render, this);
+        this.model.bind("sync", this.addToRaphaelList, this);
         $(this.el).mouseup(_.bind(function() { this.clicked()}, this));
         $(this.raphaelText.node).mouseup(_.bind(function() { this.clicked()}, this));
     },
+    
+    addToRaphaelList: function(){
+        RaphaelObjects[this.model.get("id")] = this.raphaelStart;
+    },        
+            
     
     render: function() {
         this.raphaelStart.attr({'x':this.model.get("cx"), 'y':this.model.get('cy')});
@@ -170,13 +191,21 @@ workflow.views.EndView = Backbone.View.extend({
        
         this.el = this.raphaelEnd.node;
         this.raphaelEnd.attr({data: this.model.get("id")});
-        RaphaelObjects[this.model.get("id")] = this.raphaelEnd;
+        
+        if (this.model.get("id")){
+            this.addToRaphaelList();
+        }
+        
 
         $(this.el).mouseup(_.bind(function() { this.clicked()}, this));
          this.model.bind("change", this.render, this);
          
          $(this.raphaelText.node).mouseup(_.bind(function() { this.clicked()}, this));
     },
+            
+    addToRaphaelList: function(){
+        RaphaelObjects[this.model.get("id")] = this.raphaelEnd;
+    },         
             
     render: function() {
         
@@ -196,8 +225,7 @@ workflow.views.EndView = Backbone.View.extend({
         if(workflow.views.editView){
             if (workflow.views.editView.startRelId) {
                 var relId = workflow.views.editView.startRelId;
-                console.log(relId);
-
+                
             }
         
         //COMPLETELY UNBIND THE VIEW
@@ -266,8 +294,7 @@ workflow.views.SwimlaneView = Backbone.View.extend({
         if(workflow.views.editView){
             if (workflow.views.editView.startRelId) {
                 var relId = workflow.views.editView.startRelId;
-                console.log(relId);
-
+               
             }
         
         //COMPLETELY UNBIND THE VIEW
@@ -275,10 +302,7 @@ workflow.views.SwimlaneView = Backbone.View.extend({
           $("#editElements").removeData().unbind(); 
 
         }
-         
-         
-         
-         
+          
         workflow.views.editView = new workflow.views.EditElementsView({model: this.model});
         this.model.save();
     },
@@ -307,7 +331,9 @@ workflow.views.GatewayView = Backbone.View.extend({
         
         this.raphaelGateway.attr({data: this.model.get("id")});
 
-        RaphaelObjects[this.model.get("id")] = this.raphaelGateway;
+       if(this.model.get("id")){
+           this.addToRaphaelList();
+       }
 
         this.model.bind("change", this.render, this);
         $(this.el.node).mouseup(_.bind(function() {
@@ -316,6 +342,10 @@ workflow.views.GatewayView = Backbone.View.extend({
          $(this.raphaelText.node).mouseup(_.bind(function() { this.clicked()}, this));
 
     },
+            
+    addToRaphaelList: function(){
+        RaphaelObjects[this.model.get("id")] = this.raphaelGateway;
+    },         
             
     render: function() {
     	var temp = this.raphaelGateway.clone();
@@ -343,7 +373,7 @@ workflow.views.GatewayView = Backbone.View.extend({
         if(workflow.views.editView){
             if (workflow.views.editView.startRelId) {
                 var relId = workflow.views.editView.startRelId;
-                console.log(relId);
+               
 
             }
         
@@ -355,8 +385,6 @@ workflow.views.GatewayView = Backbone.View.extend({
         
         workflow.views.editView = null;
         workflow.views.editView = new workflow.views.EditElementsView({model: this.model, startRelId: relId});
-        
-        
         this.model.save();
         
     }
@@ -375,6 +403,7 @@ workflow.views.RelationView = Backbone.View.extend({
     render: function() {
         var startPoint = RaphaelObjects[this.model.get("startId")];
         var endPoint = RaphaelObjects[this.model.get("endId")];
+
 			
 	   
 	    
@@ -382,17 +411,21 @@ workflow.views.RelationView = Backbone.View.extend({
      //   this.raphaelRelation.attr({startId: this.model.get("startId"), endId: this.model.get("endId")});
         this.model.bind("remove", function() { this.delete() }, this);
        
+
         connections.push(this.raphaelRelation);
     },
     
      clicked: function() {
+
 		console.log("Mouse up relation");
     },
     
     delete: function() {
-     console.log("deleting relation...");
-    	this.raphaelRelation.line.remove();
+       console.log("deleting relation...");
+     	this.raphaelRelation.line.remove();
+   //     this.raphaelRelation.removeConnection();
     	this.model.destroy();
+
     }
 })
 
@@ -404,13 +437,12 @@ workflow.views.EditElementsView = Backbone.View.extend({
     events: {
         "keyup #editValue" : "editValue",
         "click #newRelationButton" : "newRelation",
-		"click #deleteElementButton": "deleteElement",
+	"click #deleteElementButton" : "deleteElement",
         "focusout #editValue" : "outOfFocus"
-
     },
              
     initialize: function(){
-     //   console.log(this.options.startRelId);
+
         if (this.options.startRelId){
             this.createRelation(); 
         }else {
@@ -429,7 +461,6 @@ workflow.views.EditElementsView = Backbone.View.extend({
     },   
             
     focusOut: function(){
-       
         var newValue = $("#editValue").val();
         this.model.set({value: newValue});
         this.model.save();
@@ -455,11 +486,11 @@ workflow.views.EditElementsView = Backbone.View.extend({
     },
     //Creates new relation from preDefined startPoint         
     createRelation: function(){
-        //console.log("startRelId " + this.options.startRelId + " this.model.get " + this.model.get("id"));
-        var to = this.model.get("id");
+        console.log("startRelId " + this.options.startRelId + " this.model.get " + this.model.get("id"));
         
-       var relationModel = new workflow.models.relation({"startId": this.options.startRelId ,"endId": this.to});
-       new workflow.views.relationView({model: relationModel}); 
+       var relationModel = new workflow.models.relation({"startId": this.options.startRelId ,"endId": this.model.get("id")});
+       new workflow.views.RelationView({model: relationModel}); 
+       relationModel.save();
     },
     
     outOfFocus: function(){
@@ -476,8 +507,16 @@ workflow.views.EditElementsView = Backbone.View.extend({
          }
        }
        RelationElements.remove(removed);
-       console.log(RelationElements);
-       this.model.destroy()	
+       var model = this.model;
+       setTimeout(
+          function () { 
+             console.log(RelationElements);
+             RaphaelObjects[model.get("id")] = null;
+             model.destroy();
+          
+       }, 100);
+       
+      	
     }
     
 })

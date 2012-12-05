@@ -51,7 +51,7 @@ object Relations extends Controller {
    * Delete new relation of the element specified by elementId. Parameter modelId is needed to show the page of the right model
    * afterwards so that user can see changes. 
    */
-  def delete(id: Long) = Action { implicit request =>
+  def delete2(id: Long) = Action { implicit request =>
     Relation.read(id) match {
       case Some(relation) => {
         val modelId = Relation.getModelId(id)

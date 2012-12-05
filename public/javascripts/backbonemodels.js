@@ -95,19 +95,36 @@ workflow.models.relation = Backbone.Model.extend({
     urlRoot: workflow.domainHost+'/relation',
   
     defaults: {
-        'from': null,
-        'to': null
+       id: null,
+       relationTypeId: 1,
+       value: "Relation"
     },
     
     initialize: function() {
-        var startId = this.get("startId");
-        var startObject = getBackboneModelById(startId);
+     
         
         
-        console.log("startId"  +startId);
-        console.log("startModel " + startObject.get("element"));
-        this.set({ from:  getBackboneModelById(this.get("startId")).get("element")});  
-        this.set({ to:  getBackboneModelById(this.get("endId")).get("element")});
+        this.set({ from:  getBackboneModelById(this.get("startId"))});  
+        this.set({ to:  getBackboneModelById(this.get("endId"))});
+        
+//        var startId = this.get("startId");
+//        var endId = this.get("endId");
+//        
+//        console.log("startId " + startId);
+//        console.log("ENDiD " + endId);
+//        console.log("bbmodel start " +  JSON.stringify(getBackboneModelById(startId)));
+//        console.log("bbmodel end " +  JSON.stringify(getBackboneModelById(endId)));
+//        
+//        var startElement =getBackboneModelById(startId).get("element");
+//        var endElement = getBackboneModelById(endId).get("element");
+//        
+//        console.log("start element " + JSON.stringify(startElement));
+//         console.log("end element " + JSON.stringify(endElement));
+//         
+//        
+//        console.log("uusi relaatio alkuid  " + getBackboneModelById(this.get("startId")).get("element") );
+//        console.log("uusi relaatio loppuid  " + getBackboneModelById(this.get("endId")).get("element") );
+        
     }
 });
 
@@ -176,30 +193,37 @@ function post_to_url(path, params, method) {
 function uusiActivity() {
     var activityModel = new workflow.models.activity();
     ActivityElements.add(activityModel);
-    new workflow.views.ActivityView({model: activityModel});
+     new workflow.views.ActivityView({model: activityModel});
+    activityModel.save();
+   
+   
 };
 
 function uusiStart() {
     var startModel = new workflow.models.start();
     StartElements.add(startModel);
     new workflow.views.StartView({model: startModel});
+    startModel.save();
 };
 
 function uusiEnd() {
     var endModel = new workflow.models.end();
     EndElements.add(endModel);
     new workflow.views.EndView({model: endModel});
+    endModel.save();
 };
 
 function uusiGateway() {
     var gatewayModel = new workflow.models.gateway();
     GatewayElements.add(gatewayModel);
     new workflow.views.GatewayView({model: gatewayModel});
+    gatewayModel.save();
 };
 
 function uusiRelation() {
     var relationModel = new workflow.models.relation();
     RelationElements.add(relationModel);
     new workflow.views.RelationView({model: relationModel})
+    relationModel.save();
 };
 
