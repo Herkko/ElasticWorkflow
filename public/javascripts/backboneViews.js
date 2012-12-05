@@ -48,7 +48,7 @@ workflow.views.ActivityView = Backbone.View.extend({
           
         
         
-        this.model.bind("change", this.render(), this);
+        this.model.bind("change", this.render, this);
         this.model.bind("sync", function() { this.addToRaphaelObjects() }, this);
         this.model.bind("destroy", function() { this.delete() }, this);
 
