@@ -185,6 +185,7 @@ workflow.views.EndView = Backbone.View.extend({
         }
         
          this.model.bind("change", this.render, this);
+         this.model.bind("sync", this.addToRaphaelList, this);
          $(this.el).mouseup(_.bind(function() { this.clicked()}, this));
          $(this.raphaelText.node).mouseup(_.bind(function() { this.clicked()}, this));
     },
