@@ -46,7 +46,7 @@ workflow.views.ActivityView = Backbone.View.extend({
             this.addToRaphaelObjects();
         }
           
-        this.model.bind("change", this.render(), this);
+        this.model.bind("change", this.render, this);
         this.model.bind("sync", function() { this.addToRaphaelObjects() }, this);
         this.model.bind("destroy", function() { this.delete() }, this);
 
@@ -193,10 +193,8 @@ workflow.views.EndView = Backbone.View.extend({
             this.addToRaphaelList();
         }
         
-
-        $(this.el).mouseup(_.bind(function() { this.clicked()}, this));
          this.model.bind("change", this.render, this);
-         
+         $(this.el).mouseup(_.bind(function() { this.clicked()}, this));
          $(this.raphaelText.node).mouseup(_.bind(function() { this.clicked()}, this));
     },
             
